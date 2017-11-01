@@ -10,6 +10,7 @@ knex.schema
     table.increments('id');
     table.string('user_name');
     table.integer('user_rating');
+    table.varchar('password');
   })
   .createTable('transactions', (table) => {
     table.increments('id');
