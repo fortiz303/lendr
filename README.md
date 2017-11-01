@@ -19,6 +19,20 @@ Proposed Endpoints:
 
 More to come
 
+### Table Structure
+
+```
+CREATE TABLE users (
+  user_id integer primary key,
+
+);
+
+CREATE TABLE transaction (
+  transaction_id integer primary key,
+  user_id integer not null references users(user_id)
+);
+```
+
 ### Endpoints
 
 #### /user/:id (GET)
