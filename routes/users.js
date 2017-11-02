@@ -4,33 +4,61 @@ var express = require('express');
 var router = express.Router();
 var knex = require('knex')(knexConfig);
 
-router.get('/setup', (req, res, next) => {
-  const setupUser = {
-    user_name: 'Seed User',
-    password: 'password'
-  }
+const passwordHelper = require('../utils/passwordHelper.js');
 
-  knex
-    .insert(setupUser)
-    .into('users')
-    .then(() => {
-      res.json({success: true})
-    })
-    .catch((error) => {
-      console.log('something went wrong saving setup user');
-    })
+// Signup
+router.post('/signup', (req, res, next) => {
+  const user = req.body.user_name;
+  const pass = req.body.password;
+
+  if (!user || !pass) {
+    res.json({
+      success: false,
+      message: 'Missing username or password',
+    });
+  } else {
+    passwordHelper
+      .returnHashedPassword(pass)
+      .then((hash) => {
+        knex
+          .insert({
+            user_name: user,
+            password: hash
+          })
+          .into('users')
+          .then(() => {
+            res.json({
+              success: true,
+              message: `User ${user} created.`
+            })
+          })
+          .catch((error) => {
+            res.json({
+              success: false,
+              message: `Failed creating user ${user}.`,
+              error: error
+            })
+          })
+      })
+      .catch((error) => {
+        res.json({
+          success: false,
+          message: 'Signup failed',
+          error: error
+        })
+      });
+  }
 });
-router.get('/', (req, res, next) => {
-  knex.select().from('users').then((row) => {
-    res.json(row)
-  })
+
+// Reset route
+// TBD
+router.get('/reset/:token', (req, res, next) => {
+
 });
-/* GET users listing. */
+
+// Displays public user info
 router.get('/:userId', (req, res, next) => {
-  const userId = req.params.userId;
-  knex.select().from('users').where({id: userId}).then((row) => {
-    res.json(row)
-  })
+
 });
 
 module.exports = router;

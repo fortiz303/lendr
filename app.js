@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var user = require('./routes/users');
 var api = require('./routes/api/v1/index');
 
 var app = express();
@@ -25,15 +25,16 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 
 // app.use('/', index);
 
-// app.use('/users', users);
-app.use('/api/v1', api)
+
 app.get('/home', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
+app.use('/user', user);
 
-// app.get('*/:page', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
-// });
+// API Routes
+app.use('/api/v1', api)
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

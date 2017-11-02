@@ -2,6 +2,8 @@
 const knexConfig = require('../../../config/db.js');
 const appConfig = require('../../../config/app.js');
 
+const passwordHelper = require('../../../utils/passwordHelper.js')
+
 var _ = require('lodash');
 var express = require('express');
 var router = express.Router();
@@ -9,31 +11,31 @@ var knex = require('knex')(knexConfig);
 var jwt  = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 
-function returnHashedPassword(password = 'password') {
-  const saltRounds = 10;
+// function returnHashedPassword(password = 'password') {
+//   const saltRounds = 10;
 
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(hash)
-      }
-    })
-  })
-};
+//   return new Promise((resolve, reject) => {
+//     bcrypt.hash(password, saltRounds, (err, hash) => {
+//       if (err) {
+//         reject(err)
+//       } else {
+//         resolve(hash)
+//       }
+//     })
+//   })
+// };
 
-function comparePasswords(ciphertext, plaintext) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(plaintext, ciphertext, function(err, res) {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(res)
-      }
-    });
-  })
-}
+// function comparePasswords(ciphertext, plaintext) {
+//   return new Promise((resolve, reject) => {
+//     bcrypt.compare(plaintext, ciphertext, function(err, res) {
+//       if (err) {
+//         reject(err)
+//       } else {
+//         resolve(res)
+//       }
+//     });
+//   })
+// }
 
 router.post('/authenticate', (req, res) => {
   console.log(req.body)
@@ -53,7 +55,7 @@ router.post('/authenticate', (req, res) => {
         const ciphertext = row[0].password;
         const plaintext = req.body.password;
 
-        comparePasswords(ciphertext, plaintext)
+        passwordHelper.comparePasswords(ciphertext, plaintext)
           .then((passwordResponse) => {
             if (!passwordResponse) {
               res.json({
@@ -86,7 +88,7 @@ router.post('/authenticate', (req, res) => {
 })
 
 router.get('/addRandomUser', (req, res, next) => {
-  const randomPassword = returnHashedPassword().then((hash) => {
+  const randomPassword = passwordHelper.returnHashedPassword().then((hash) => {
     const randomName = `RandomUser${Math.random()}`;
     const randomPass = hash;
     knex
