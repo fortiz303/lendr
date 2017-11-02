@@ -36,6 +36,7 @@ function comparePasswords(ciphertext, plaintext) {
 }
 
 router.post('/authenticate', (req, res) => {
+  console.log(req.body)
   knex
     .select()
     .from('users')
@@ -54,7 +55,6 @@ router.post('/authenticate', (req, res) => {
 
         comparePasswords(ciphertext, plaintext)
           .then((passwordResponse) => {
-            
             if (!passwordResponse) {
               res.json({
                 success: false,
@@ -63,7 +63,7 @@ router.post('/authenticate', (req, res) => {
             } else {
               const payload = {user_name: row[0].user_name};
               const token = jwt.sign(payload, appConfig.secret);
-              
+
               res.json({
                 success: true,
                 message: 'Token Issued.',
