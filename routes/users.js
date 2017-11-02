@@ -17,6 +17,9 @@ router.post('/signup', (req, res, next) => {
       message: 'Missing username or password',
     });
   } else {
+
+    // VALIDATE EMAIL ADDRESS HERE AND BREAK IF WRONG
+
     passwordHelper
       .returnHashedPassword(pass)
       .then((hash) => {
@@ -31,6 +34,7 @@ router.post('/signup', (req, res, next) => {
               success: true,
               message: `User ${user} created.`
             })
+            // Handle sign up email stuff here.
           })
           .catch((error) => {
             res.json({
