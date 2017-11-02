@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-
+// Redux
+import {connect} from 'react-redux';
 import {
   BrowserRouter as Router,
   Route,
   Link
 } from 'react-router-dom';
 
-export default class Home extends Component {
+class Home extends Component {
   state = {
     authtoken: false,
     username: false,
@@ -107,4 +108,12 @@ export default class Home extends Component {
       </div>
     );
   }
-}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    authStatus: state.authReducer.status
+  }
+};
+
+export default connect(mapStateToProps)(Home);
