@@ -25,7 +25,7 @@ function returnHashedPassword(password = 'password') {
 
 function comparePasswords(ciphertext, plaintext) {
   return new Promise((resolve, reject) => {
-    bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
+    bcrypt.compare(plaintext, ciphertext, function(err, res) {
       if (err) {
         reject(err)
       } else {
@@ -34,23 +34,6 @@ function comparePasswords(ciphertext, plaintext) {
     });
   })
 }
-
-router.get('/setup', (req, res, next) => {
-  const setupUser = {
-    user_name: 'Seed User',
-    password: 'password'
-  };
-
-  knex
-    .insert(setupUser)
-    .into('users')
-    .then(() => {
-      res.json({success: true})
-    })
-    .catch((error) => {
-      console.log('something went wrong saving setup user');
-    })
-});
 
 router.post('/authenticate', (req, res) => {
   knex
@@ -66,12 +49,13 @@ router.post('/authenticate', (req, res) => {
           message: 'Invalid Credentials'
         });
       } else {
-        const cipher = row[0].password;
-        const plaint = req.body.password;
+        const ciphertext = row[0].password;
+        const plaintext = req.body.password;
 
-        comparePasswords(cipher, plaint)
-          .then((res) => {
-            if (!res) {
+        comparePasswords(ciphertext, plaintext)
+          .then((passwordResponse) => {
+            
+            if (!passwordResponse) {
               res.json({
                 success: false,
                 message: 'Invalid Credentials'
@@ -79,13 +63,20 @@ router.post('/authenticate', (req, res) => {
             } else {
               const payload = {user_name: row[0].user_name};
               const token = jwt.sign(payload, appConfig.secret);
-
+              
               res.json({
                 success: true,
                 message: 'Token Issued.',
                 token: token
               });
             }
+          })
+          .catch((error) => {
+            res.json({
+              success: false,
+              message: 'Something went wrong',
+              error: error
+            })
           })
       }
     })
