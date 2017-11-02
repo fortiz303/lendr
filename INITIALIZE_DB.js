@@ -9,7 +9,9 @@ knex.schema
   .createTable('users', (table) => {
     table.increments('id');
     table.string('user_name');
-    table.integer('user_rating');
+    table.string('email');
+    table.boolean('verified').defaultTo(false);
+    table.integer('user_rating').defaultTo(0);
     table.varchar('password');
   })
   .createTable('transactions', (table) => {
