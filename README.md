@@ -21,6 +21,15 @@ More to come
 
 ### Table Structure
 
+#### User Table
+
+- id - autoinc - int
+- user_name - string - must be an email (verify!)
+- password - varchar - bcrypted password
+- rating - int
+- dwolla info
+- nick - string - nickname to be made public
+
 ```
 CREATE TABLE users (
   user_id integer primary key,

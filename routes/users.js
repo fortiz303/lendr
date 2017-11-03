@@ -19,7 +19,6 @@ router.post('/signup', (req, res, next) => {
   } else {
 
     // VALIDATE EMAIL ADDRESS HERE AND BREAK IF WRONG
-
     passwordHelper
       .returnHashedPassword(pass)
       .then((hash) => {

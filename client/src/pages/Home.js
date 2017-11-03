@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 // Redux
 import {connect} from 'react-redux';
@@ -7,33 +8,25 @@ import {
   Link
 } from 'react-router-dom';
 
+import authActions from '../actions/authActions';
+
 class Home extends Component {
   state = {
-    authtoken: false,
-    username: false,
-    transactions: [],
-    passwordInput: '',
-    usernameInput: ''
+    
   };
 
   componentDidMount = () => {
-    // fetch('/api/v1/users')
-    //   .then(res => res.json())
-    //   .then(users => {
-    //     console.log(users)
-    //   });
-  };
+    const {user, dispatch, history} = this.props;
 
-  handlePasswordInput = (e) => {
-    this.setState({
-      passwordInput: e.target.value
-    })
-  };
+    // check sessionStorage for token
+    const token = _.get(window.sessionStorage, 'token', false);
 
-  handleUsernameInput = (e) => {
-    this.setState({
-      usernameInput: e.target.value
-    })
+    if (token) {
+      dispatch(authActions.test(token));
+      dispatch(authActions.setToken(token))
+    } else {
+      history.replace('/');
+    }
   };
 
   authenticate = () => {
@@ -112,7 +105,8 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authStatus: state.authReducer.status
+    authStatus: state.authReducer.status,
+    user: state.authReducer.user
   }
 };
 

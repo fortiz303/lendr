@@ -12,6 +12,7 @@ knex.schema
     table.string('email');
     table.boolean('verified').defaultTo(false);
     table.integer('user_rating').defaultTo(0);
+    table.string('nick');
     table.varchar('password');
   })
   .createTable('transactions', (table) => {

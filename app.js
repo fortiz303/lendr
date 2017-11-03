@@ -7,7 +7,9 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var user = require('./routes/users');
-var api = require('./routes/api/v1/index');
+
+var apiUser = require('./routes/api/v1/user');
+var apiAuthentication = require('./routes/api/v1/authentication');
 
 var app = express();
 
@@ -32,7 +34,8 @@ app.get('/home', (req, res) => {
 app.use('/user', user);
 
 // API Routes
-app.use('/api/v1', api)
+app.use('/api/v1/user', apiUser)
+app.use('/api/v1/auth', apiAuthentication)
 
 
 // catch 404 and forward to error handler

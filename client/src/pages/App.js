@@ -16,6 +16,7 @@ import thunk from 'redux-thunk';
 
 import authReducer from '../reducers/authReducer';
 
+import Login from './Login';
 import Home from './Home';
 import About from './About';
 
@@ -50,7 +51,8 @@ class App extends Component {
               <span className="navbar-brand mb-0 h1">Navbar</span>
             </nav>
 
-            <Route exact path="/" component={Home}/>
+            <Route exact path="/" component={Login}/>
+            <Route path="/home" component={Home}/>
             <Route path="/about" component={About}/>
 
           </div>

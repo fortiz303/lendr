@@ -11,32 +11,6 @@ var knex = require('knex')(knexConfig);
 var jwt  = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 
-// function returnHashedPassword(password = 'password') {
-//   const saltRounds = 10;
-
-//   return new Promise((resolve, reject) => {
-//     bcrypt.hash(password, saltRounds, (err, hash) => {
-//       if (err) {
-//         reject(err)
-//       } else {
-//         resolve(hash)
-//       }
-//     })
-//   })
-// };
-
-// function comparePasswords(ciphertext, plaintext) {
-//   return new Promise((resolve, reject) => {
-//     bcrypt.compare(plaintext, ciphertext, function(err, res) {
-//       if (err) {
-//         reject(err)
-//       } else {
-//         resolve(res)
-//       }
-//     });
-//   })
-// }
-
 router.post('/authenticate', (req, res) => {
   console.log(req.body)
   knex
@@ -105,6 +79,52 @@ router.get('/addRandomUser', (req, res, next) => {
       })
   })
 });
+// Signup
+router.post('/signup', (req, res, next) => {
+  const user = req.body.user_name;
+  const pass = req.body.password;
+
+  if (!user || !pass) {
+    res.json({
+      success: false,
+      message: 'Missing username or password',
+    });
+  } else {
+
+    // VALIDATE EMAIL ADDRESS HERE AND BREAK IF WRONG
+    passwordHelper
+      .returnHashedPassword(pass)
+      .then((hash) => {
+        knex
+          .insert({
+            user_name: user,
+            password: hash
+          })
+          .into('users')
+          .then(() => {
+            res.json({
+              success: true,
+              message: `User ${user} created.`
+            })
+            // Handle sign up email stuff here.
+          })
+          .catch((error) => {
+            res.json({
+              success: false,
+              message: `Failed creating user ${user}.`,
+              error: error
+            })
+          })
+      })
+      .catch((error) => {
+        res.json({
+          success: false,
+          message: 'Signup failed',
+          error: error
+        })
+      });
+  }
+});
 
 router.use((req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -124,16 +144,16 @@ router.use((req, res, next) => {
       message: 'No token provided'
     })
   }
-})
+});
 
-router.get('/users', (req, res, next) => {
+router.get('/', (req, res, next) => {
   knex.select().from('users').then((row) => {
     res.json(row)
   })
 });
 
 /* GET users listing. */
-router.get('/users/:userId', (req, res, next) => {
+router.get('/:userId', (req, res, next) => {
   const userId = req.params.userId;
   knex.select().from('users').where({id: userId}).then((row) => {
     res.json(row)
