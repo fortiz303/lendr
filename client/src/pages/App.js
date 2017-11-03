@@ -53,36 +53,34 @@ class App extends Component {
               <span className="navbar-brand mb-0 h1">Navbar</span>
             </nav>
 
-            <Route exact path="/" component={Login}/>
+            <Route exact path="/login" component={Login}/>
             
-            <Router path="/home" component={Home}>
+            <Router path="/" component={Home}>
               <div className="container-fluid">
                 <div className="row">
+                  <div className="col">
+                    <h2>Hello...</h2>
+                  </div>
+                </div>
+                <div className="row">
                   <div className="col-2">
-                    <ul className="nav flex-column">
+                    <ul className="nav flex-column test">
                       <li className="nav-item">
-                        <a className="nav-link" href="#">Feed</a>
+                        <Link to="/">Feed</Link>
                       </li>
                       <li className="nav-item">
-                        <a className="nav-link active" href="#">New Post</a>
-                      </li>
-                      <li className="nav-item">
-                        <a className="nav-link" href="#">My Transactions</a>
-                      </li>
-                      <li className="nav-item">
-                        <a className="nav-link disabled" href="#">My Profile</a>
+                        <Link to="/about">About</Link>
                       </li>
                     </ul>
                   </div>
+
                   <div className="col">
-                    <Route path="/home/feed" component={Feed} />
-                    <Route path="/home/new" component={About} />
+                    <Route exact path="/" component={Feed} />
+                    <Route exact path="/about" component={About} />
                   </div>
                 </div>
               </div>
             </Router>
-            
-            <Route path="/about" component={About}/>
 
           </div>
         </Router>
