@@ -14,12 +14,16 @@ knex.schema
     table.integer('user_rating').defaultTo(0);
     table.string('nick');
     table.varchar('password');
+    table.unique(['user_name', 'email'])
   })
   .createTable('transactions', (table) => {
     table.increments('id');
     table.string('from');
     table.string('to');
     table.integer('ammount');
+    table.integer('interest');
+    table.integer('promise_to_pay_date');
+    table.integer('memo');
     table.string('status');
     table.integer('user_id').unsigned().references('users.id')
   })

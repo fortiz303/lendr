@@ -3,7 +3,31 @@ const headers = new Headers({
 });
 
 export const API = {
-  fetchAllTransactions(token){ 
+  authenticate(token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          token: token
+        })
+      };
+
+      fetch('/api/v1/auth/authenticate', opts)
+        .then(res => res.json())
+        .then((data) => {
+          if (data.success) {
+            resolve(data);
+          } else {
+            reject(data)
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        })
+    })
+  },
+  fetchAllTransactions(token){
     return new Promise((resolve, reject) => {
       const opts = {
         headers: {

@@ -37,8 +37,10 @@ router.post('/authenticate', (req, res) => {
                 message: 'Invalid Credentials'
               });
             } else {
-              const payload = {user_name: row[0].user_name};
-              const token = jwt.sign(payload, appConfig.secret, {expiresIn: '1h'});
+              const payload = {
+                user_name: row[0].user_name
+              };
+              const token = jwt.sign(payload, appConfig.secret, {expiresIn: '1m'});
 
               res.json({
                 success: true,

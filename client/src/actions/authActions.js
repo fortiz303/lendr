@@ -1,11 +1,21 @@
 import {API} from '../API';
 
 const authActions = {
-  test: (token) => {
+  authenticate: (token) => {
     return (dispatch) => {
-      API.test(token)
-        .then((data) => {console.log(data)})
-        .catch((error) => {console.log(error)})
+      API.authenticate(token)
+        .then((data) => {
+          dispatch({
+            type: 'LOGIN_SUCCESS',
+            data: data
+          })
+        })
+        .catch((error) => {
+          dispatch({
+            type: 'LOGIN_FAILURE',
+            error: error
+          })
+        })
     }
   },
   setToken: (token) => {

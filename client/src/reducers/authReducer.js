@@ -5,7 +5,7 @@ export default function authReducer(state = {}, action) {
         ...state,
         user: {
           ...state.user,
-          token: action.toke
+          token: action.token
         }
       }
     case 'AUTH_STATUS':
@@ -13,7 +13,7 @@ export default function authReducer(state = {}, action) {
         ...state,
         status: action.status
       }
-    case 'LOGIN_SUCCESS': 
+    case 'LOGIN_SUCCESS':
       return {
         ...state,
         status: true,
@@ -22,19 +22,19 @@ export default function authReducer(state = {}, action) {
           token: action.data.token
         }
       }
-    case 'LOGIN_FAILURE': 
+    case 'LOGIN_FAILURE':
       return {
         ...state,
         status: false,
         user: false
       }
-    case 'SIGNUP_SUCCESS': 
+    case 'SIGNUP_SUCCESS':
       return {
         ...state,
         status: true,
         user: false
       }
-    case 'SIGNUP_FAILURE': 
+    case 'SIGNUP_FAILURE':
       return {
         ...state,
         status: false,

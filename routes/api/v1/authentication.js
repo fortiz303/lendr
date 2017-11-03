@@ -11,6 +11,26 @@ var knex = require('knex')(knexConfig);
 var jwt  = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 
+router.post('/authenticate', (req, res) => {
+  const token = req.body.token;
+
+  jwt.verify(token, appConfig.secret, (err, decoded) => {
+    if (err) {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid token'
+      })
+    } else {
+      res.json({
+        success: true,
+        message: 'Valid token. User authenticated.',
+        token: token,
+        user_name: decoded.user_name
+      })
+    }
+  })
+});
+
 router.post('/login', (req, res) => {
   knex
     .select()
@@ -36,9 +56,11 @@ router.post('/login', (req, res) => {
                 message: 'Invalid Credentials'
               });
             } else {
-              const payload = {user_name: row[0].user_name};
+              const payload = {
+                user_name: row[0].user_name,
+                exp: new Date().getTime() + 3600000
+              };
               const token = jwt.sign(payload, appConfig.secret);
-
               res.json({
                 success: true,
                 message: 'Token Issued.',

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-
+import _ from 'lodash';
 import './App.css';
 
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Link,
+  Switch
 } from 'react-router-dom'
 
 // Redux
@@ -17,9 +18,12 @@ import thunk from 'redux-thunk';
 import authReducer from '../reducers/authReducer';
 import transactionReducer from '../reducers/transactionReducer';
 
+import Wrapper from './Wrapper';
+
 import Login from './Login';
 import Feed from './Feed';
 import About from './About';
+import New from './New';
 
 /* eslint-disable */
 const isProduction = false;
@@ -47,40 +51,45 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <div>
-            <nav className="navbar navbar-dark bg-dark">
-              <span className="navbar-brand mb-0 h1">Navbar</span>
-            </nav>
-
-            <Route exact path="/login" component={Login}/>
-            
-            <Router path="/">
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col">
-                    <h2>Hello...</h2>
+          <div className="router-wrapper">
+            <Switch>
+              <Route exact path="/login" component={Login}/>
+              <div className="main-content-wrapper">
+                <div className="container-fluid">
+                  <nav className="navbar navbar-dark bg-dark fixed-top">
+                    <span className="navbar-brand mb-0 h1">Navbar</span>
+                  </nav>
+                  <div className="row">
+                    <div className="col">
+                      <h2>Hello...</h2>
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-2">
-                    <ul className="nav flex-column test">
-                      <li className="nav-item">
-                        <Link to="/">Feed</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/about">About</Link>
-                      </li>
-                    </ul>
-                  </div>
+                  <div className="row">
+                    <div className="col-2">
+                      <ul className="nav flex-column test">
+                        <li className="nav-item">
+                          <Link to="/">Feed</Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link to="/new">New</Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link to="/about">About</Link>
+                        </li>
+                      </ul>
+                    </div>
 
-                  <div className="col">
-                    <Route exact path="/" component={Feed} />
-                    <Route exact path="/about" component={About} />
+                    <div className="col">
+                      <Switch>
+                        <Route exact component={Feed}  path="/" />
+                        <Route exact component={New}  path="/new" />
+                        <Route exact component={About}  path="/about" />
+                      </Switch>
+                    </div>
                   </div>
                 </div>
               </div>
-            </Router>
-
+            </Switch>
           </div>
         </Router>
       </Provider>

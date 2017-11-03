@@ -6,7 +6,9 @@ const passwordHelper = {
       if (!password) {
         reject('No password supplied')
       }
+
       const saltRounds = 10;
+
       bcrypt.hash(password, saltRounds, (err, hash) => {
         if (err) {
           reject(err)

@@ -16,8 +16,9 @@ router.use((req, res, next) => {
 
   if (token) {
     jwt.verify(token, appConfig.secret, (err, decoded) => {
+      console.log(err, decoded, token)
       if (err) {
-        return res.json({success: false, message: 'Failed to Authenticate'});
+        return res.status(400).json({success: false, message: 'Failed to Authenticate'});
       } else {
         req.decoded = decoded;
         next();
@@ -29,6 +30,31 @@ router.use((req, res, next) => {
       message: 'No token provided'
     })
   }
+});
+
+router.post('/new', (req, res, next) => {
+  const transaction = {
+    from: req.body.from,
+    to: req.body.to,
+    amount: req.body.amount,
+    status: 'pending',
+    interest: req.body.interest,
+    promise_to_pay_date: req.body.promise_to_pay_date,
+    memo: req.body.memo
+  };
+
+  knex.insert(transaction).into('transactions').then(() => {
+    res.json({
+      success: true,
+      message: 'Transaction added'
+    })
+    .catch((error) => {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to add transaction'
+      })
+    })
+  })
 });
 
 router.get('/', (req, res, next) => {
