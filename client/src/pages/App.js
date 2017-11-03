@@ -18,7 +18,6 @@ import authReducer from '../reducers/authReducer';
 import transactionReducer from '../reducers/transactionReducer';
 
 import Login from './Login';
-import Home from './Home';
 import Feed from './Feed';
 import About from './About';
 
@@ -55,7 +54,7 @@ class App extends Component {
 
             <Route exact path="/login" component={Login}/>
             
-            <Router path="/" component={Home}>
+            <Router path="/">
               <div className="container-fluid">
                 <div className="row">
                   <div className="col">
