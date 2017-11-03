@@ -38,7 +38,7 @@ router.post('/authenticate', (req, res) => {
               });
             } else {
               const payload = {user_name: row[0].user_name};
-              const token = jwt.sign(payload, appConfig.secret);
+              const token = jwt.sign(payload, appConfig.secret, {expiresIn: '1h'});
 
               res.json({
                 success: true,

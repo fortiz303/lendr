@@ -9,12 +9,13 @@ import {
 } from 'react-router-dom'
 
 // Redux
-import {Provider, connect} from 'react-redux';
+import {Provider} from 'react-redux';
 import {applyMiddleware, createStore, combineReducers} from 'redux';
 import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import authReducer from '../reducers/authReducer';
+import transactionReducer from '../reducers/transactionReducer';
 
 import Login from './Login';
 import Home from './Home';
@@ -28,14 +29,14 @@ let store;
 
 if (isProduction) {
   store = createStore(
-    combineReducers({authReducer}),
+    combineReducers({authReducer, transactionReducer}),
     applyMiddleware(thunk)
   );
 } else {
   const logger = createLogger({collapsed: true});
 
   store = createStore(
-    combineReducers({authReducer}),
+    combineReducers({authReducer, transactionReducer}),
     applyMiddleware(thunk, logger)
   );
 }

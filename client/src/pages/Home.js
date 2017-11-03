@@ -2,13 +2,9 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 // Redux
 import {connect} from 'react-redux';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
 
 import authActions from '../actions/authActions';
+import transactionActions from '../actions/transactionActions';
 
 class Home extends Component {
   state = {
@@ -16,13 +12,13 @@ class Home extends Component {
   };
 
   componentDidMount = () => {
-    const {user, dispatch, history} = this.props;
+    const {dispatch, history} = this.props;
 
     // check sessionStorage for token
     const token = _.get(window.sessionStorage, 'token', false);
 
     if (token) {
-      dispatch(authActions.test(token));
+      dispatch(transactionActions.fetchAll(token));
       dispatch(authActions.setToken(token))
     } else {
       history.replace('/');
@@ -56,7 +52,15 @@ class Home extends Component {
         console.log(error)
       })
   };
+  renderTransactionFeed = () => {
+    const {transactionFeed} = this.props;
 
+    return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
+      return (
+        <p>Transaction ID: <strong>{current.id}</strong> from <strong>{current.from}</strong> to <strong>{current.to}</strong> has a status: <strong>{current.status}</strong></p>
+      )
+    }) : null
+  };
   render() {
     return (
       <div className="container-fluid">
@@ -78,24 +82,9 @@ class Home extends Component {
             </ul>
           </div>
           <div className="col">
-            <div className="jumbotron jumbotron-fluid">
-              <div className="container">
-                <h1 className="display-3">Fluid jumbotron</h1>
-                <p className="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-              </div>
-            </div>
-            <div className="card" style={{width: '20rem'}}>
-              <img className="card-img-top" src="http://placehold.it/200x200" alt="Card image cap" />
-              <div className="card-body">
-                <h4 className="card-title">Card title</h4>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" className="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-
-            <input onChange={this.handleUsernameInput} type="text" />
-            <input onChange={this.handlePasswordInput} type="password" />
-            <button onClick={this.authenticate}>Authenticate</button>
+            
+            {this.renderTransactionFeed()}
+          
           </div>
         </div>
       </div>
@@ -106,7 +95,8 @@ class Home extends Component {
 const mapStateToProps = (state) => {
   return {
     authStatus: state.authReducer.status,
-    user: state.authReducer.user
+    user: state.authReducer.user,
+    transactionFeed: state.transactionReducer.transactionFeed
   }
 };
 

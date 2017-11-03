@@ -3,7 +3,7 @@ const headers = new Headers({
 });
 
 export const API = {
-  test(token){ 
+  fetchAllTransactions(token){ 
     return new Promise((resolve, reject) => {
       const opts = {
         headers: {
@@ -13,13 +13,13 @@ export const API = {
         method: 'GET'
       };
 
-      fetch('/api/v1/user', opts)
+      fetch('/api/v1/transaction', opts)
         .then(res => res.json())
         .then((data) => {
-          console.log(data)
+          resolve(data);
         })
         .catch((error) => {
-          console.log(error)
+          reject(error);
         })
     })
   },
