@@ -19,6 +19,7 @@ import transactionReducer from '../reducers/transactionReducer';
 
 import Login from './Login';
 import Home from './Home';
+import Feed from './Feed';
 import About from './About';
 
 /* eslint-disable */
@@ -53,7 +54,34 @@ class App extends Component {
             </nav>
 
             <Route exact path="/" component={Login}/>
-            <Route path="/home" component={Home}/>
+            
+            <Router path="/home" component={Home}>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-2">
+                    <ul className="nav flex-column">
+                      <li className="nav-item">
+                        <a className="nav-link" href="#">Feed</a>
+                      </li>
+                      <li className="nav-item">
+                        <a className="nav-link active" href="#">New Post</a>
+                      </li>
+                      <li className="nav-item">
+                        <a className="nav-link" href="#">My Transactions</a>
+                      </li>
+                      <li className="nav-item">
+                        <a className="nav-link disabled" href="#">My Profile</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="col">
+                    <Route path="/home/feed" component={Feed} />
+                    <Route path="/home/new" component={About} />
+                  </div>
+                </div>
+              </div>
+            </Router>
+            
             <Route path="/about" component={About}/>
 
           </div>
