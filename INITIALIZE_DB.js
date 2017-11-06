@@ -7,27 +7,29 @@ console.log('Creating new tables with');
 
 knex.schema
   .createTable('users', (table) => {
-    table.increments('id');
-    table.string('user_name');
-    table.string('email');
-    table.boolean('verified').defaultTo(false);
-    table.integer('user_rating').defaultTo(0);
-    table.string('nick');
-    table.varchar('password');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.unique(['user_name', 'email'])
+    table.increments('id'); // the  user id
+    table.string('user_name'); // the user name
+    table.string('email'); // the users email
+    table.boolean('verified').defaultTo(false); // verified status (verify email address)
+    table.integer('user_rating').defaultTo(0); // the user's rating (0 - 5? 0 - 10? something else?)
+    table.string('nick'); // optional user nickname
+    table.varchar('password'); // password - hashed
+    table.timestamp('created_at').defaultTo(knex.fn.now()); // user created at date
+    table.unique(['user_name', 'email']) // columns that need to be unique
   })
   .createTable('transactions', (table) => {
-    table.increments('id');
-    table.string('from');
-    table.string('to');
-    table.integer('amount');
-    table.integer('interest');
-    table.date('promise_to_pay_date');
-    table.string('memo');
-    table.string('status');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.integer('user_id').unsigned().references('users.id')
+    table.increments('id'); // the transaction ID
+    table.string('from'); // the sender of money
+    table.string('to'); // the recipient of money
+    table.integer('amount'); // the amount of the transaction
+    table.integer('interest'); // the posted interest by the borrower
+    table.date('promise_to_pay_date'); // the date on which the borrower promises to return principal + interest
+    table.string('memo'); // an optional memo field - figure out how this ties into Dwolla
+    table.string('status'); // the status (pending, accepted, active, paid, defaulted)
+    table.timestamp('created_at').defaultTo(knex.fn.now()); // created at date of the transaction post
+    table.integer('user_id').unsigned().references('users.id'); // the uid of the person creating the transaction
+    table.boolean('seen_by_recipient').defaultTo(false); // has the recipient seen this transaction
+    table.boolean('seen_by_sender').defaultTo(false); // has the sender seen this transaction
   })
   .catch((error) => {
     console.log('Something went wrong. ', error);
