@@ -19,7 +19,8 @@ class New extends Component {
     amount: '100',
     interest: '25',
     promise_to_pay_date: '2017/11/30',
-    memo: new Date()
+    memo: new Date(),
+    user_id: 1
   };
 
   updateField = (field, e) => {

@@ -13,10 +13,8 @@ var bcrypt = require('bcrypt');
 
 router.use((req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
-  console.log(req.body)
   if (token) {
     jwt.verify(token, appConfig.secret, (err, decoded) => {
-      console.log(err, decoded, token)
       if (err) {
         return res.status(400).json({success: false, message: 'Failed to Authenticate'});
       } else {
@@ -40,9 +38,10 @@ router.post('/new', (req, res, next) => {
     status: 'pending',
     interest: req.body.interest,
     promise_to_pay_date: req.body.promise_to_pay_date,
-    memo: req.body.memo
+    memo: req.body.memo,
+    user_id: req.decoded.uid
   };
-
+  console.log(transaction, req.decoded)
   knex
     .insert(transaction)
     .into('transactions')
