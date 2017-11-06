@@ -51,14 +51,14 @@ router.post('/new', (req, res, next) => {
         success: true,
         message: 'Transaction added'
       })
-  })
-  .catch((error) => {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to add transaction',
-      error: error
     })
-  })
+    .catch((error) => {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to add transaction',
+        error: error
+      })
+    })
 });
 
 router.get('/', (req, res, next) => {
