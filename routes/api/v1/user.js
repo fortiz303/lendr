@@ -11,76 +11,76 @@ var knex = require('knex')(knexConfig);
 var jwt  = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 
-router.post('/authenticate', (req, res) => {
-  console.log(req.body)
-  knex
-    .select()
-    .from('users')
-    .where({
-      user_name: req.body.user_name
-    })
-    .then((row) => {
-      if (_.isEmpty(row)) {
-        res.json({
-          success: false,
-          message: 'Invalid Credentials'
-        });
-      } else {
-        const ciphertext = row[0].password;
-        const plaintext = req.body.password;
+// router.post('/authenticate', (req, res) => {
+//   console.log(req.body)
+//   knex
+//     .select()
+//     .from('users')
+//     .where({
+//       user_name: req.body.user_name
+//     })
+//     .then((row) => {
+//       if (_.isEmpty(row)) {
+//         res.json({
+//           success: false,
+//           message: 'Invalid Credentials'
+//         });
+//       } else {
+//         const ciphertext = row[0].password;
+//         const plaintext = req.body.password;
 
-        passwordHelper.comparePasswords(ciphertext, plaintext)
-          .then((passwordResponse) => {
-            if (!passwordResponse) {
-              res.json({
-                success: false,
-                message: 'Invalid Credentials'
-              });
-            } else {
-              const payload = {
-                user_name: row[0].user_name
-              };
-              const token = jwt.sign(payload, appConfig.secret, {expiresIn: '1m'});
+//         passwordHelper.comparePasswords(ciphertext, plaintext)
+//           .then((passwordResponse) => {
+//             if (!passwordResponse) {
+//               res.json({
+//                 success: false,
+//                 message: 'Invalid Credentials'
+//               });
+//             } else {
+//               const payload = {
+//                 user_name: row[0].user_name
+//               };
+//               const token = jwt.sign(payload, appConfig.secret, {expiresIn: '1m'});
 
-              res.json({
-                success: true,
-                message: 'Token Issued.',
-                token: token
-              });
-            }
-          })
-          .catch((error) => {
-            res.json({
-              success: false,
-              message: 'Something went wrong',
-              error: error
-            })
-          })
-      }
-    })
-    .catch((error) => {
-      res.json(error)
-    })
-})
+//               res.json({
+//                 success: true,
+//                 message: 'Token Issued.',
+//                 token: token
+//               });
+//             }
+//           })
+//           .catch((error) => {
+//             res.json({
+//               success: false,
+//               message: 'Something went wrong',
+//               error: error
+//             })
+//           })
+//       }
+//     })
+//     .catch((error) => {
+//       res.json(error)
+//     })
+// })
 
-router.get('/addRandomUser', (req, res, next) => {
-  const randomPassword = passwordHelper.returnHashedPassword().then((hash) => {
-    const randomName = `RandomUser${Math.random()}`;
-    const randomPass = hash;
-    knex
-      .insert({
-        user_name: randomName,
-        password: randomPass
-      })
-      .into('users')
-      .then(() => {
-        res.json({success: true, message: `Random user created with username ${randomName} pass: ${randomPass}`})
-      })
-      .catch((error) => {
-        res.json({success: false, message: 'Something went wrong.', error: error})
-      })
-  })
-});
+// router.get('/addRandomUser', (req, res, next) => {
+//   const randomPassword = passwordHelper.returnHashedPassword().then((hash) => {
+//     const randomName = `RandomUser${Math.random()}`;
+//     const randomPass = hash;
+//     knex
+//       .insert({
+//         user_name: randomName,
+//         password: randomPass
+//       })
+//       .into('users')
+//       .then(() => {
+//         res.json({success: true, message: `Random user created with username ${randomName} pass: ${randomPass}`})
+//       })
+//       .catch((error) => {
+//         res.json({success: false, message: 'Something went wrong.', error: error})
+//       })
+//   })
+// });
 // Signup
 router.post('/signup', (req, res, next) => {
   const user = req.body.user_name;

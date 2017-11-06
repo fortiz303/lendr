@@ -4,7 +4,6 @@ const headers = new Headers({
 
 export const API = {
   newTransaction(data, token) {
-    console.log(data, token)
     return new Promise((resolve, reject) => {
       const opts = {
         headers: headers,
@@ -13,7 +12,7 @@ export const API = {
           ...data,
           token: token
         })
-      }
+      };
 
       fetch('/api/v1/transaction/new', opts)
         .then(res => res.json())

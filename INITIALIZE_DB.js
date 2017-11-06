@@ -29,29 +29,6 @@ knex.schema
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.integer('user_id').unsigned().references('users.id')
   })
-  .then(() => {
-    return knex.insert({
-      user_name: 'Test User 1',
-      user_rating: 0
-    }).into('users')
-  })
-  .then((rows) => {
-    return knex.table('transactions').insert({
-      user_id: rows[0],
-      from: 'Test user 1',
-      to: 'Test user 2',
-      amount: 100,
-      status: 'pending'
-    })
-  })
-  .then(() => {
-    return knex('users')
-      .join('transactions', 'users.id', 'transactions.id')
-      .select();
-  })
-  .map((row) => {
-    console.log(row)
-  })
   .catch((error) => {
     console.log('Something went wrong. ', error);
   })

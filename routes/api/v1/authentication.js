@@ -21,12 +21,31 @@ router.post('/authenticate', (req, res) => {
         message: 'Invalid token'
       })
     } else {
-      res.json({
-        success: true,
-        message: 'Valid token. User authenticated.',
-        token: token,
-        user_name: decoded.user_name
-      })
+      // db call to make sure username and uid match
+      knex
+        .select()
+        .from('users')
+        .where({
+          user_name: decoded.user_name
+        })
+        .then((row) => {
+          if (row[0].user_name === decoded.user_name && row[0].id === decoded.id)
+          res.json(row)
+          res.json({
+            success: true,
+            message: 'Valid token. User authenticated.',
+            token: token,
+            user_name: row[0].user_name,
+            uid: row[0].id
+          })
+        })
+        .catch((error) => {
+          res.status(400).json({
+            success: false,
+            message: 'Failure to authenticate with provided token',
+            error: error
+          })
+        })
     }
   })
 });
@@ -58,6 +77,7 @@ router.post('/login', (req, res) => {
             } else {
               const payload = {
                 user_name: row[0].user_name,
+                uid: row[0].id,
                 exp: new Date().getTime() + 3600000
               };
               const token = jwt.sign(payload, appConfig.secret);
