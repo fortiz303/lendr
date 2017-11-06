@@ -1,9 +1,9 @@
 import {API} from '../API';
 
 const transactionActions = {
-  new: (data) => {
+  new: (data, token) => {
     return (dispatch) => {
-      API.newTransaction(data)
+      API.newTransaction(data, token)
         .then((data) => {
           dispatch({
             type: 'NEW_TRANSACTION_SUCCESS',

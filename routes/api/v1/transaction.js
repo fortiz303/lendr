@@ -13,7 +13,7 @@ var bcrypt = require('bcrypt');
 
 router.use((req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
-
+  console.log(req.body)
   if (token) {
     jwt.verify(token, appConfig.secret, (err, decoded) => {
       console.log(err, decoded, token)
@@ -43,16 +43,20 @@ router.post('/new', (req, res, next) => {
     memo: req.body.memo
   };
 
-  knex.insert(transaction).into('transactions').then(() => {
-    res.json({
-      success: true,
-      message: 'Transaction added'
-    })
-    .catch((error) => {
-      res.status(500).json({
-        success: false,
-        message: 'Failed to add transaction'
+  knex
+    .insert(transaction)
+    .into('transactions')
+    .then(() => {
+      res.json({
+        success: true,
+        message: 'Transaction added'
       })
+  })
+  .catch((error) => {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to add transaction',
+      error: error
     })
   })
 });

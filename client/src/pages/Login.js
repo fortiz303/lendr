@@ -67,7 +67,7 @@ class Login extends Component {
               <h4 className="card-title">{method}</h4>
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
-                  <label for="exampleInputEmail1">Email address</label>
+                  <label htmlFor="exampleInputEmail1">Email address</label>
                   <input
                     onChange={this.handleEmailInput}
                     value={email}
@@ -79,7 +79,7 @@ class Login extends Component {
                   <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div className="form-group">
-                  <label for="exampleInputPassword1">Password</label>
+                  <label htmlFor="exampleInputPassword1">Password</label>
                   <input
                     onChange={this.handlePasswordInput}
                     value={password}

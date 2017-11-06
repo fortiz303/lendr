@@ -59,11 +59,7 @@ class App extends Component {
                   <nav className="navbar navbar-dark bg-dark fixed-top">
                     <span className="navbar-brand mb-0 h1">Navbar</span>
                   </nav>
-                  <div className="row">
-                    <div className="col">
-                      <h2>Hello...</h2>
-                    </div>
-                  </div>
+
                   <div className="row">
                     <div className="col-2">
                       <ul className="nav flex-column test">
