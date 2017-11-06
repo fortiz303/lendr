@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var user = require('./routes/users');
 
 var apiUser = require('./routes/api/v1/user');
 var apiTransaction = require('./routes/api/v1/transaction');
@@ -32,7 +31,6 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 app.get('/home', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
-app.use('/user', user);
 
 // API Routes
 app.use('/api/v1/user', apiUser)

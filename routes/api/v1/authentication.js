@@ -26,16 +26,16 @@ router.post('/authenticate', (req, res) => {
         .select()
         .from('users')
         .where({
-          user_name: decoded.user_name
+          email: decoded.email
         })
         .then((row) => {
-          if (row[0].user_name === decoded.user_name && row[0].id === decoded.id)
+          if (row[0].email === decoded.email && row[0].id === decoded.id)
           res.json(row)
           res.json({
             success: true,
             message: 'Valid token. User authenticated.',
             token: token,
-            user_name: row[0].user_name,
+            email: row[0].email,
             uid: row[0].id
           })
         })
@@ -55,7 +55,7 @@ router.post('/login', (req, res) => {
     .select()
     .from('users')
     .where({
-      user_name: req.body.user_name
+      email: req.body.email
     })
     .then((row) => {
       if (_.isEmpty(row)) {
@@ -76,7 +76,7 @@ router.post('/login', (req, res) => {
               });
             } else {
               const payload = {
-                user_name: row[0].user_name,
+                email: row[0].email,
                 uid: row[0].id,
                 exp: new Date().getTime() + 3600000
               };
@@ -85,7 +85,7 @@ router.post('/login', (req, res) => {
                 success: true,
                 message: 'Token Issued.',
                 token: token,
-                user_name: row[0].user_name
+                email: row[0].email
               });
             }
           })
@@ -105,7 +105,7 @@ router.post('/login', (req, res) => {
 
 // Signup
 router.post('/signup', (req, res, next) => {
-  const user = req.body.user_name;
+  const user = req.body.email;
   const pass = req.body.password;
 
   if (!user || !pass) {
@@ -121,7 +121,7 @@ router.post('/signup', (req, res, next) => {
       .then((hash) => {
         knex
           .insert({
-            user_name: user,
+            email: user,
             password: hash
           })
           .into('users')
@@ -129,7 +129,7 @@ router.post('/signup', (req, res, next) => {
             res.json({
               success: true,
               message: `User ${user} created.`,
-              user_name: user,
+              email: user,
               password: pass
             })
             // Handle sign up email stuff here.

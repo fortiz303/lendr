@@ -13,6 +13,7 @@ var bcrypt = require('bcrypt');
 
 router.use((req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
+  console.log(req.body)
   if (token) {
     jwt.verify(token, appConfig.secret, (err, decoded) => {
       if (err) {
@@ -41,7 +42,7 @@ router.post('/new', (req, res, next) => {
     memo: req.body.memo,
     user_id: req.decoded.uid
   };
-  console.log(transaction, req.decoded)
+
   knex
     .insert(transaction)
     .into('transactions')

@@ -13,7 +13,7 @@ var bcrypt = require('bcrypt');
 
 // Signup
 router.post('/signup', (req, res, next) => {
-  const user = req.body.user_name;
+  const user = req.body.email;
   const pass = req.body.password;
 
   if (!user || !pass) {
@@ -29,7 +29,7 @@ router.post('/signup', (req, res, next) => {
       .then((hash) => {
         knex
           .insert({
-            user_name: user,
+            email: user,
             password: hash
           })
           .into('users')

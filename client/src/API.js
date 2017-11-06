@@ -79,7 +79,7 @@ export const API = {
         headers: headers,
         method: 'POST',
         body: JSON.stringify({
-          user_name: email,
+          email: email,
           password: pass
         })
       };
@@ -103,7 +103,7 @@ export const API = {
         headers: headers,
         method: 'POST',
         body: JSON.stringify({
-          user_name: email,
+          email: email,
           password: pass
         })
       };
