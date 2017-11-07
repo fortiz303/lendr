@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/client/build')));
 
-// app.use('/', index);
+app.use('/', index);
 
 
 app.get('/home', (req, res) => {

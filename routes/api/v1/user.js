@@ -13,6 +13,7 @@ var bcrypt = require('bcrypt');
 
 // Signup
 router.post('/signup', (req, res, next) => {
+    console.log(knex)
   const user = req.body.email;
   const pass = req.body.password;
 
