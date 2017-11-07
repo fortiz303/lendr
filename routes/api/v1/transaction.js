@@ -13,7 +13,6 @@ var bcrypt = require('bcrypt');
 
 router.use((req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
-  console.log(req.body)
   if (token) {
     jwt.verify(token, appConfig.secret, (err, decoded) => {
       if (err) {
@@ -29,6 +28,27 @@ router.use((req, res, next) => {
       message: 'No token provided'
     })
   }
+});
+router.post('/accept', (req, res, next) => {
+  knex('transactions')
+    .where('id', '=', req.body.transactionId)
+    .update({
+      status: 'accepted',
+      from: req.body.fromUser
+    })
+    .then(() => {
+      res.json({
+        success: true,
+        message: 'Transaction updated'
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+      res.status(500).json({
+        success: false,
+        message: 'Transaction failed to update'
+      })
+    })
 });
 
 router.post('/new', (req, res, next) => {

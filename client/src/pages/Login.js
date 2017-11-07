@@ -9,6 +9,10 @@ class Login extends Component {
     email: '',
     password: ''
   };
+  
+  componentDidMount = () => {
+    window.sessionStorage.token = false;
+  };
 
   componentDidUpdate = (prevProps, prevState) => {
     const {history} = this.props;

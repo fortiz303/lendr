@@ -12,25 +12,80 @@ class Feed extends Component {
   };
 
   componentDidMount = () => {
-    const {dispatch, history} = this.props;
+    const {dispatch, history, user} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
+  
     if (token) {
-      dispatch(transactionActions.fetchAll(token));
+      dispatch(authActions.authenticate(token));
     }
   };
 
+  componentDidUpdate = (prevProps, prevState) => {
+    const {user, dispatch} = this.props;
+
+    if (_.get(prevProps, 'user.uid', false) !== user.uid && user.token) {
+      dispatch(transactionActions.fetchAll(user.token));    
+    }
+  };
+  
+  acceptTransaction = (transactionId) => {
+    const {dispatch, user} = this.props;
+    
+    const updateData = {
+      transactionId: transactionId,
+      fromUser: user.uid
+    };
+
+    dispatch(transactionActions.accept(updateData, user.token))
+  };
+
   renderTransactionFeed = () => {
-    const {transactionFeed} = this.props;
+    const {transactionFeed, user} = this.props;
 
     return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
       return (
-        <p key={index}>Transaction ID: <strong>{current.id}</strong> from <strong>{current.from}</strong> to <strong>{current.to}</strong> has a status: <strong>{current.status}</strong></p>
+        <tr key={`feed-table-row-${index}`}>
+          <td>{current.created_at}</td>
+          <td>{current.amount}</td>
+          <td>{current.interest}</td>
+          <td>{current.amount + current.interest}</td>
+          <td>{current.memo}</td>
+          <td>{current.status}</td>
+          <td>
+            {
+              current.user_id !== user.uid ?
+                <span onClick={() => {this.acceptTransaction(current.id)}} className="btn btn-primary">Loan</span> :
+                <span className="btn btn-secondary">Edit</span>
+            }
+          </td>
+        </tr>
       )
     }) : null
   };
   render() {
-    return this.renderTransactionFeed()
+    const {user} = this.props;
+    return (
+      <div className="col">
+        <h2>Hello {_.get(user, 'email', '')}</h2>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Date posted</th>
+              <th>Amount requested</th>
+              <th>Interest</th>
+              <th>Your total return</th>
+              <th>For</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.renderTransactionFeed()}
+          </tbody>
+        </table>
+      </div>
+    )
   }
 };
 

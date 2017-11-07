@@ -14,12 +14,12 @@ import authActions from '../actions/authActions';
 
 class New extends Component {
   state = {
-    from: 'peter',
-    to: 'marco',
-    amount: '100',
-    interest: '25',
-    promise_to_pay_date: '2017/11/30',
-    memo: new Date()
+    from: '',
+    to: '',
+    amount: '',
+    interest: '',
+    promise_to_pay_date: '',
+    memo: ''
   };
 
   updateField = (field, e) => {
@@ -44,29 +44,15 @@ class New extends Component {
 
   render() {
     return (
-      <div>
+      <div className="col">
         <div className="row">
           <div className="col">
             <h2>Hello...</h2>
           </div>
         </div>
 
-        <div className="form-group">
-          <input
-            value={this.state.from}
-            type="text"
-            onChange={(e) => {this.updateField('from', e)}}
-            placeholder="from"
-          />
-        </div>
-        <div className="form-group">
-          <input
-            value={this.state.to}
-            type="text"
-            onChange={(e) => {this.updateField('to', e)}}
-            placeholder="to"
-          />
-        </div>
+       
+       
         <div className="form-group">
           <input
             value={this.state.amount}

@@ -3,6 +3,31 @@ const headers = new Headers({
 });
 
 export const API = {
+  acceptLoan(data, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers, 
+        method: 'POST',
+        body: JSON.stringify({
+          ...data,
+          token: token
+        })
+      }
+
+      fetch('/api/v1/transaction/accept', opts)
+        .then(res => res.json())
+        .then((data) => {
+          if (data.success) {
+            resolve(data)
+          } else {
+            reject(data)
+          }
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   newTransaction(data, token) {
     return new Promise((resolve, reject) => {
       const opts = {

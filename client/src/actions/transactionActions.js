@@ -1,6 +1,23 @@
 import {API} from '../API';
 
 const transactionActions = {
+  accept: (data, token) => {
+    return (dispatch) => {
+      API.acceptLoan(data, token)
+        .then((data) => {
+          dispatch({
+            type: 'LOAN_ACCEPTANCE_SUCCESS',
+            data: data
+          })
+        })
+        .catch((error) => {
+          dispatch({
+            type: 'LOAN_ACCEPTANCE_FAILURE',
+            error: error
+          })
+        })
+    }
+  },
   new: (data, token) => {
     return (dispatch) => {
       API.newTransaction(data, token)

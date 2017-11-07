@@ -15,21 +15,29 @@ knex.schema
     table.string('nick'); // optional user nickname
     table.varchar('password'); // password - hashed
     table.timestamp('created_at').defaultTo(knex.fn.now()); // user created at date
+    table.specificType('friends', 'integer[]'); // an array of other UID's who are this users friends
     table.unique(['user_name', 'email']) // columns that need to be unique
   })
   .createTable('transactions', (table) => {
     table.increments('id'); // the transaction ID
-    table.string('from'); // the sender of money
-    table.string('to'); // the recipient of money
     table.integer('amount'); // the amount of the transaction
     table.integer('interest'); // the posted interest by the borrower
     table.date('promise_to_pay_date'); // the date on which the borrower promises to return principal + interest
     table.string('memo'); // an optional memo field - figure out how this ties into Dwolla
     table.string('status'); // the status (pending, accepted, active, paid, defaulted)
     table.timestamp('created_at').defaultTo(knex.fn.now()); // created at date of the transaction post
-    table.integer('user_id').unsigned().references('users.id'); // the uid of the person creating the transaction
+    table.integer('created_by_user_id').unsigned().references('users.id'); // the uid of the person creating the transaction - the borrower
+    table.string('accepted_by_user_id'); // the sender of the money - the lender
     table.boolean('seen_by_recipient').defaultTo(false); // has the recipient seen this transaction
     table.boolean('seen_by_sender').defaultTo(false); // has the sender seen this transaction
+  })
+  .createTable('reviews', (table) => {
+    table.increments('id'); // the review id
+    table.integer('rating'); // the rating given
+    table.string('created_by_user_id').unsigned().references('users.id');
+    table.integer('review_target_user_id'); // the uid of the user that the review is about
+    table.varchar('memo'); // optional review text
+    table.specificType('tags', 'varchar[]'); // maybe - tags to id the review
   })
   .catch((error) => {
     console.log('Something went wrong. ', error);

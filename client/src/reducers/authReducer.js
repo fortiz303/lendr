@@ -17,10 +17,7 @@ export default function authReducer(state = {}, action) {
       return {
         ...state,
         status: true,
-        user: {
-          user_name: action.data.user_name,
-          token: action.data.token
-        }
+        user: {...action.data}
       }
     case 'LOGIN_FAILURE':
       return {
