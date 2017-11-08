@@ -55,33 +55,24 @@ class App extends Component {
             <Switch>
               <Route exact path="/login" component={Login}/>
               <div className="main-content-wrapper">
-                <div className="container-fluid">
-                  <nav className="navbar navbar-dark bg-dark fixed-top">
+                <div className="container">
+                  <nav className="navbar navbar-dark bg-dark fixed-top navbar-expand-lg">
                     <span className="navbar-brand mb-0 h1">Navbar</span>
+                    <div className=" navbar-collapse" id="navbarNavAltMarkup">
+                      <div className="navbar-nav">
+                        <Link className="nav-item nav-link" to="/">Feed</Link>
+                        <Link className="nav-item nav-link" to="/new">New</Link>
+                        <Link className="nav-item nav-link" to="/about">About</Link>
+                      </div>
+                    </div>
                   </nav>
 
-                  <div className="row">
-                    <div className="col-2">
-                      <ul className="nav flex-column test">
-                        <li className="nav-item">
-                          <Link to="/">Feed</Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link to="/new">New</Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link to="/about">About</Link>
-                        </li>
-                      </ul>
-                    </div>
-
-                    
+                  <div className="row">                    
                     <Switch>
                       <Route exact component={Feed}  path="/" />
                       <Route exact component={New}  path="/new" />
                       <Route exact component={About}  path="/about" />
                     </Switch>
-                    
                   </div>
                 </div>
               </div>

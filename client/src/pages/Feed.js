@@ -45,21 +45,15 @@ class Feed extends Component {
 
     return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
       return (
-        <tr key={`feed-table-row-${index}`}>
-          <td>{current.created_at}</td>
-          <td>{current.amount}</td>
-          <td>{current.interest}</td>
-          <td>{current.amount + current.interest}</td>
-          <td>{current.memo}</td>
-          <td>{current.status}</td>
-          <td>
-            {
-              current.user_id !== user.uid ?
-                <span onClick={() => {this.acceptTransaction(current.id)}} className="btn btn-primary">Loan</span> :
-                <span className="btn btn-secondary">Edit</span>
-            }
-          </td>
-        </tr>
+        <div className="card">
+          <div className="card-body">
+            <h4 className="card-title">${current.amount} with ${current.interest} interest</h4>
+            <h6 className="card-subtitle mb-2 text-muted">Posted on: {new Date(current.created_at).toLocaleString()}</h6>
+            <p className="card-text">{current.memo}</p>
+            <a onClick={() => {this.acceptTransaction(current.id)}} className="card-link">View Details</a>
+            <a href="#" className="card-link">View Profile</a>
+          </div>
+        </div>
       )
     }) : null
   };
@@ -67,23 +61,9 @@ class Feed extends Component {
     const {user} = this.props;
     return (
       <div className="col">
-        <h2>Hello {_.get(user, 'email', '')}</h2>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Date posted</th>
-              <th>Amount requested</th>
-              <th>Interest</th>
-              <th>Your total return</th>
-              <th>For</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.renderTransactionFeed()}
-          </tbody>
-        </table>
+        <div className="card-columns">
+          {this.renderTransactionFeed()}
+        </div>
       </div>
     )
   }
