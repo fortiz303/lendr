@@ -9,7 +9,6 @@ import {
   Switch
 } from 'react-router-dom'
 
-import transactionActions from '../../actions/transactionActions';
 import authActions from '../../actions/authActions';
 
 import History from './History';

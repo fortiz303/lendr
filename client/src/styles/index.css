@@ -6601,10 +6601,10 @@ html,
   background-color: #FFFFFF;
   border: 1px solid #DADADA; }
 
-.card {
+.feed-card {
   background-color: #FFFFFF;
   border: 1px solid #007bff;
   border-bottom-width: 1px; }
-  .card .card-header {
+  .feed-card .card-header {
     background-color: #007bff;
     color: #7A7A7A; }
