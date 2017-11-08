@@ -46,13 +46,17 @@ class Feed extends Component {
     return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
       return (
         <div className="card">
+          <div class="card-header">{current.status}</div>
           <div className="card-body">
             <h4 className="card-title">${current.amount} with ${current.interest} interest</h4>
-            <h6 className="card-subtitle mb-2 text-muted">Posted on: {new Date(current.created_at).toLocaleString()}</h6>
+            <h6 className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleString()}</h6>
             <p className="card-text">{current.memo}</p>
-            <a onClick={() => {this.acceptTransaction(current.id)}} className="card-link">View Details</a>
-            <a href="#" className="card-link">View Profile</a>
+            <p className="card-subtitle mb-2 text-muted"><small>Posted on: {new Date(current.created_at).toLocaleString()}</small></p>
           </div>
+            <ul class="list-group list-group-flush">
+             <li class="list-group-item"><a onClick={() => {this.acceptTransaction(current.id)}} className="card-link">View Details of Loan</a></li>
+             <li class="list-group-item"><a href="#" className="card-link">View Profile of Poster</a></li>
+           </ul>
         </div>
       )
     }) : null
