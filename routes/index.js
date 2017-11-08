@@ -7,7 +7,7 @@ var knex = require('knex')(knexConfig);
 // router.get('/', function(req, res, next) {
 //   res.render('index', { title: 'Express' });
 // });
-
+console.log(knexConfig)
 router.get('/create', (req, res, next) => {
   knex.schema
     .createTableIfNotExists('users', (table) => {
@@ -28,17 +28,17 @@ router.get('/create', (req, res, next) => {
       table.integer('interest'); // the posted interest by the borrower
       table.date('promise_to_pay_date'); // the date on which the borrower promises to return principal + interest
       table.string('memo'); // an optional memo field - figure out how this ties into Dwolla
-      table.string('status'); // the status (pending, accepted, active, paid, defaulted)
+      table.string('status').defaultTo('pending'); // the status (pending, accepted, active, paid, defaulted)
       table.timestamp('created_at').defaultTo(knex.fn.now()); // created at date of the transaction post
       table.integer('created_by_user_id').unsigned().references('users.id'); // the uid of the person creating the transaction - the borrower
-      table.string('accepted_by_user_id'); // the sender of the money - the lender
+      table.boolean('accepted_by_user_id'); // the sender of the money - the lender
       table.boolean('seen_by_recipient').defaultTo(false); // has the recipient seen this transaction
       table.boolean('seen_by_sender').defaultTo(false); // has the sender seen this transaction
     })
     .createTableIfNotExists('reviews', (table) => {
       table.increments('id'); // the review id
       table.integer('rating'); // the rating given
-      table.string('created_by_user_id').unsigned().references('users.id');
+      table.integer('created_by_user_id').unsigned().references('users.id');
       table.integer('created_for_user_id'); // the uid of the user that the review is about
       table.varchar('memo'); // optional review text
       table.specificType('tags', 'varchar[]'); // maybe - tags to id the review

@@ -34,7 +34,7 @@ class Feed extends Component {
     
     const updateData = {
       transactionId: transactionId,
-      fromUser: user.uid
+      accepted_by_user_id: user.uid
     };
 
     dispatch(transactionActions.accept(updateData, user.token))

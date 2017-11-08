@@ -38,7 +38,7 @@ export const API = {
           token: token
         })
       };
-
+      
       fetch('/api/v1/transaction/new', opts)
         .then(res => res.json())
         .then((data) => {

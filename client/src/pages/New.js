@@ -39,7 +39,15 @@ class New extends Component {
   };
   handleSubmit = () => {
     const {dispatch} = this.props;
-    dispatch(transactionActions.new(this.state, this.props.user.token));
+    
+    const transactionData = {
+      amount: this.state.amount,
+      interest: this.state.interest,
+      promise_to_pay_date: this.state.promise_to_pay_date,
+      memo: this.state.memo
+    };
+
+    dispatch(transactionActions.new(transactionData, this.props.user.token));
   };
 
   render() {

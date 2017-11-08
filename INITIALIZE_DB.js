@@ -1,12 +1,12 @@
 const knexConfig = require('./config/db');
 
+
 var knex = require('knex')(knexConfig)
 
 console.log('Connected to db');
 console.log('Creating new tables with');
-
 knex.schema
-  .createTable('users', (table) => {
+  .createTableIfNotExists('users', (table) => {
     table.increments('id'); // the  user id
     table.string('user_name'); // the user name
     table.string('email'); // the users email
@@ -18,7 +18,7 @@ knex.schema
     table.specificType('friends', 'integer[]'); // an array of other UID's who are this users friends
     table.unique(['user_name', 'email']) // columns that need to be unique
   })
-  .createTable('transactions', (table) => {
+  .createTableIfNotExists('transactions', (table) => {
     table.increments('id'); // the transaction ID
     table.integer('amount'); // the amount of the transaction
     table.integer('interest'); // the posted interest by the borrower
@@ -31,7 +31,7 @@ knex.schema
     table.boolean('seen_by_recipient').defaultTo(false); // has the recipient seen this transaction
     table.boolean('seen_by_sender').defaultTo(false); // has the sender seen this transaction
   })
-  .createTable('reviews', (table) => {
+  .createTableIfNotExists('reviews', (table) => {
     table.increments('id'); // the review id
     table.integer('rating'); // the rating given
     table.string('created_by_user_id').unsigned().references('users.id');
@@ -45,3 +45,4 @@ knex.schema
   })
 
 console.log('Created tables');
+process.exit(-1);

@@ -24,7 +24,7 @@ const transactionActions = {
         .then((data) => {
           dispatch({
             type: 'NEW_TRANSACTION_SUCCESS',
-            data: data
+            data: data,
           })
         })
         .catch((error) => {

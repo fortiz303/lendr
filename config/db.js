@@ -6,9 +6,10 @@ const knexConfig = isProduction ?
   {
     dialect: 'pg',
     connection: {
-      user: 'postgres',
-      password: 'password',
-      database: 'lender-184617:us-central1:rosco-dev-1'
+      host: `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`,
+      user: process.env.SQL_USER,
+      password: process.env.SQL_PASSWORD,
+      database: process.env.SQL_DATABASE,
     }
   } :
   {
@@ -22,3 +23,14 @@ const knexConfig = isProduction ?
 };
 
 module.exports = knexConfig
+
+
+// const config = {
+//     user: process.env.SQL_USER,
+//     password: process.env.SQL_PASSWORD,
+//     database: process.env.SQL_DATABASE
+//   };
+
+//   if (process.env.INSTANCE_CONNECTION_NAME && process.env.NODE_ENV === 'production') {
+//     config.host = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
+//   }

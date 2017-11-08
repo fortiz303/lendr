@@ -29,12 +29,13 @@ router.use((req, res, next) => {
     })
   }
 });
+
 router.post('/accept', (req, res, next) => {
   knex('transactions')
     .where('id', '=', req.body.transactionId)
     .update({
       status: 'accepted',
-      from: req.body.fromUser
+      accepted_by_user_id: req.body.fromUser
     })
     .then(() => {
       res.json({
@@ -52,15 +53,12 @@ router.post('/accept', (req, res, next) => {
 });
 
 router.post('/new', (req, res, next) => {
-  const transaction = {
-    from: req.body.from,
-    to: req.body.to,
+  const transaction = {    
     amount: req.body.amount,
-    status: 'pending',
     interest: req.body.interest,
     promise_to_pay_date: req.body.promise_to_pay_date,
     memo: req.body.memo,
-    user_id: req.decoded.uid
+    created_by_user_id: req.decoded.uid
   };
 
   knex
