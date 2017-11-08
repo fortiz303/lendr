@@ -4,7 +4,7 @@ import '../styles/index.css';
 import {
   BrowserRouter as Router,
   Route,
-  Link,
+  NavLink,
   Switch
 } from 'react-router-dom'
 
@@ -21,7 +21,7 @@ import errorReducer from '../reducers/errorReducer';
 import Login from './Login';
 import Feed from './Feed';
 import About from './About';
-import New from './New';
+import Profile from './profile';
 
 /* eslint-disable */
 const isProduction = false;
@@ -58,18 +58,18 @@ class App extends Component {
                     <span className="navbar-brand mb-0 h1">Navbar</span>
                     <div className=" navbar-collapse" id="navbarNavAltMarkup">
                       <div className="navbar-nav">
-                        <Link className="nav-item nav-link" to="/">Feed</Link>
-                        <Link className="nav-item nav-link" to="/new">New</Link>
-                        <Link className="nav-item nav-link" to="/about">About</Link>
+                        <NavLink activeClassName="active" exact className="nav-item nav-link" to="/">Feed</NavLink>
+                        <NavLink activeClassName="active" className="nav-item nav-link" to="/profile">Profile</NavLink>
+                        <NavLink activeClassName="active" exact className="nav-item nav-link" to="/about">About</NavLink>
                       </div>
                     </div>
                   </nav>
 
-                  <Switch>
+
                     <Route exact component={Feed}  path="/" />
-                    <Route exact component={New}  path="/new" />
+                    <Route component={Profile}  path="/profile" />
                     <Route exact component={About}  path="/about" />
-                  </Switch>
+
                 </div>
               </div>
             </Switch>
