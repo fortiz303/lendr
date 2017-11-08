@@ -1,6 +1,8 @@
+@import './bootstrap/bootstrap.scss';
+
 /* fills */
 $success-color: #47D09D; // green
-$fill-highlight: #4A8ECA; // blue
+$fill-highlight: $primary; // blue
 $fill-highlight-lighter: #f0f8ff;
 $fill-star: #F5A623; // gold
 $fill-price-range: #AADD74; // light green
@@ -34,6 +36,7 @@ html,
   height: 100%;
   background-color: $fill-lighter-grey;
   color: $text-default;
+  font-weight: lighter;
 }
 .main-content-wrapper {
   padding-top: 80px;
@@ -52,9 +55,10 @@ html,
 
 .card {
   background-color: $fill-white;
-  border: 1px solid $border-grey;
+  border: 1px solid $fill-highlight;
+  border-bottom-width: 1px;
   .card-header {
-    background-color: $fill-highlight-lighter;
+    background-color: $fill-highlight;
     color: $text-medium-grey;
   }
 }
