@@ -27,18 +27,16 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 
 app.use('/', index);
 
-
-app.get('/home', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
-
 // API Routes
 app.use('/api/v1/user', apiUser)
 app.use('/api/v1/auth', apiAuthentication)
 app.use('/api/v1/transaction', apiTransaction)
-
-
 // catch 404 and forward to error handler
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
