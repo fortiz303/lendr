@@ -12,19 +12,23 @@ class Feed extends Component {
   };
 
   componentDidMount = () => {
-    const {dispatch} = this.props;
+    const {dispatch, transactionFeed} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
 
     if (token) {
       dispatch(authActions.authenticate(token));
+
+      if (token && !transactionFeed) {
+        dispatch(transactionActions.fetchAll(token));
+      }
     }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    const {user, dispatch} = this.props;
+    const {user, dispatch, transactionFeed} = this.props;
 
-    if (_.get(prevProps, 'user.uid', false) !== user.uid && user.token) {
+    if (_.get(prevProps, 'user.uid', false) !== _.get(user, 'uid', false) && user.token && !transactionFeed) {
       dispatch(transactionActions.fetchAll(user.token));
     }
   };
@@ -45,17 +49,17 @@ class Feed extends Component {
 
     return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
       return (
-        <div className="card">
-          <div class="card-header">{current.status}</div>
+        <div className="card" key={`feed-card-${index}-${current.created_at}`}>
+          <div className="card-header">{current.status}</div>
           <div className="card-body">
             <h4 className="card-title">${current.amount} with ${current.interest} interest</h4>
             <h6 className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleString()}</h6>
             <p className="card-text">{current.memo}</p>
             <p className="card-subtitle mb-2 text-muted"><small>Posted on: {new Date(current.created_at).toLocaleString()}</small></p>
           </div>
-            <ul class="list-group list-group-flush">
-             <li class="list-group-item"><button onClick={() => {this.acceptTransaction(current.id)}} className="card-link">View Details of Loan</button></li>
-             <li class="list-group-item"><button className="card-link">View Profile of Poster</button></li>
+            <ul className="list-group list-group-flush">
+             <li className="list-group-item"><span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">View Details of Loan</span></li>
+             <li className="list-group-item"><span className="card-link">View Profile of Poster</span></li>
            </ul>
         </div>
       )
@@ -63,9 +67,11 @@ class Feed extends Component {
   };
   render() {
     return (
-      <div className="col">
-        <div className="card-columns">
-          {this.renderTransactionFeed()}
+      <div className="row">
+        <div className="col">
+          <div className="card-columns">
+            {this.renderTransactionFeed()}
+          </div>
         </div>
       </div>
     )

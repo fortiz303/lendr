@@ -56,6 +56,7 @@ const authActions = {
         .then((data) => {
           API.loginUser(email, pass)
             .then((loginData) => {
+              window.sessionStorage.token = loginData.token;
               dispatch({
                 type: 'LOGIN_SUCCESS',
                 data: loginData

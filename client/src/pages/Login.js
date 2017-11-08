@@ -60,6 +60,12 @@ class Login extends Component {
     })
   };
 
+  handleTOSInput = (e) => {
+    this.setState({
+      tos: !!e.target.value
+    })
+  };
+
   setMethod = (method) => {
     this.setState({
       method: method
@@ -129,7 +135,7 @@ class Login extends Component {
                   method === 'signup' ?
                   <div className="form-check">
                     <label className="form-check-label">
-                      <input type="checkbox" className="form-check-input"/>
+                      <input onChange={this.handleTOSInput} type="checkbox" className="form-check-input"/>
                       I agree to the <a href="/terms">terms of service</a>
                     </label>
                   </div> : null

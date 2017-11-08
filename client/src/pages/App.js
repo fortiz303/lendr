@@ -65,13 +65,11 @@ class App extends Component {
                     </div>
                   </nav>
 
-                  <div className="row">
-                    <Switch>
-                      <Route exact component={Feed}  path="/" />
-                      <Route exact component={New}  path="/new" />
-                      <Route exact component={About}  path="/about" />
-                    </Switch>
-                  </div>
+                  <Switch>
+                    <Route exact component={Feed}  path="/" />
+                    <Route exact component={New}  path="/new" />
+                    <Route exact component={About}  path="/about" />
+                  </Switch>
                 </div>
               </div>
             </Switch>

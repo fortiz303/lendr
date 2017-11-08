@@ -6,3 +6,9 @@ html,
 
 .main-content-wrapper {
   padding-top: 80px; }
+
+.user-side-nav {
+  border-right: 1px solid #ccc; }
+  @media (min-width: 768px) {
+    .user-side-nav {
+      height: calc(100vh - 80px); } }
