@@ -7,9 +7,6 @@ class Update extends Component {
     return (
       <div className="row">
         <div className="col">
-          <h1 className="display-3">rating 3.3</h1>
-          <p className="lead">You've lent $X times and made $Y dollars! Your rating is on the rise! Keep on keeping on!</p>
-          <hr />
           <p className="lead">Update your settings</p>
           <form>
             <div className="form-group row">

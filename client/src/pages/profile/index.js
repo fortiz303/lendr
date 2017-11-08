@@ -48,13 +48,19 @@ class Profile extends Component {
   render() {
     const {match} = this.props;
     return (
-      <div className="settings-wrapper">
+      <div className="content-wrapper">
+        <h1 className="display-2 text-primary">
+          hello there
+        </h1>
+        <p className="lead">current rating: <strong>4.5</strong><br />
+        You've lent $960 over the past month and made $125 dollars!</p>
+        <hr />
         <div className="row">
           <div className="col">
             <ul className="nav nav-pills">
               <li className="nav-item">
                 <NavLink
-                  activeClassName="active"
+                  activeClassName="active border border-primary bg-white text-primary"
                   className="nav-item nav-link"
                   to="/profile/history"
                 >
@@ -63,7 +69,7 @@ class Profile extends Component {
               </li>
               <li className="nav-item">
                 <NavLink
-                  activeClassName="active"
+                  activeClassName="active border border-primary bg-white text-primary"
                   className="nav-item nav-link"
                   to="/profile/new"
                 >
@@ -72,7 +78,7 @@ class Profile extends Component {
               </li>
               <li className="nav-item">
                 <NavLink
-                  activeClassName="active"
+                  activeClassName="active border border-primary bg-white text-primary"
                   className="nav-item nav-link"
                   to="/profile/update"
                 >
@@ -90,25 +96,26 @@ class Profile extends Component {
         </div>
         <hr />
 
-       <Route
-        exact
-        component={History}
-        path={`${match.url}`}
+
+        <Route
+          exact
+          component={History}
+          path={`${match.url}`}
         />
-       <Route
-        exact
-        component={History}
-        path={`${match.url}/history`}
+        <Route
+          exact
+          component={History}
+          path={`${match.url}/history`}
         />
-       <Route
-        exact
-        component={Update}
-        path={`${match.url}/update`}
+        <Route
+          exact
+          component={Update}
+          path={`${match.url}/update`}
         />
-       <Route
-        exact
-        component={New}
-        path={`${match.url}/new`}
+        <Route
+          exact
+          component={New}
+          path={`${match.url}/new`}
         />
 
       </div>
