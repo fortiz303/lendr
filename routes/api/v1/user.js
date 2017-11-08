@@ -61,7 +61,6 @@ router.post('/signup', (req, res, next) => {
 
 router.use((req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
-
   if (token) {
     jwt.verify(token, appConfig.secret, (err, decoded) => {
       if (err) {
@@ -79,18 +78,27 @@ router.use((req, res, next) => {
   }
 });
 
-router.get('/', (req, res, next) => {
-  knex.select().from('users').then((row) => {
-    res.json(row)
-  })
-});
-
 /* GET users listing. */
 router.get('/:userId', (req, res, next) => {
   const userId = req.params.userId;
-  knex.select().from('users').where({id: userId}).then((row) => {
-    res.json(row)
-  })
+  knex
+    .select()
+    .from('users')
+    .where({id: userId})
+    .then((row) => {
+      res.json({
+        success: true,
+        message: 'Success fetching user Info',
+        user: row
+      })
+    })
+    .catch((error) => {
+      res.status(500).json({
+        success: false,
+        message: 'Failure fetching user',
+        error: error
+      })
+    })
 });
 
 module.exports = router;

@@ -3,11 +3,7 @@ const knexConfig = require('../config/db.js');
 var express = require('express');
 var router = express.Router();
 var knex = require('knex')(knexConfig);
-/* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
-console.log(knexConfig)
+
 router.get('/create', (req, res, next) => {
   knex.schema
     .createTableIfNotExists('users', (table) => {

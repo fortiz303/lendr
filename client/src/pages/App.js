@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import './App.css';
-
+import '../styles/index.css';
+import '../styles/bootstrap/bootstrap.css';
 import {
   BrowserRouter as Router,
   Route,
@@ -12,13 +11,12 @@ import {
 // Redux
 import {Provider} from 'react-redux';
 import {applyMiddleware, createStore, combineReducers} from 'redux';
-import {createLogger} from 'redux-logger';
+import {createLogger, connect} from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import authReducer from '../reducers/authReducer';
 import transactionReducer from '../reducers/transactionReducer';
-
-import Wrapper from './Wrapper';
+import errorReducer from '../reducers/errorReducer';
 
 import Login from './Login';
 import Feed from './Feed';
@@ -33,14 +31,14 @@ let store;
 
 if (isProduction) {
   store = createStore(
-    combineReducers({authReducer, transactionReducer}),
+    combineReducers({authReducer, transactionReducer, errorReducer}),
     applyMiddleware(thunk)
   );
 } else {
   const logger = createLogger({collapsed: true});
 
   store = createStore(
-    combineReducers({authReducer, transactionReducer}),
+    combineReducers({authReducer, transactionReducer, errorReducer}),
     applyMiddleware(thunk, logger)
   );
 }
@@ -67,7 +65,7 @@ class App extends Component {
                     </div>
                   </nav>
 
-                  <div className="row">                    
+                  <div className="row">
                     <Switch>
                       <Route exact component={Feed}  path="/" />
                       <Route exact component={New}  path="/new" />
@@ -82,6 +80,7 @@ class App extends Component {
       </Provider>
     );
   }
-}
+};
+
 
 export default App;

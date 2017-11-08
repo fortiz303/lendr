@@ -12,10 +12,10 @@ class Feed extends Component {
   };
 
   componentDidMount = () => {
-    const {dispatch, history, user} = this.props;
+    const {dispatch} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
-  
+
     if (token) {
       dispatch(authActions.authenticate(token));
     }
@@ -25,13 +25,13 @@ class Feed extends Component {
     const {user, dispatch} = this.props;
 
     if (_.get(prevProps, 'user.uid', false) !== user.uid && user.token) {
-      dispatch(transactionActions.fetchAll(user.token));    
+      dispatch(transactionActions.fetchAll(user.token));
     }
   };
-  
+
   acceptTransaction = (transactionId) => {
     const {dispatch, user} = this.props;
-    
+
     const updateData = {
       transactionId: transactionId,
       accepted_by_user_id: user.uid
@@ -41,7 +41,7 @@ class Feed extends Component {
   };
 
   renderTransactionFeed = () => {
-    const {transactionFeed, user} = this.props;
+    const {transactionFeed} = this.props;
 
     return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
       return (
@@ -54,15 +54,14 @@ class Feed extends Component {
             <p className="card-subtitle mb-2 text-muted"><small>Posted on: {new Date(current.created_at).toLocaleString()}</small></p>
           </div>
             <ul class="list-group list-group-flush">
-             <li class="list-group-item"><a onClick={() => {this.acceptTransaction(current.id)}} className="card-link">View Details of Loan</a></li>
-             <li class="list-group-item"><a href="#" className="card-link">View Profile of Poster</a></li>
+             <li class="list-group-item"><button onClick={() => {this.acceptTransaction(current.id)}} className="card-link">View Details of Loan</button></li>
+             <li class="list-group-item"><button className="card-link">View Profile of Poster</button></li>
            </ul>
         </div>
       )
     }) : null
   };
   render() {
-    const {user} = this.props;
     return (
       <div className="col">
         <div className="card-columns">

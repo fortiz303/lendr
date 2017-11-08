@@ -2,14 +2,16 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import authActions from '../actions/authActions';
+import errorActions from '../actions/errorActions';
 
 class Login extends Component {
   state = {
     method: 'login',
     email: '',
-    password: ''
+    password: '',
+    tos: false
   };
-  
+
   componentDidMount = () => {
     window.sessionStorage.token = false;
   };
@@ -24,13 +26,25 @@ class Login extends Component {
 
   handleSubmit = (e) => {
     const {dispatch} = this.props;
-    const {email, password, method} = this.state;
+    const {email, password, method, tos} = this.state;
 
     e.preventDefault();
     if (method === 'login') {
-      dispatch(authActions.loginUser(email, password));
+      if (!email.length || !password.length) {
+        dispatch(errorActions.throw('Email or Password fields are not filled in.'))
+        return false;
+      } else {
+        dispatch(errorActions.clear())
+        dispatch(authActions.loginUser(email, password));
+      }
     } else if (method === 'signup') {
-      dispatch(authActions.signupUser(email, password));
+      if (!email.length || !password.length || !tos) {
+        dispatch(errorActions.throw('Email, Password or TOS acceptance fields are not filled in.'))
+        return false;
+      } else {
+        dispatch(errorActions.clear())
+        dispatch(authActions.signupUser(email, password));
+      }
     }
   };
 
@@ -54,20 +68,39 @@ class Login extends Component {
 
   render() {
     const {email, password, method} = this.state;
+    const {error} = this.props;
 
     return (
       <div className="container h-100">
+        {
+          error ?
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div> : null
+        }
         <div className="row h-100 justify-content-center align-items-center">
-          <div className="card" style={{width: '20rem'}}>
-            <div className="card-body">
-              <ul className="nav nav-pills">
+          <div className="card">
+            <div className="card-header">
+              <ul className="nav nav-tabs card-header-tabs">
                 <li className="nav-item">
-                  <a onClick={() => {this.setMethod('login')}} className={`nav-link ${method === 'login' ? 'active' : null}`} href="#">Login</a>
+                  <button
+                    className={`nav-link ${method === 'login' ? 'active' : null}`}
+                    onClick={() => {this.setMethod('login')}}
+                  >
+                    Login
+                  </button>
                 </li>
                 <li className="nav-item">
-                  <a onClick={() => {this.setMethod('signup')}} className={`nav-link ${method === 'signup' ? 'active' : null}`} href="#">Signup</a>
+                  <button
+                    className={`nav-link ${method === 'signup' ? 'active' : null}`}
+                    onClick={() => {this.setMethod('signup')}}
+                  >
+                    Signup
+                  </button>
                 </li>
               </ul>
+            </div>
+            <div className="card-body">
               <h4 className="card-title">{method}</h4>
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
@@ -92,12 +125,15 @@ class Login extends Component {
                     placeholder="Password"
                   />
                 </div>
-                {/*<div className="form-check">
-                  <label className="form-check-label">
-                    <input type="checkbox" className="form-check-input"/>
-                    Check me out
-                  </label>
-                </div>*/}
+                {
+                  method === 'signup' ?
+                  <div className="form-check">
+                    <label className="form-check-label">
+                      <input type="checkbox" className="form-check-input"/>
+                      I agree to the <a href="/terms">terms of service</a>
+                    </label>
+                  </div> : null
+                }
                 <button type="submit" className="btn btn-primary">Submit</button>
               </form>
             </div>
@@ -111,7 +147,8 @@ class Login extends Component {
 const mapStateToProps = (state) => {
   return {
     authStatus: state.authReducer.status,
-    user: state.authReducer.user
+    user: state.authReducer.user,
+    error: state.errorReducer.error
   }
 };
 

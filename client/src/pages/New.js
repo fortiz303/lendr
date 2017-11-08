@@ -29,7 +29,7 @@ class New extends Component {
   };
 
   componentDidMount = () => {
-    const {dispatch, history} = this.props;
+    const {dispatch} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
     if (token) {
@@ -39,7 +39,7 @@ class New extends Component {
   };
   handleSubmit = () => {
     const {dispatch} = this.props;
-    
+
     const transactionData = {
       amount: this.state.amount,
       interest: this.state.interest,
@@ -59,8 +59,8 @@ class New extends Component {
           </div>
         </div>
 
-       
-       
+
+
         <div className="form-group">
           <input
             value={this.state.amount}
