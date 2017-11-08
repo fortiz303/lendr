@@ -17,11 +17,6 @@ import New from './New';
 import Update from './Update';
 
 class Profile extends Component {
-  updateField = (field, e) => {
-    this.setState({
-      [field]: e.target.value
-    })
-  };
 
   componentDidMount = () => {
     const {dispatch} = this.props;
@@ -31,18 +26,6 @@ class Profile extends Component {
       dispatch(authActions.authenticate(token));
     }
 
-  };
-  handleSubmit = () => {
-    const {dispatch} = this.props;
-
-    const transactionData = {
-      amount: this.state.amount,
-      interest: this.state.interest,
-      promise_to_pay_date: this.state.promise_to_pay_date,
-      memo: this.state.memo
-    };
-
-    dispatch(transactionActions.new(transactionData, this.props.user.token));
   };
 
   render() {

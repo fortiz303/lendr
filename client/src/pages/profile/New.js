@@ -11,6 +11,23 @@ class New extends Component {
     promise_to_pay_date: '',
     memo: ''
   };
+  updateField = (field, e) => {
+    this.setState({
+      [field]: e.target.value
+    })
+  };
+  handleSubmit = () => {
+    const {dispatch} = this.props;
+
+    const transactionData = {
+      amount: this.state.amount,
+      interest: this.state.interest,
+      promise_to_pay_date: this.state.promise_to_pay_date,
+      memo: this.state.memo
+    };
+
+    dispatch(transactionActions.new(transactionData, this.props.user.token));
+  };
   render() {
     return (
       <div className="row">

@@ -49,7 +49,7 @@ class Feed extends Component {
 
     return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
       return (
-        <div className="card" key={`feed-card-${index}-${current.created_at}`}>
+        <div className="card feed-card" key={`feed-card-${index}-${current.created_at}`}>
           <div className="card-body">
             <h4 className="card-title text-primary">${current.amount} <small>with</small> ${current.interest} <small>interest</small></h4>
             <p className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleString()}</p>
