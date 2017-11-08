@@ -52,7 +52,7 @@ class New extends Component {
 
   render() {
     return (
-      <div>
+      <div className="settings-wrapper">
         <div className="row">
           <div className="col">
             <ul className="nav nav-pills">
@@ -64,6 +64,9 @@ class New extends Component {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">New Post</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Link Bank Account</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link disabled" href="#">Help</a>
@@ -147,8 +150,8 @@ class New extends Component {
         {/* profile panel tempalte */}
         <div className="row">
           <div className="col">
-            <h1 class="display-3">rating 3.3</h1>
-            <p class="lead">You've lent $X times and made $Y dollars! Your rating is on the rise! Keep on keeping on!</p>
+            <h1 className="display-3">rating 3.3</h1>
+            <p className="lead">You've lent $X times and made $Y dollars! Your rating is on the rise! Keep on keeping on!</p>
             <hr />
             <p className="lead">Update your settings</p>
             <form>

@@ -1,14 +1,30 @@
+/* fills */
+/* text */
+/* links */
+/* borders */
 body,
 html,
 .router-wrapper,
 #root {
-  height: 100%; }
+  height: 100%;
+  background-color: #FAFAFA;
+  color: #4D4E52; }
 
 .main-content-wrapper {
   padding-top: 80px; }
 
-.user-side-nav {
-  border-right: 1px solid #ccc; }
-  @media (min-width: 768px) {
-    .user-side-nav {
-      height: calc(100vh - 80px); } }
+.main-nav {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #DADADA; }
+
+.settings-wrapper {
+  padding: 40px;
+  background-color: #FFFFFF;
+  border: 1px solid #DADADA; }
+
+.card {
+  background-color: #FFFFFF;
+  border: 1px solid #DADADA; }
+  .card .card-header {
+    background-color: #f0f8ff;
+    color: #7A7A7A; }

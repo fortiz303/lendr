@@ -54,7 +54,7 @@ class App extends Component {
               <Route exact path="/login" component={Login}/>
               <div className="main-content-wrapper">
                 <div className="container">
-                  <nav className="navbar navbar-dark bg-dark fixed-top navbar-expand-lg">
+                  <nav className="navbar navbar-light fixed-top navbar-expand-lg main-nav">
                     <span className="navbar-brand mb-0 h1">Navbar</span>
                     <div className=" navbar-collapse" id="navbarNavAltMarkup">
                       <div className="navbar-nav">
