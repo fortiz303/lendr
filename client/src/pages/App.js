@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 
 import '../styles/index.css';
@@ -18,6 +19,7 @@ import thunk from 'redux-thunk';
 import authReducer from '../reducers/authReducer';
 import transactionReducer from '../reducers/transactionReducer';
 import errorReducer from '../reducers/errorReducer';
+import loadingReducer from '../reducers/loadingReducer';
 
 import Login from './Login';
 import Feed from './Feed';
@@ -29,31 +31,59 @@ const isProduction = false;
 /* eslint-enable */
 
 let store;
+let loadingCounter = 0;
+let errorcounter = 0;
 
 if (isProduction) {
   store = createStore(
-    combineReducers({authReducer, transactionReducer, errorReducer}),
+    combineReducers({authReducer, transactionReducer, errorReducer, loadingReducer}),
     applyMiddleware(thunk)
   );
 } else {
   const logger = createLogger({collapsed: true});
 
   store = createStore(
-    combineReducers({authReducer, transactionReducer, errorReducer}),
+    combineReducers({authReducer, transactionReducer, errorReducer, loadingReducer}),
     applyMiddleware(thunk, logger)
   );
 }
 
 
 class App extends Component {
+  state = {
+    error: false,
+    loading: false
+  }
+  componentDidMount = () => {
+    console.log('did mount')
+    store.subscribe(() => {
+      const currentStore = store.getState();
+      const error = _.get(currentStore, 'errorReducer.error', false);
+      const loading = _.get(currentStore, 'loadingReducer.loading', false);
+      console.log(currentStore)
+      if (loading) {
+        console.log('setting loading state', loadingCounter + 1)
+        this.setState({loading: loading});
+      }
+
+      if (error) {
+        console.log('setting error state', errorcounter + 1)
+        this.setState({error: error});
+      }
+    })
+  };
+
   render() {
+    const {error, loading} = this.state;
     return (
       <Provider store={store}>
         <Router>
           <div className="router-wrapper">
+            {
+              loading ? <div className="loading-bar"><h1>HIHIHI</h1></div> : null
+            }
             <nav className="navbar navbar-light navbar-expand-lg main-nav">
               <span className="navbar-brand mb-0 h1">rosco</span>
-              {console.log(this.props)}
               <div className="navbar-nav mr-auto">
                 <NavLink activeClassName="active" exact className="nav-item nav-link" to="/">feed</NavLink>
                 <NavLink activeClassName="active" className="nav-item nav-link" to="/profile">profile</NavLink>
@@ -64,6 +94,12 @@ class App extends Component {
                 <NavLink className="nav-item nav-link" to="/login">logout</NavLink>
               </div>
             </nav>
+            {
+              error ?
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                </div> : null
+            }
             <Switch>
               <Route exact path="/login" component={Login}/>
               <div className="main-content-wrapper">

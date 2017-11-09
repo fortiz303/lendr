@@ -63,3 +63,29 @@ html,
     color: $text-medium-grey;
   }
 }
+
+.loading-bar {
+  &:after {
+    content: "";
+    height: 3px;
+    background: $fill-highlight;
+    position: fixed;
+    width: 40px;
+    animation: loader 2s infinite;
+    top: 0px;
+    margin-left: 0;
+    z-index: 999;
+  }
+
+}
+@keyframes loader {
+    0% {width: 0%;left:0;right:0}
+    50% { width: 100%;left:0;right:0}
+    99% { width: 0%;left:100%;right:0}
+}
+
+@-webkit-keyframes loader {
+    0% {width: 0%;left:0;right:0}
+    50% { width: 100%;left:0;right:0}
+    99% { width: 0%;left:100%;right:0}
+}
