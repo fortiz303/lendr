@@ -51,26 +51,26 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className="router-wrapper">
+            <nav className="navbar navbar-light navbar-expand-lg main-nav">
+              <span className="navbar-brand mb-0 h1">rosco</span>
+              {console.log(this.props)}
+              <div className="navbar-nav mr-auto">
+                <NavLink activeClassName="active" exact className="nav-item nav-link" to="/">feed</NavLink>
+                <NavLink activeClassName="active" className="nav-item nav-link" to="/profile">profile</NavLink>
+                <NavLink activeClassName="active" exact className="nav-item nav-link" to="/about">about</NavLink>
+              </div>
+
+              <div className="navbar-nav">
+                <NavLink className="nav-item nav-link" to="/login">logout</NavLink>
+              </div>
+            </nav>
             <Switch>
               <Route exact path="/login" component={Login}/>
               <div className="main-content-wrapper">
                 <div className="container">
-                  <nav className="navbar navbar-light fixed-top navbar-expand-lg main-nav">
-                    <span className="navbar-brand mb-0 h1">Navbar</span>
-                    <div className=" navbar-collapse" id="navbarNavAltMarkup">
-                      <div className="navbar-nav">
-                        <NavLink activeClassName="active" exact className="nav-item nav-link" to="/">Feed</NavLink>
-                        <NavLink activeClassName="active" className="nav-item nav-link" to="/profile">Profile</NavLink>
-                        <NavLink activeClassName="active" exact className="nav-item nav-link" to="/about">About</NavLink>
-                      </div>
-                    </div>
-                  </nav>
-
-
-                    <Route exact component={Feed}  path="/" />
-                    <Route component={Profile}  path="/profile" />
-                    <Route exact component={About}  path="/about" />
-
+                  <Route exact component={Feed}  path="/" />
+                  <Route component={Profile}  path="/profile" />
+                  <Route exact component={About}  path="/about" />
                 </div>
               </div>
             </Switch>

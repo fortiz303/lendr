@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 
 import transactionActions from '../../actions/transactionActions';
 
+import NewLoanEntry from '../../components/NewLoanEntry';
+
 class New extends Component {
   state = {
     from: '',
@@ -35,6 +37,7 @@ class New extends Component {
       <div className="row">
         <div className="col">
           <h3>new</h3>
+          <NewLoanEntry />
           <div className="form-group">
             <input
               value={this.state.amount}

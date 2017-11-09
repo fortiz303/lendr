@@ -46,7 +46,7 @@ class Profile extends Component {
                   className="nav-item nav-link"
                   to="/profile/history"
                 >
-                  History
+                  history
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -55,7 +55,7 @@ class Profile extends Component {
                   className="nav-item nav-link"
                   to="/profile/new"
                 >
-                  New
+                  new
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -64,14 +64,14 @@ class Profile extends Component {
                   className="nav-item nav-link"
                   to="/profile/update"
                 >
-                  Edit Profile
+                  edit profile
                 </NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Link Bank Account</a>
+                <a className="nav-link" href="#">link bank account</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link disabled" href="#">Help</a>
+                <a className="nav-link disabled" href="#">help</a>
               </li>
             </ul>
           </div>
