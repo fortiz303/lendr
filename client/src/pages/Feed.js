@@ -52,16 +52,15 @@ class Feed extends Component {
         <div className="card feed-card" key={`feed-card-${index}-${current.created_at}`}>
           <div className="card-body">
             <h4 className="card-title text-primary">${current.amount} <small>for</small> ${current.interest}</h4>
-            <p className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleString()}</p>
+            <p className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleDateString()}</p>
             <p className="card-text">{current.memo}</p>
           </div>
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">
-                  <Link to={`/transaction/${current.id}`}>View Details of Loan <span className="oi oi-arrow-right text-primary"></span></Link>
+                  <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
                 </span>
               </li>
-             <li className="list-group-item"><span className="card-link">View Profile of Poster <span className="oi oi-arrow-right text-primary"></span></span></li>
            </ul>
         </div>
       )
