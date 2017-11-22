@@ -79,6 +79,11 @@ router.post('/new', (req, res, next) => {
     })
 });
 
+router.get('/:transactionId', (req, res, next) => {
+  knex.select().from('transactions').where({id: req.params.transactionId}).then((row) => {
+    res.json(row)
+  })
+});
 router.get('/', (req, res, next) => {
   knex.select().from('transactions').then((row) => {
     res.json(row)

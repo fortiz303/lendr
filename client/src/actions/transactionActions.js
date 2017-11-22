@@ -35,6 +35,23 @@ const transactionActions = {
         })
     }
   },
+  fetchById: (id, token) => {
+    return (dispatch) => {
+      API.fetchTransactionById(id, token)
+        .then((data) => {
+          dispatch({
+            type: 'FETCH_TRANSACTION_SUCCESS',
+            data: data
+          })
+        })
+        .catch((error) => {
+          dispatch({
+            type: 'TRANSACTION_ERROR',
+            error: error
+          })
+        })
+    }
+  },
   fetchAll: (token) => {
     return (dispatch) => {
       API.fetchAllTransactions(token)

@@ -21,6 +21,7 @@ import errorReducer from '../reducers/errorReducer';
 
 import Login from './Login';
 import Feed from './Feed';
+import Transaction from './Transaction';
 import About from './About';
 import Profile from './profile';
 
@@ -53,7 +54,6 @@ class App extends Component {
           <div className="router-wrapper">
             <nav className="navbar navbar-light navbar-expand-lg main-nav">
               <span className="navbar-brand mb-0 h1">rosco</span>
-              {console.log(this.props)}
               <div className="navbar-nav mr-auto">
                 <NavLink activeClassName="active" exact className="nav-item nav-link" to="/">feed</NavLink>
                 <NavLink activeClassName="active" className="nav-item nav-link" to="/profile">profile</NavLink>
@@ -69,6 +69,7 @@ class App extends Component {
               <div className="main-content-wrapper">
                 <div className="container">
                   <Route exact component={Feed}  path="/" />
+                  <Route exact component={Transaction}  path="/transaction/:id" />
                   <Route component={Profile}  path="/profile" />
                   <Route exact component={About}  path="/about" />
                 </div>

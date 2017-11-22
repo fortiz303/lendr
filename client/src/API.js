@@ -98,6 +98,25 @@ export const API = {
         })
     })
   },
+  fetchTransactionById(id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token,
+        },
+        method: 'GET'
+      }
+
+      fetch(`/api/v1/transaction/${id}`, opts)
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   loginUser(email, pass) {
     return new Promise((resolve, reject) => {
       const opts = {

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 // Redux
 import {connect} from 'react-redux';
-
+import {Link} from 'react-router-dom';
 import authActions from '../actions/authActions';
 import transactionActions from '../actions/transactionActions';
 
@@ -56,7 +56,11 @@ class Feed extends Component {
             <p className="card-text">{current.memo}</p>
           </div>
             <ul className="list-group list-group-flush">
-             <li className="list-group-item"><span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">View Details of Loan <span class="oi oi-arrow-right text-primary"></span></span></li>
+              <li className="list-group-item">
+                <span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">
+                  <Link to={`/transaction/${current.id}`}>View Details of Loan <span class="oi oi-arrow-right text-primary"></span></Link>
+                </span>
+              </li>
              <li className="list-group-item"><span className="card-link">View Profile of Poster <span class="oi oi-arrow-right text-primary"></span></span></li>
            </ul>
         </div>
