@@ -109,6 +109,7 @@ export const API = {
       }
 
       fetch(`/api/v1/transaction/${id}`, opts)
+        .then(res => res.json())
         .then((data) => {
           resolve(data);
         })

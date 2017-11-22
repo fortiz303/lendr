@@ -58,10 +58,10 @@ class Feed extends Component {
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">
-                  <Link to={`/transaction/${current.id}`}>View Details of Loan <span class="oi oi-arrow-right text-primary"></span></Link>
+                  <Link to={`/transaction/${current.id}`}>View Details of Loan <span className="oi oi-arrow-right text-primary"></span></Link>
                 </span>
               </li>
-             <li className="list-group-item"><span className="card-link">View Profile of Poster <span class="oi oi-arrow-right text-primary"></span></span></li>
+             <li className="list-group-item"><span className="card-link">View Profile of Poster <span className="oi oi-arrow-right text-primary"></span></span></li>
            </ul>
         </div>
       )

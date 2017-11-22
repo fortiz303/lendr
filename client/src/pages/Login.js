@@ -74,16 +74,9 @@ class Login extends Component {
 
   render() {
     const {email, password, method} = this.state;
-    const {error} = this.props;
 
     return (
       <div className="container h-100">
-        {
-          error ?
-            <div className="alert alert-danger" role="alert">
-              {error}
-            </div> : null
-        }
         <div className="row h-100 justify-content-center align-items-center">
           <div className="card">
             <div className="card-header">
@@ -153,8 +146,7 @@ class Login extends Component {
 const mapStateToProps = (state) => {
   return {
     authStatus: state.authReducer.status,
-    user: state.authReducer.user,
-    error: state.errorReducer.error
+    user: state.authReducer.user
   }
 };
 

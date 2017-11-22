@@ -25,8 +25,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/client/build')));
 
-app.use('/', index);
-
 // API Routes
 app.use('/api/v1/user', apiUser)
 app.use('/api/v1/auth', apiAuthentication)

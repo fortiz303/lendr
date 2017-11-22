@@ -16,36 +16,36 @@ export default class NewLoanEntry extends Component {
   renderSteps = () => {
     const {currentStep} = this.state;
 
-    const step1 = 
-      <div className="step"> 
+    const step1 =
+      <div className="step">
         <h4 className="card-title">How much do you need to borrow?</h4>
         <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
-        <input className="form-control form-control-lg" type="text" value={this.state.step1Value} />
+        <input onChange={(e) => {this.handleInput(e, 'step1')}} className="form-control form-control-lg" type="text" value={this.state.step1Value} />
       </div>
 
-    const step2 = 
-      <div className="step"> 
+    const step2 =
+      <div className="step">
         <h4 className="card-title">How much interest are you going to pay?</h4>
         <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
-        <input className="form-control form-control-lg" type="text" value={this.state.step1Value} />
+        <input onChange={(e) => {this.handleInput(e, 'step2')}} className="form-control form-control-lg" type="text" value={this.state.step1Value} />
       </div>
 
-    const step3 = 
-      <div className="step"> 
+    const step3 =
+      <div className="step">
         <h4 className="card-title">When do you promise to pay it back??</h4>
         <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
-        <input className="form-control form-control-lg" type="text" value={this.state.step1Value} />
+        <input onChange={(e) => {this.handleInput(e, 'step3')}} className="form-control form-control-lg" type="text" value={this.state.step1Value} />
       </div>
 
-    const step4 = 
-      <div className="step"> 
+    const step4 =
+      <div className="step">
         <h4 className="card-title">What's it for??</h4>
         <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
-        <input className="form-control form-control-lg" type="text" value={this.state.step1Value} />
+        <input onChange={(e) => {this.handleInput(e, 'step4')}} className="form-control form-control-lg" type="text" value={this.state.step1Value} />
       </div>
 
-    const step5 = 
-      <div className="step"> 
+    const step5 =
+      <div className="step">
         <h4 className="card-title">Ready?</h4>
         <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
         <button type="submit">Post!</button>

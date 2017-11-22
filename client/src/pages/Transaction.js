@@ -12,7 +12,6 @@ class Transaction extends Component {
     if (token) {
       dispatch(authActions.authenticate(token));
       const id = _.get(match, 'params.id', false);
-      console.log(match);
       if (token && !transactionFeed && id) {
         dispatch(transactionActions.fetchById(id, token));
       }
@@ -27,23 +26,41 @@ class Transaction extends Component {
     }
   };
 
+  // accepted_by_user_id: null
+  // amount: 10000
+  // created_at: "2017-11-08T02:34:12.439Z"
+  // created_by_user_id: 1
+  // id: 4
+  // interest: 1000
+  // memo: "memo 5"
+  // promise_to_pay_date: "2017-12-31T08:00:00.000Z"
+  // seen_by_recipient: false
+  // seen_by_sender: false
+  // status: "accepted"
 
   render() {
-    console.log(this.props)
-    return (
+    const {transaction} = this.props;
+
+    return transaction ? 
       <div className="content-wrapper">
-        <h1 className="display-2 text-primary">
-          Transaction Details
-        </h1>
-        <p className="lead">sub title line - decided on content here</p>
+        <p className="lead">Transaction details</p>
         <hr />
         <div className="row">
           <div className="col">
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+            <p>User: {transaction.created_by_user_id} wants to borrow {transaction.amount} and pay back {transaction.interest} by {transaction.promise_to_pay_date}</p>
+            <p>{transaction.memo}</p>
+            
           </div>
         </div>
-      </div>
-    );
+        <hr />
+        <div className="row">
+          <div className="col">
+            <p>Actions</p>
+            <p>View user -> USER ID: {transaction.created_by_user_id}</p>
+            <p>Accept Transaction</p>
+          </div>
+        </div>
+      </div> : null
   }
 }
 

@@ -3,14 +3,17 @@ import {API} from '../API';
 const authActions = {
   authenticate: (token) => {
     return (dispatch) => {
+      dispatch({type: 'LOADING', loading: true});
       API.authenticate(token)
         .then((data) => {
+          dispatch({type: 'LOADING', loading: false});
           dispatch({
             type: 'LOGIN_SUCCESS',
             data: data
           })
         })
         .catch((error) => {
+          dispatch({type: 'LOADING', loading: false});
           dispatch({
             type: 'LOGIN_FAILURE',
             error: error
@@ -34,6 +37,7 @@ const authActions = {
   },
   loginUser: (email, pass) => {
     return (dispatch) => {
+      dispatch({type: 'LOADING', loading: true});
       API.loginUser(email, pass)
         .then((data) => {
           window.sessionStorage.token = data.token;
@@ -41,21 +45,25 @@ const authActions = {
             type: 'LOGIN_SUCCESS',
             data: data
           })
+          dispatch({type: 'LOADING', loading: false});
         })
         .catch((error) => {
           dispatch({
             type: 'LOGIN_FAILURE',
             error: error
           })
+          dispatch({type: 'LOADING', loading: false});
         })
     }
   },
   signupUser: (email, pass) => {
     return (dispatch) => {
+      dispatch({type: 'LOADING', loading: true});
       API.signupUser(email, pass)
         .then((data) => {
           API.loginUser(email, pass)
             .then((loginData) => {
+              dispatch({type: 'LOADING', loading: false});
               window.sessionStorage.token = loginData.token;
               dispatch({
                 type: 'LOGIN_SUCCESS',
@@ -67,6 +75,7 @@ const authActions = {
                 type: 'LOGIN_FAILURE',
                 error: error
               })
+              dispatch({type: 'LOADING', loading: false});
             })
         })
         .catch((error) => {
@@ -74,6 +83,7 @@ const authActions = {
             type: 'SIGNUP_FAILURE',
             error: error
           })
+          dispatch({type: 'LOADING', loading: false});
         })
     }
   }
