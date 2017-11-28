@@ -41,6 +41,9 @@ html,
 }
 .main-content-wrapper {
   padding-top: 20px;
+  &.loading {
+    
+  }
 }
 
 .main-nav {

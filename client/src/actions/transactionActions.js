@@ -1,6 +1,42 @@
 import {API} from '../API';
 
 const transactionActions = {
+  lock: (id, token) => {
+    return (dispatch) => {
+      dispatch({type: 'LOADING', loading: true})
+      API.lockTransaction(id, token)
+        .then((data) => {
+          dispatch({
+            type: 'LOCK_TRANSACTION_SUCCESS',
+            data: data
+          })
+        })
+        .catch((error) => {
+          dispatch({
+            type: 'LOCK_TRANSACTION_FAILURE',
+            error: error
+          })
+        })
+    }
+  },
+  free: (id, token) => {
+    return (dispatch) => {
+      dispatch({type: 'LOADING', loading: true})
+      API.freeTransaction(id, token)
+        .then((data) => {
+          dispatch({
+            type: 'FREE_TRANSACTION_SUCCESS',
+            data: data
+          })
+        })
+        .catch((error) => {
+          dispatch({
+            type: 'FREE_TRANSACTION_FAILURE',
+            error: error
+          })
+        })
+    }
+  },
   accept: (data, token) => {
     return (dispatch) => {
       dispatch({type: 'LOADING', loading: true});

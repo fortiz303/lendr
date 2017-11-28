@@ -20,6 +20,7 @@ import authReducer from '../reducers/authReducer';
 import transactionReducer from '../reducers/transactionReducer';
 import errorReducer from '../reducers/errorReducer';
 import loadingReducer from '../reducers/loadingReducer';
+import userReducer from '../reducers/userReducer';
 
 import Login from './Login';
 import Feed from './Feed';
@@ -37,14 +38,14 @@ let errorcounter = 0;
 
 if (isProduction) {
   store = createStore(
-    combineReducers({authReducer, transactionReducer, errorReducer, loadingReducer}),
+    combineReducers({authReducer, transactionReducer, errorReducer, loadingReducer, userReducer}),
     applyMiddleware(thunk)
   );
 } else {
   const logger = createLogger({collapsed: true});
 
   store = createStore(
-    combineReducers({authReducer, transactionReducer, errorReducer, loadingReducer}),
+    combineReducers({authReducer, transactionReducer, errorReducer, loadingReducer, userReducer}),
     applyMiddleware(thunk, logger)
   );
 }
@@ -54,14 +55,21 @@ class App extends Component {
   state = {
     error: false,
     loading: false
-  }
+  };
+
   componentDidMount = () => {
     store.subscribe(() => {
       const currentStore = store.getState();
       const error = _.get(currentStore, 'errorReducer.error', false);
       const loading = _.get(currentStore, 'loadingReducer.loading', false);
 
-      this.setState({loading: loading});
+      if (loading) {
+        this.setState({loading: loading});
+      } else {
+        setTimeout(() => {
+          this.setState({loading: false})
+        }, 250);
+      }
 
       if (error) {
         console.log('setting error state', errorcounter + 1)
@@ -99,11 +107,11 @@ class App extends Component {
             }
             <Switch>
               <Route exact path="/login" component={Login}/>
-              <div className="main-content-wrapper">
+              <div className={`main-content-wrapper ${loading ? 'loading' : null}`}>
                 <div className="container">
                   <Route exact component={Feed}  path="/" />
                   <Route exact component={Transaction}  path="/transaction/:id" />
-                  <Route component={Profile}  path="/profile" />
+                  <Route component={Profile} path="/profile/:id" />
                   <Route exact component={About}  path="/about" />
                 </div>
               </div>

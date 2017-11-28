@@ -1,9 +1,15 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom'
 import transactionActions from '../actions/transactionActions';
 import authActions from '../actions/authActions';
+
 class Transaction extends Component {
+  state = {
+    hasAcceptedTransaction: false
+  };
+
   componentDidMount = () => {
     const {dispatch, transactionFeed, match} = this.props;
 
@@ -19,13 +25,26 @@ class Transaction extends Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    const {user, dispatch, transactionFeed} = this.props;
-
-    if (_.get(prevProps, 'user.uid', false) !== _.get(user, 'uid', false) && user.token && transactionFeed !== prevProps.transactionFeed) {
-      dispatch(transactionActions.fetchAll(user.token));
+    const {user, dispatch, transaction} = this.props;
+        const token = _.get(window.sessionStorage, 'token', false);
+    if (prevProps.transaction !== transaction && transaction && transaction.status !== 'locked' && token) {
+      dispatch(transactionActions.lock(transaction.id, token))
     }
   };
 
+  componentWillUnmount = () => {
+    const {dispatch, transaction} = this.props;
+    const {hasAcceptedTransaction} = this.state;
+    const token = _.get(window.sessionStorage, 'token', false);
+    if (!hasAcceptedTransaction && token) {
+      dispatch(transactionActions.free(transaction.id, token));
+    }
+  };
+
+  acceptTransaction = () => {
+    const {dispatch, transaction} = this.props;
+
+  }
   // accepted_by_user_id: null
   // amount: 10000
   // created_at: "2017-11-08T02:34:12.439Z"
@@ -40,10 +59,10 @@ class Transaction extends Component {
 
   render() {
     const {transaction} = this.props;
-
     return transaction ? 
       <div className="content-wrapper">
         <p className="lead">Transaction details</p>
+        <p>Status: {transaction.status}</p>
         <hr />
         <div className="row">
           <div className="col">
@@ -55,9 +74,8 @@ class Transaction extends Component {
         <hr />
         <div className="row">
           <div className="col">
-            <p>Actions</p>
-            <p>View user -> USER ID: {transaction.created_by_user_id}</p>
-            <p>Accept Transaction</p>
+            <Link className="btn btn-primary" to={`/profile/${transaction.created_by_user_id}`}>View User</Link>
+            <a className="btn btn-primary" onClick={this.acceptTransaction}>Accept Transaction</a>
           </div>
         </div>
       </div> : null

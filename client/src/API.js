@@ -3,6 +3,46 @@ const headers = new Headers({
 });
 
 export const API = {
+  freeTransaction(id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token
+        },
+        method: 'GET'
+      };
+
+      fetch(`/api/v1/transaction/free/${id}`, opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data.user)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  lockTransaction(id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token
+        },
+        method: 'GET'
+      };
+
+      fetch(`/api/v1/transaction/lock/${id}`, opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data.user)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   acceptLoan(data, token) {
     return new Promise((resolve, reject) => {
       const opts = {
@@ -98,6 +138,26 @@ export const API = {
         })
     })
   },
+  fetchUserById(id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token
+        },
+        method: 'GET'
+      };
+
+      fetch(`/api/v1/user/${id}`, opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data.user)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   fetchTransactionById(id, token) {
     return new Promise((resolve, reject) => {
       const opts = {
@@ -131,6 +191,7 @@ export const API = {
       fetch(`/api/v1/auth/login`, opts)
         .then(res => res.json())
         .then((data) => {
+          console.log(data)
           if (data.success) {
             resolve(data)
           } else {

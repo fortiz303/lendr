@@ -89,7 +89,7 @@ router.get('/:userId', (req, res, next) => {
       res.json({
         success: true,
         message: 'Success fetching user Info',
-        user: row
+        user: row[0]
       })
     })
     .catch((error) => {

@@ -28,7 +28,7 @@ class Feed extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     const {user, dispatch, transactionFeed} = this.props;
 
-    if (_.get(prevProps, 'user.uid', false) !== _.get(user, 'uid', false) && user.token && transactionFeed !== prevProps.transactionFeed) {
+    if (_.get(prevProps, 'user.id', false) !== _.get(user, 'id', false) && user.token && transactionFeed !== prevProps.transactionFeed) {
       dispatch(transactionActions.fetchAll(user.token));
     }
   };
@@ -38,7 +38,7 @@ class Feed extends Component {
 
     const updateData = {
       transactionId: transactionId,
-      accepted_by_user_id: user.uid
+      accepted_by_user_id: user.id
     };
 
     dispatch(transactionActions.accept(updateData, user.token))
@@ -48,20 +48,24 @@ class Feed extends Component {
     const {transactionFeed} = this.props;
 
     return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
+      const isLocked = current.status === 'locked';
       return (
-        <div className="card feed-card" key={`feed-card-${index}-${current.created_at}`}>
+        <div className={`card feed-card ${isLocked ? 'locked' : null}`} key={`${current.id}-feed-card-${index}-${current.created_at}`}>
           <div className="card-body">
             <h4 className="card-title text-primary">${current.amount} <small>for</small> ${current.interest}</h4>
             <p className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleDateString()}</p>
             <p className="card-text">{current.memo}</p>
           </div>
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item">
-                <span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">
-                  <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
-                </span>
-              </li>
-           </ul>
+            {
+              !isLocked ? 
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item">
+                    <span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">
+                      <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
+                    </span>
+                  </li>
+               </ul> : null
+           }
         </div>
       )
     }) : null

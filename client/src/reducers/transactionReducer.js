@@ -1,5 +1,21 @@
 export default function transactionReduced(state = {}, action) {
   switch (action.type) {
+    case 'LOCK_TRANSACTION_SUCCESS':
+      return {
+        ...state,
+        transaction: {
+          ...state.transaction,
+          status: 'locked'
+        }
+      }
+    case 'FREE_TRANSACTION_SUCCESS':
+      return {
+        ...state,
+        transaction: {
+          ...state.transaction,
+          status: 'pending'
+        }
+      }
     case 'FETCH_TRANSACTION_SUCCESS':
       return {
         ...state,

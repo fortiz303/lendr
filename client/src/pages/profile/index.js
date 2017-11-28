@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom'
 
 import authActions from '../../actions/authActions';
+import userActions from '../../actions/userActions';
 
 import History from './History';
 import New from './New';
@@ -18,18 +19,35 @@ import Update from './Update';
 class Profile extends Component {
 
   componentDidMount = () => {
-    const {dispatch} = this.props;
+    const {dispatch, profile, match, user, router} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
     if (token) {
       dispatch(authActions.authenticate(token));
+
+      const id = _.get(match, 'params.id', false);
+      if (token && !profile && id) {
+        dispatch(userActions.fetchById(id, token));
+      }
     }
-
   };
+  // componentDidUpdate = (prevProps, prevState) => {
+  //   const {dispatch, profile, match, user, history} = this.props;
+  //   const id = _.get(match, 'params.id', false);
 
+  //   if (prevProps !== this.props && !user || !profile && !id) {
+  //     history.push(`/profile/${user.id}`)
+  //   }
+  // }
   render() {
-    const {match} = this.props;
-    return (
+    const {match, user, profile} = this.props;
+    
+    // am I looking at myself? if so, enable settings stuff
+    console.log(match.url)
+    const isUser = user && profile && user.id === profile.id;
+    const foundUser = !!profile;
+    const notFound = <div className="content-wrapper"><h1 className="display-2 text-primary">user not found</h1></div>;
+    return foundUser && user ? 
       <div className="content-wrapper">
         <h1 className="display-2 text-primary">
           hello there
@@ -44,35 +62,47 @@ class Profile extends Component {
                 <NavLink
                   activeClassName="active border border-primary bg-white text-primary"
                   className="nav-item nav-link"
-                  to="/profile/history"
+                  to={`/profile/${user.id}/history`}
                 >
                   history
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink
-                  activeClassName="active border border-primary bg-white text-primary"
-                  className="nav-item nav-link"
-                  to="/profile/new"
-                >
-                  new
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  activeClassName="active border border-primary bg-white text-primary"
-                  className="nav-item nav-link"
-                  to="/profile/update"
-                >
-                  edit profile
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">link bank account</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link disabled" href="#">help</a>
-              </li>
+              {
+                isUser ?
+                  <li className="nav-item">
+                    <NavLink
+                      activeClassName="active border border-primary bg-white text-primary"
+                      className="nav-item nav-link"
+                      to={`/profile/${user.id}/new`}
+                    >
+                      new
+                    </NavLink>
+                  </li> : null
+              }
+              {
+                isUser ?
+                  <li className="nav-item">
+                    <NavLink
+                      activeClassName="active border border-primary bg-white text-primary"
+                      className="nav-item nav-link"
+                      to={`/profile/${user.id}/update`}
+                    >
+                      edit profile
+                    </NavLink>
+                  </li> : null
+              }
+              {
+                isUser ?
+                  <li className="nav-item">
+                    <a className="nav-link" href="#">link bank account</a>
+                  </li> : null
+              }
+              {
+                isUser ?
+                  <li className="nav-item">
+                    <a className="nav-link disabled" href="#">help</a>
+                  </li> : null
+              }
             </ul>
           </div>
         </div>
@@ -89,27 +119,34 @@ class Profile extends Component {
           component={History}
           path={`${match.url}/history`}
         />
-        <Route
-          exact
-          component={Update}
-          path={`${match.url}/update`}
-        />
-        <Route
-          exact
-          component={New}
-          path={`${match.url}/new`}
-        />
+        {
+          isUser ?
+            <Route
+              exact
+              component={Update}
+              path={`${match.url}/update`}
+            /> :
+            null
+        }
+        {
+          isUser ?
+          <Route
+            exact
+            component={New}
+            path={`${match.url}/new`}
+          /> :
+          null
+        }
 
-      </div>
-
-    );
+      </div> : notFound;
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     authStatus: state.authReducer.status,
-    user: state.authReducer.user
+    user: state.authReducer.user,
+    profile: state.userReducer.profile
   }
 };
 

@@ -30,13 +30,12 @@ router.post('/authenticate', (req, res) => {
         })
         .then((row) => {
           if (row[0].email === decoded.email && row[0].id === decoded.id)
-          res.json(row)
           res.json({
             success: true,
             message: 'Valid token. User authenticated.',
             token: token,
             email: row[0].email,
-            uid: row[0].id
+            id: row[0].id
           })
         })
         .catch((error) => {
@@ -77,7 +76,7 @@ router.post('/login', (req, res) => {
             } else {
               const payload = {
                 email: row[0].email,
-                uid: row[0].id,
+                id: row[0].id,
                 exp: new Date().getTime() + 3600000
               };
               const token = jwt.sign(payload, appConfig.secret);

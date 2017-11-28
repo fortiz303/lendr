@@ -79,15 +79,61 @@ router.post('/new', (req, res, next) => {
     })
 });
 
+router.get('/lock/:transactionId', (req, res, next) => {
+  const transactionId = req.params.transactionId;
+  knex('transactions')
+    .where('id', '=', transactionId)
+    .update({
+      status: 'locked'
+    })
+    .then((row) => {
+      res.json({
+        success: true,
+        data: row[0]
+      })
+    })
+    .catch((error) => {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to lock transaction',
+        error: error
+      })
+    })
+});
+
+router.get('/free/:transactionId', (req, res, next) => {
+  const transactionId = req.params.transactionId;
+
+  knex('transactions')
+    .where('id', '=', transactionId)
+    .update({
+      status: 'pending'
+    })
+    .then((row) => {
+      res.json({
+        success: true,
+        data: row[0]
+      })
+    })
+    .catch((error) => {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to free transaction',
+        error: error
+      })
+    })
+});
+
 router.get('/:transactionId', (req, res, next) => {
   knex.select().from('transactions').where({id: req.params.transactionId}).then((row) => {
     res.json(row[0])
-  })
+  });
 });
+
 router.get('/', (req, res, next) => {
   knex.select().from('transactions').then((row) => {
     res.json(row)
-  })
+  });
 });
 
 module.exports = router;

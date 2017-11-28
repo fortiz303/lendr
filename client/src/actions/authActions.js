@@ -48,6 +48,7 @@ const authActions = {
           dispatch({type: 'LOADING', loading: false});
         })
         .catch((error) => {
+          console.log(error)
           dispatch({
             type: 'LOGIN_FAILURE',
             error: error
