@@ -94,13 +94,14 @@ const transactionActions = {
         })
     }
   },
-  fetchAllForUser: (id, token) => {
+  fetchAllBorrowedForUser: (id, token) => {
     return (dispatch) => {
       API.fetchTransactionsByUserId(id, token)
         .then((data) => {
           dispatch({
             type: 'FETCH_TRANSACTIONS_FOR_USER_SUCCESS',
-            data: data.data
+            borrowHistory: data.data,
+            lendHistory: []
           })
         })
         .catch((error) => {

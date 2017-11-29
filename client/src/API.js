@@ -53,7 +53,7 @@ export const API = {
         method: 'GET'
       };
 
-      fetch(`/api/v1/transaction/fetchAllForUser/${id}`, opts)
+      fetch(`/api/v1/transaction/fetchAllBorrowedForUser/${id}`, opts)
         .then(res => res.json())
         .then((data) => {
           resolve(data)

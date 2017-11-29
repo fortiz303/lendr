@@ -111,7 +111,7 @@ class App extends Component {
                 <div className="container">
                   <Route exact component={Feed}  path="/" />
                   <Route exact component={Transaction}  path="/transaction/:id" />
-                  <Route component={Profile} path="/profile/:id" />
+                  <Route component={Profile} path="/profile/:id?" />
                   <Route exact component={About}  path="/about" />
                 </div>
               </div>

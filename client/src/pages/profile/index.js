@@ -19,16 +19,27 @@ import Update from './Update';
 class Profile extends Component {
 
   componentDidMount = () => {
-    const {dispatch, profile, match, user, router} = this.props;
+    const {dispatch, profile, match, user, router, history} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
     if (token) {
       dispatch(authActions.authenticate(token));
 
       const id = _.get(match, 'params.id', false);
+
       if (token && !profile && id) {
         dispatch(userActions.fetchById(id, token));
       }
+    }
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    const {dispatch, profile, user, history, match} = this.props;
+
+    const id = _.get(match, 'params.id', false);
+
+    if (this.props !== prevProps && !id && user) {
+      history.push(`/profile/${user.id}`)
     }
   };
   // componentDidUpdate = (prevProps, prevState) => {

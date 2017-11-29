@@ -126,7 +126,7 @@ router.get('/free/:transactionId', (req, res, next) => {
     })
 });
 
-router.get('/fetchAllForUser/:userId', (req, res, next) => {
+router.get('/fetchAllBorrowedForUser/:userId', (req, res, next) => {
   knex.select().table('transactions').where('created_by_user_id', '=', req.params.userId).then((row) => {
     res.json({
       success: true,

@@ -3,7 +3,8 @@ export default function transactionReduced(state = {}, action) {
     case 'FETCH_TRANSACTIONS_FOR_USER_SUCCESS':
       return {
         ...state,
-        transactionHistory: action.data
+        borrowHistory: action.borrowHistory,
+        lendHistory: action.lendHistory
       }
     case 'LOCK_TRANSACTION_SUCCESS':
       return {

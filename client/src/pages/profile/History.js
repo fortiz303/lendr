@@ -10,8 +10,38 @@ class History extends Component {
     const id = profile.id;
 
     if (token) {
-      dispatch(transactionActions.fetchAllForUser(id, token));
+      dispatch(transactionActions.fetchAllBorrowedForUser(id, token));
     }
+  };
+
+  renderBorrowHistory = () => {
+    const {borrowHistory} = this.props;
+    return borrowHistory && borrowHistory.length ? borrowHistory.map((current, index) => {
+      return (
+        <tr key={`${index}-table-row`}>
+          <td>{current.created_at}</td>
+          <td>{current.amount}</td>
+          <td>{current.interest}</td>
+          <td>{current.memo}</td>
+          <td>{current.accepted_by_user_id}</td>
+        </tr>
+      )
+    }) : <tr><td><p>nothing borrowed</p></td></tr>;
+  };
+
+  renderLendHistory = () => {
+    const {lendHistory} = this.props;
+    return lendHistory && lendHistory.length ? lendHistory.map((current, index) => {
+      return (
+        <tr key={`${index}-table-row`}>
+          <td>{current.created_at}</td>
+          <td>{current.amount}</td>
+          <td>{current.interest}</td>
+          <td>{current.memo}</td>
+          <td>{current.accepted_by_user_id}</td>
+        </tr>
+      )
+    }) : <tr><td><p>nothing loaned</p></td></tr>;
   };
 
   render() {
@@ -22,35 +52,17 @@ class History extends Component {
           <table className="table table-striped">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Date</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Username</th>
+                <th scope="col">created at</th>
+                <th scope="col">amount</th>
+                <th scope="col">interest</th>
+                <th scope="col">memo</th>
+                <th scope="col">accepted by</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              {this.renderBorrowHistory()}
             </tbody>
           </table>
-        </div>
-        <div className="col">
           <p className="lead">loaned</p>
           <table className="table table-striped">
             <thead>
@@ -62,24 +74,7 @@ class History extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              {this.renderLendHistory()}
             </tbody>
           </table>
         </div>
@@ -93,7 +88,8 @@ const mapStateToProps = (state) => {
     authStatus: state.authReducer.status,
     user: state.authReducer.user,
     profile: state.userReducer.profile,
-    history: state.transactionReducer.transactionHistory
+    borrowHistory: state.transactionReducer.borrowHistory,
+    lendHistory: state.transactionReducer.lendHistory
   }
 };
 
