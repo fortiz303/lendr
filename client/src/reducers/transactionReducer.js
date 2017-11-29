@@ -1,5 +1,10 @@
 export default function transactionReduced(state = {}, action) {
   switch (action.type) {
+    case 'FETCH_TRANSACTIONS_FOR_USER_SUCCESS':
+      return {
+        ...state,
+        transactionHistory: action.data
+      }
     case 'LOCK_TRANSACTION_SUCCESS':
       return {
         ...state,

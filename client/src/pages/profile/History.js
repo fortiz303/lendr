@@ -1,9 +1,19 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-
+import transactionActions from '../../actions/transactionActions';
 class History extends Component {
-  
+  componentDidMount = () => {
+    const {dispatch, profile, match, user, router} = this.props;
+
+    const token = user.token;
+    const id = profile.id;
+
+    if (token) {
+      dispatch(transactionActions.fetchAllForUser(id, token));
+    }
+  };
+
   render() {
     return (
       <div className="row">
@@ -81,7 +91,9 @@ class History extends Component {
 const mapStateToProps = (state) => {
   return {
     authStatus: state.authReducer.status,
-    user: state.authReducer.user
+    user: state.authReducer.user,
+    profile: state.userReducer.profile,
+    history: state.transactionReducer.transactionHistory
   }
 };
 

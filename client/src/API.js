@@ -43,10 +43,30 @@ export const API = {
         })
     })
   },
+  fetchTransactionsByUserId(id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token
+        },
+        method: 'GET'
+      };
+
+      fetch(`/api/v1/transaction/fetchAllForUser/${id}`, opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   acceptLoan(data, token) {
     return new Promise((resolve, reject) => {
       const opts = {
-        headers: headers, 
+        headers: headers,
         method: 'POST',
         body: JSON.stringify({
           ...data,
@@ -78,7 +98,7 @@ export const API = {
           token: token
         })
       };
-      
+
       fetch('/api/v1/transaction/new', opts)
         .then(res => res.json())
         .then((data) => {

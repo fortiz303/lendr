@@ -41,17 +41,14 @@ class Profile extends Component {
   // }
   render() {
     const {match, user, profile} = this.props;
-    
+
     // am I looking at myself? if so, enable settings stuff
-    console.log(match.url)
     const isUser = user && profile && user.id === profile.id;
     const foundUser = !!profile;
     const notFound = <div className="content-wrapper"><h1 className="display-2 text-primary">user not found</h1></div>;
-    return foundUser && user ? 
+
+    return foundUser && user ?
       <div className="content-wrapper">
-        <h1 className="display-2 text-primary">
-          hello there
-        </h1>
         <p className="lead">current rating: <strong>4.5</strong><br />
         You've lent $960 over the past month and made $125 dollars!</p>
         <hr />
@@ -112,6 +109,7 @@ class Profile extends Component {
         <Route
           exact
           component={History}
+          user={profile}
           path={`${match.url}`}
         />
         <Route

@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema.table('transactions', (t) => {
-    t.timestamp('locked_on_timestamp').defaultTo(knex.fn.now())
+    t.timestamp('locked_on_timestamp')
   });
 };
 

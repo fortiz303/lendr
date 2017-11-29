@@ -94,6 +94,23 @@ const transactionActions = {
         })
     }
   },
+  fetchAllForUser: (id, token) => {
+    return (dispatch) => {
+      API.fetchTransactionsByUserId(id, token)
+        .then((data) => {
+          dispatch({
+            type: 'FETCH_TRANSACTIONS_FOR_USER_SUCCESS',
+            data: data.data
+          })
+        })
+        .catch((error) => {
+          dispatch({
+            type: 'FETCH_TRANSACTIONS_FOR_USER_FAILURE',
+            error: error
+          })
+        })
+    }
+  },
   fetchAll: (token) => {
     return (dispatch) => {
       dispatch({type: 'LOADING', loading: true});

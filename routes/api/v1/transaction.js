@@ -53,12 +53,12 @@ router.post('/accept', (req, res, next) => {
 });
 
 router.post('/new', (req, res, next) => {
-  const transaction = {    
+  const transaction = {
     amount: req.body.amount,
     interest: req.body.interest,
     promise_to_pay_date: req.body.promise_to_pay_date,
     memo: req.body.memo,
-    created_by_user_id: req.decoded.uid
+    created_by_user_id: req.decoded.id
   };
 
   knex
@@ -84,7 +84,8 @@ router.get('/lock/:transactionId', (req, res, next) => {
   knex('transactions')
     .where('id', '=', transactionId)
     .update({
-      status: 'locked'
+      status: 'locked',
+      locked_on_timestamp: knex.fn.now()
     })
     .then((row) => {
       res.json({
@@ -107,7 +108,8 @@ router.get('/free/:transactionId', (req, res, next) => {
   knex('transactions')
     .where('id', '=', transactionId)
     .update({
-      status: 'pending'
+      status: 'pending',
+      locked_on_timestamp: null
     })
     .then((row) => {
       res.json({
@@ -123,6 +125,21 @@ router.get('/free/:transactionId', (req, res, next) => {
       })
     })
 });
+
+router.get('/fetchAllForUser/:userId', (req, res, next) => {
+  knex.select().table('transactions').where('created_by_user_id', '=', req.params.userId).then((row) => {
+    res.json({
+      success: true,
+      data: row
+    })
+  })
+  .catch((error) => {
+    res.json({
+      success: false,
+      error: error
+    })
+  })
+})
 
 router.get('/:transactionId', (req, res, next) => {
   knex.select().from('transactions').where({id: req.params.transactionId}).then((row) => {
