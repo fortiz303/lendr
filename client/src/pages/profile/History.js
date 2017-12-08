@@ -90,7 +90,14 @@ class History extends Component {
           </div>
         </div>
       )
-    }) : <p className="lead">nothing {borrowLendString}</p>
+    }) : 
+    <div className="card feed-card">
+      <div className="card-body">
+        <p className="lead">there's nothing here yet!</p>
+        <p>Lend someone in need some money or request a loan from the community!</p>
+        <Link to="/">go take a look!</Link>
+      </div>
+    </div>
   };
 
   render() {
