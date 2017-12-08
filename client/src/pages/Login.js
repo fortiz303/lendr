@@ -78,58 +78,67 @@ class Login extends Component {
     const {email, password, method} = this.state;
 
     return (
-      <div className="container h-100">
+      <div className="container h-100 justify-content-center align-items-center">
         <div className="row h-100 justify-content-center align-items-center">
-          <div className="card border-transparent">
-            <div className="card-body">
-              <form onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">Email address</label>
-                  <input
-                    onChange={this.handleEmailInput}
-                    value={email}
-                    type="email"
-                    className="form-control"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter email"
+          <div class="col-lg-8">
+            <div className="jumbotron mb-0 bg-transparent">
+              <h1 className="display-3">Hello, money!</h1>
+              <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+              <hr className="my-4" />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div className="card">
+              <div className="card-body">
+                <form onSubmit={this.handleSubmit}>
+                  <div className="form-group">
+                    <label htmlFor="exampleInputEmail1">Email address</label>
+                    <input
+                      onChange={this.handleEmailInput}
+                      value={email}
+                      type="email"
+                      className="form-control"
+                      aria-describedby="emailHelp"
+                      placeholder="Enter email"
+                      />
+                    {method === 'signup' ? <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small> : null}
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="exampleInputPassword1">Password</label>
+                    <input
+                      onChange={this.handlePasswordInput}
+                      value={password}
+                      type="password"
+                      className="form-control"
+                      placeholder="Password"
                     />
-                  <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+                  {
+                    method === 'signup' ?
+                    <div className="form-check">
+                      <label className="form-check-label">
+                        <input onChange={this.handleTOSInput} type="checkbox" className="form-check-input"/>
+                        I agree to the <a href="/terms">terms of service</a>
+                      </label>
+                    </div> : null
+                  }
+                  <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                </form>
+                <hr />
+                <div className="login-toggle">
+                  <span
+                    className={`button-inverse ${method === 'login' ? 'active' : null}`}
+                    onClick={() => {this.setMethod('login')}}
+                  >
+                    Login
+                  </span>
+                  <span
+                    className={`button-inverse ${method === 'signup' ? 'active' : null}`}
+                    onClick={() => {this.setMethod('signup')}}
+                  >
+                    Signup
+                  </span>
                 </div>
-                <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Password</label>
-                  <input
-                    onChange={this.handlePasswordInput}
-                    value={password}
-                    type="password"
-                    className="form-control"
-                    placeholder="Password"
-                  />
-                </div>
-                {
-                  method === 'signup' ?
-                  <div className="form-check">
-                    <label className="form-check-label">
-                      <input onChange={this.handleTOSInput} type="checkbox" className="form-check-input"/>
-                      I agree to the <a href="/terms">terms of service</a>
-                    </label>
-                  </div> : null
-                }
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
-              </form>
-              <hr />
-              <div className="login-toggle">
-                <span
-                  className={`button-inverse ${method === 'login' ? 'active' : null}`}
-                  onClick={() => {this.setMethod('login')}}
-                >
-                  Login
-                </span>
-                <span
-                  className={`button-inverse ${method === 'signup' ? 'active' : null}`}
-                  onClick={() => {this.setMethod('signup')}}
-                >
-                  Signup
-                </span>
               </div>
             </div>
           </div>

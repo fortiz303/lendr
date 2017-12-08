@@ -128,37 +128,7 @@ class App extends Component {
     loading: false,
     user: false
   };
-
-  // componentDidMount = () => {
-  //   store.subscribe(() => {
-  //     const currentStore = store.getState();
-  //     const error = _.get(currentStore, 'errorReducer.error', false);
-  //     const loading = _.get(currentStore, 'loadingReducer.loading', false);
-  //     const currentUser = _.get(currentStore, 'authReducer.user', false);
-
-  //     if (loading) {
-  //       this.setState({loading: loading});
-  //     } else {
-  //       setTimeout(() => {
-  //         this.setState({loading: false})
-  //       }, 250);
-  //     }
-      
-  //     if (currentUser) {
-  //       this.setState({
-  //         user: currentUser
-  //       })
-  //     } else {
-
-  //     }
-
-  //     if (error) {
-  //       console.log('setting error state', errorcounter + 1)
-  //       this.setState({error: error});
-  //     }
-  //   })
-  // };
-
+  
   render() {
     const {error, loading, user} = this.state;
     return (
