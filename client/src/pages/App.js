@@ -85,7 +85,6 @@ class Wrapper extends Component {
               {error}
             </div> : null
         }
-        <p className="lead">rosco</p>
         <div class="row">
           {shouldDisplayNav ?
             <div class="col-md-4 col-lg-2">
