@@ -86,8 +86,8 @@ class Wrapper extends Component {
         <p className="lead">rosco</p>
         <div class="row">
           {shouldDisplayNav ?
-            <div class="col-md-4 col-lg-2 nav-wrapper">
-              <div>
+            <div class="col-md-4 col-lg-2">
+              <div className="content-wrapper nav-wrapper">
                 <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/">feed</NavLink>
                 <NavLink activeClassName="btn-primary" className="nav-item nav-link" to="/profile">profile</NavLink>
                 {/*<NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">about</NavLink>*/}

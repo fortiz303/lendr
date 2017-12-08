@@ -22,8 +22,9 @@ class Profile extends Component {
     const {dispatch, profile, match, user, router, history} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
-    if (token) {
-      const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
+    const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
+
+    if (token && id) {
       dispatch(userActions.fetchById(id, token));
     }
   };
@@ -31,6 +32,7 @@ class Profile extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     const {dispatch, profile, user, history, match} = this.props;
     const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
+
     if (prevProps.user !== this.props.user && id && user.token) {
       dispatch(userActions.fetchById(id, user.token)); 
     }
@@ -45,7 +47,7 @@ class Profile extends Component {
     const foundUser = !!profile;
     const notFound = <p className="lead text-center">loading</p>;
 
-    return foundUser && user ?
+    return foundUser ?
       <div>
         <div className="row">
           <div className="col">

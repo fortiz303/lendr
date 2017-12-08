@@ -84,7 +84,8 @@ router.post('/login', (req, res) => {
                 success: true,
                 message: 'Token Issued.',
                 token: token,
-                email: row[0].email
+                email: row[0].email,
+                id: row[0].id
               });
             }
           })
