@@ -59,7 +59,7 @@ class Feed extends Component {
     return (
       <div className="row">
         <div className="col">
-          <div className="card-columns">
+          <div className="card-deck">
             {this.renderTransactionFeed()}
           </div>
         </div>

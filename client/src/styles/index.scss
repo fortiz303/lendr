@@ -32,6 +32,7 @@ $border-light-grey: #EAEAEA;
 
 body,
 html,
+.app-wrapper,
 .router-wrapper,
 #root {
   height: 100%;
@@ -39,11 +40,8 @@ html,
   color: $text-default;
   font-weight: lighter;
 }
-.main-content-wrapper {
-  padding-top: 20px;
-  &.loading {
-    
-  }
+.router-wrapper {
+  padding: 20px;
 }
 
 .main-nav {
@@ -51,12 +49,21 @@ html,
   border-bottom: 1px solid $border-grey;
 }
 
+.nav-wrapper,
 .content-wrapper {
+  border-radius: 4px;
   padding: 40px;
   background-color: $fill-white;
   border: 1px solid $border-grey;
 }
+.nav-wrapper {
+  padding-left: 0;
+  padding-right: 0;
+}
 
+.border-transparent {
+  border-color: transparent
+}
 .feed-card {
   background-color: $fill-white;
   border: 1px solid $fill-highlight;
@@ -67,6 +74,20 @@ html,
   .card-header {
     background-color: $fill-highlight;
     color: $text-medium-grey;
+  }
+}
+.login-toggle {
+  display: flex;
+  span {
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    &.active {
+      border: 1px solid $fill-highlight;
+      font-weight: bolder;
+    }
   }
 }
 
@@ -80,6 +101,13 @@ html,
 }
 
 .loading-bar {
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  position: fixed;
+  z-index: 999;
+  background: rgba(255,255,255,0.8);
   &:after {
     content: "";
     height: 3px;
@@ -87,7 +115,7 @@ html,
     position: fixed;
     width: 40px;
     animation: loader 2s infinite;
-    top: 0px;
+    top: 50%;
     margin-left: 0;
     z-index: 999;
   }

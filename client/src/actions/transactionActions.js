@@ -130,7 +130,6 @@ const transactionActions = {
     return (dispatch) => {
       API.fetchTransactionsByUserId(id, token)
         .then((data) => {
-          console.log(data)
           dispatch({
             type: 'FETCH_TRANSACTIONS_FOR_USER_SUCCESS',
             borrowHistory: data.borrowData.data,

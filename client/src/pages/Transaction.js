@@ -135,7 +135,7 @@ class Transaction extends Component {
     const {modal} = this.state;
 
     return transaction ? 
-      <div className="content-wrapper">
+      <div>
         <p className="lead">Transaction details</p>
         <p>Status: {transaction.status}</p>
         <hr />

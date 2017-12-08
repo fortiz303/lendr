@@ -13,6 +13,11 @@ export default function authReducer(state = {}, action) {
         ...state,
         status: action.status
       }
+    case 'LOGOUT':
+      return {
+        ...state,
+        user: false
+      }
     case 'LOGIN_SUCCESS':
       return {
         ...state,

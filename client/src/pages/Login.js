@@ -13,7 +13,9 @@ class Login extends Component {
   };
 
   componentDidMount = () => {
+    const {dispatch} = this.props;
     window.sessionStorage.token = false;
+    dispatch(authActions.logout());
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -78,29 +80,8 @@ class Login extends Component {
     return (
       <div className="container h-100">
         <div className="row h-100 justify-content-center align-items-center">
-          <div className="card">
-            <div className="card-header">
-              <ul className="nav nav-tabs card-header-tabs">
-                <li className="nav-item">
-                  <button
-                    className={`nav-link ${method === 'login' ? 'active' : null}`}
-                    onClick={() => {this.setMethod('login')}}
-                  >
-                    Login
-                  </button>
-                </li>
-                <li className="nav-item">
-                  <button
-                    className={`nav-link ${method === 'signup' ? 'active' : null}`}
-                    onClick={() => {this.setMethod('signup')}}
-                  >
-                    Signup
-                  </button>
-                </li>
-              </ul>
-            </div>
+          <div className="card border-transparent">
             <div className="card-body">
-              <h4 className="card-title">{method}</h4>
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">Email address</label>
@@ -133,8 +114,23 @@ class Login extends Component {
                     </label>
                   </div> : null
                 }
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary btn-block">Submit</button>
               </form>
+              <hr />
+              <div className="login-toggle">
+                <span
+                  className={`button-inverse ${method === 'login' ? 'active' : null}`}
+                  onClick={() => {this.setMethod('login')}}
+                >
+                  Login
+                </span>
+                <span
+                  className={`button-inverse ${method === 'signup' ? 'active' : null}`}
+                  onClick={() => {this.setMethod('signup')}}
+                >
+                  Signup
+                </span>
+              </div>
             </div>
           </div>
         </div>

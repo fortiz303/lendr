@@ -6582,6 +6582,7 @@ a.text-dark:focus, a.text-dark:hover {
 /* borders */
 body,
 html,
+.app-wrapper,
 .router-wrapper,
 #root {
   height: 100%;
@@ -6589,17 +6590,26 @@ html,
   color: #4D4E52;
   font-weight: lighter; }
 
-.main-content-wrapper {
-  padding-top: 20px; }
+.router-wrapper {
+  padding: 20px; }
 
 .main-nav {
   background-color: #FFFFFF;
   border-bottom: 1px solid #DADADA; }
 
+.nav-wrapper,
 .content-wrapper {
+  border-radius: 4px;
   padding: 40px;
   background-color: #FFFFFF;
   border: 1px solid #DADADA; }
+
+.nav-wrapper {
+  padding-left: 0;
+  padding-right: 0; }
+
+.border-transparent {
+  border-color: transparent; }
 
 .feed-card {
   background-color: #FFFFFF;
@@ -6611,6 +6621,18 @@ html,
     background-color: #007bff;
     color: #7A7A7A; }
 
+.login-toggle {
+  display: flex; }
+  .login-toggle span {
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px; }
+    .login-toggle span.active {
+      border: 1px solid #007bff;
+      font-weight: bolder; }
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -6619,16 +6641,24 @@ html,
   height: 100%;
   background: rgba(0, 0, 0, 0.7); }
 
-.loading-bar:after {
-  content: "";
-  height: 3px;
-  background: #007bff;
+.loading-bar {
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
   position: fixed;
-  width: 40px;
-  animation: loader 2s infinite;
-  top: 0px;
-  margin-left: 0;
-  z-index: 999; }
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.8); }
+  .loading-bar:after {
+    content: "";
+    height: 3px;
+    background: #007bff;
+    position: fixed;
+    width: 40px;
+    animation: loader 2s infinite;
+    top: 50%;
+    margin-left: 0;
+    z-index: 999; }
 
 @keyframes loader {
   0% {

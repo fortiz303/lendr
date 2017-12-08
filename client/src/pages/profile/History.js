@@ -78,7 +78,7 @@ class History extends Component {
                 </ul> : null
             }
             {
-              !isUser && current.status === 'pending' ?
+              !isUser && current.status === 'pending' && borrowLendString === 'borrowed' ?
                  <ul className="list-group list-group-flush">
                    <li className="list-group-item">
                      <span onClick={() => {this.openRepaymentModal(current.id), (current.amount + current.interest)}} className="card-link">
@@ -95,15 +95,14 @@ class History extends Component {
 
   render() {
     const {isUser, borrowHistory, lendHistory} = this.props;
-    console.log(this.props)
     return (
       <div className="row">
         <div className="col">
-          <div className="card-columns">
+          <div className="card-deck">
             {this.renderHistory(borrowHistory, 'borrowed')}
           </div>
           <hr />
-          <div className="card-columns">
+          <div className="card-deck">
             {this.renderHistory(lendHistory, 'loaned')}
           </div>
         </div>

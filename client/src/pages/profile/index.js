@@ -22,39 +22,20 @@ class Profile extends Component {
     const {dispatch, profile, match, user, router, history} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
-    console.log(user)
     if (token) {
-      const id = _.get(match, 'params.id', false);
-      if (token && !profile && id) {
-        dispatch(userActions.fetchById(id, token));
-      }
+      const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
+      dispatch(userActions.fetchById(id, token));
     }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
     const {dispatch, profile, user, history, match} = this.props;
-
-    const id = _.get(match, 'params.id', false);
-
-    if (_.get(prevProps, 'match.params.id', 'a') !== _.get(this.props, 'match.params.id', 'b') && _.get(user, 'token') && id) {
-      // navigated to a new user - fetch new users profile
-      dispatch(userActions.fetchById(id, user.token))
-    } else if (_.get(prevProps, 'user.id') !== _.get(user, 'id') && _.get(user, 'token')) {
-      dispatch(userActions.fetchById(user.id, user.token))
+    const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
+    if (prevProps.user !== this.props.user && id && user.token) {
+      dispatch(userActions.fetchById(id, user.token)); 
     }
-    // if (prevProps.location !== this.props.location && user.token) {
-    //   debugger
-    //   dispatch(userActions.fetchById(id, user.token));
-    // }
   };
-  // componentDidUpdate = (prevProps, prevState) => {
-  //   const {dispatch, profile, match, user, history} = this.props;
-  //   const id = _.get(match, 'params.id', false);
-
-  //   if (prevProps.user !== this.props && !user || !profile && !id) {
-  //     dispatch(userActions.fetchById(id, token));
-  //   }
-  // };
+  
   render() {
     const {match, user, profile} = this.props;
 
@@ -62,11 +43,10 @@ class Profile extends Component {
     const isUser = user && profile && user.id === profile.id;
 
     const foundUser = !!profile;
-    const notFound = 
-      <div className="content-wrapper"><p className="lead">loading</p></div>;
+    const notFound = <p className="lead text-center">loading</p>;
 
     return foundUser && user ?
-      <div className="content-wrapper">
+      <div>
         <div className="row">
           <div className="col">
             <ul className="nav nav-pills">

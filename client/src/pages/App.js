@@ -57,7 +57,6 @@ if (isProduction) {
 class Wrapper extends Component {
   componentDidMount = () => {
     const {user, location, dispatch} = this.props;
-    console.log(this.props)
     if (!user) {
       if (location.pathname !== '/login') {
         const token = _.get(window.sessionStorage, 'token', false);
@@ -76,7 +75,7 @@ class Wrapper extends Component {
     const {loading, error, user, modal} = this.props;
     const shouldDisplayNav = !!user;
     return (
-      <div className="app-wrapper">
+      <div className="container-fluid">
         {loading ? <div className="loading-bar"></div> : null}
         {
           error ?
@@ -84,22 +83,26 @@ class Wrapper extends Component {
               {error}
             </div> : null
         }
-        {modal && modal.active ? <Modal data={modal} /> : null}
-        {shouldDisplayNav ?
-          <nav className="navbar navbar-light navbar-expand-lg main-nav">
-            <span className="navbar-brand mb-0 h1">rosco</span>
-            <div className="navbar-nav mr-auto">
-              <NavLink activeClassName="active" exact className="nav-item nav-link" to="/">feed</NavLink>
-              <NavLink activeClassName="active" className="nav-item nav-link" to="/profile">profile</NavLink>
-              <NavLink activeClassName="active" exact className="nav-item nav-link" to="/about">about</NavLink>
+        <p className="lead">rosco</p>
+        <div class="row">
+          {shouldDisplayNav ?
+            <div class="col-md-4 col-lg-2 nav-wrapper">
+              <div>
+                <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/">feed</NavLink>
+                <NavLink activeClassName="btn-primary" className="nav-item nav-link" to="/profile">profile</NavLink>
+                {/*<NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">about</NavLink>*/}
+                <NavLink className="nav-item nav-link" to="/login">logout user {user.email}</NavLink>
+              </div> 
+            </div> : null
+          }
+          
+          <div className="col">
+            <div className="content-wrapper">
+              {this.props.children}
             </div>
-
-            <div className="navbar-nav">
-              <NavLink className="nav-item nav-link" to="/login">logout user {user.email}</NavLink>
-            </div>
-          </nav> : null
-        }
-        {this.props.children}
+          </div>
+        </div>
+        
       </div>
     );
   }

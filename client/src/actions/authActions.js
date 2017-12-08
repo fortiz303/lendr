@@ -1,6 +1,9 @@
 import {API} from '../API';
 
 const authActions = {
+  logout: () => {
+    return {type: 'LOGOUT'}
+  },
   authenticate: (token) => {
     return (dispatch) => {
       dispatch({type: 'LOADING', loading: true});
