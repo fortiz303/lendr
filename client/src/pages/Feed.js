@@ -43,14 +43,12 @@ class Feed extends Component {
           </div>
             {
               !isLocked ? 
-                <ul className="list-group list-group-flush">
-                  <li className="list-group-item">
-                    <span className="card-link">
-                      <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
-                    </span>
-                  </li>
-               </ul> : null
-           }
+                <div className="card-footer bg-transparent">
+                  <span className="card-link">
+                    <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
+                  </span>
+                </div>: null
+             }
         </div>
       )
     }) : null
@@ -59,7 +57,7 @@ class Feed extends Component {
     return (
       <div className="row">
         <div className="col">
-          <div className="card-deck">
+          <div className="card-columns">
             {this.renderTransactionFeed()}
           </div>
         </div>

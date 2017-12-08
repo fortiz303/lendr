@@ -6606,8 +6606,7 @@ html,
   border-bottom-width: 2px; }
 
 .nav-wrapper {
-  padding-left: 0;
-  padding-right: 0; }
+  padding: 20px 0; }
 
 .border-transparent {
   border-color: transparent; }

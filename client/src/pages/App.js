@@ -74,8 +74,10 @@ class Wrapper extends Component {
   render() {
     const {loading, error, user, modal} = this.props;
     const shouldDisplayNav = !!user;
+
     return (
       <div className="container-fluid">
+        {modal && modal.active ? <Modal data={modal} /> : null}
         {loading ? <div className="loading-bar"></div> : null}
         {
           error ?
@@ -91,7 +93,6 @@ class Wrapper extends Component {
                 <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/">feed</NavLink>
                 <NavLink activeClassName="btn-primary" className="nav-item nav-link" to="/profile">profile</NavLink>
                 {/*<NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">about</NavLink>*/}
-                <hr />
                 <NavLink className="nav-item nav-link" to="/login">logout</NavLink>
                 <hr />
                 <p className="text-center mb-0"><small class="text-muted">2017 rosco</small></p>

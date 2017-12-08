@@ -67,27 +67,23 @@ class History extends Component {
             <p className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleDateString()}</p>
             {current.status === 'settled' ? <p className="card-subtitle mb-2 text-muted">Settled on: {new Date(current.settled_on).toLocaleDateString()}</p> : null}
             <p className="card-text">{current.status}</p>
-             {
-               isUser ? 
-                 <ul className="list-group list-group-flush">
-                   <li className="list-group-item">
-                     <span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">
-                       <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
-                     </span>
-                   </li>
-                </ul> : null
-            }
-            {
-              !isUser && current.status === 'pending' && borrowLendString === 'borrowed' ?
-                 <ul className="list-group list-group-flush">
-                   <li className="list-group-item">
-                     <span onClick={() => {this.openRepaymentModal(current.id), (current.amount + current.interest)}} className="card-link">
-                       repay <span className="oi oi-arrow-right text-primary"></span>
-                     </span>
-                   </li>
-                </ul> : null
-            }
           </div>
+          {
+          isUser ? 
+            <div className="card-footer bg-transparent">
+              <span className="card-link">
+                <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
+              </span>
+            </div> : null
+          }
+          {
+            !isUser && current.status === 'pending' && borrowLendString === 'borrowed' ?
+              <div className="card-footer bg-transparent">
+                <span onClick={() => {this.openRepaymentModal(current.id), (current.amount + current.interest)}} className="card-link">
+                repay <span className="oi oi-arrow-right text-primary"></span>
+                </span>
+              </div> : null
+          }
         </div>
       )
     }) : 
@@ -105,11 +101,11 @@ class History extends Component {
     return (
       <div className="row">
         <div className="col">
-          <div className="card-deck">
+          <div className="card-columns">
             {this.renderHistory(borrowHistory, 'borrowed')}
           </div>
           <hr />
-          <div className="card-deck">
+          <div className="card-columns">
             {this.renderHistory(lendHistory, 'loaned')}
           </div>
         </div>

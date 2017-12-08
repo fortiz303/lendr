@@ -47,7 +47,7 @@ class Profile extends Component {
     const foundUser = !!profile;
     const notFound = <p className="lead text-center">loading</p>;
 
-    return foundUser ?
+    return foundUser && user && user.id ?
       <div>
         <div className="row">
           <div className="col">
