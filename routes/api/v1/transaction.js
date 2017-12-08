@@ -125,20 +125,66 @@ router.get('/free/:transactionId', (req, res, next) => {
       })
     })
 });
+router.get('/repay/:transactionId', (req, res, next) => {
+  const transactionId = req.params.transactionId;
+
+  knex('transactions')
+    .where('id', '=', transactionId)
+    .update({
+      status: 'settled',
+      settled_on: knex.fn.now()
+    })
+    .then((row) => {
+      res.json({
+        success: true,
+        data: row[0]
+      })
+    })
+    .catch((error) => {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to repay transaction',
+        error: error
+      })
+    })
+});
+
+router.get('/fetchAllLoanedByUser/:userId', (req, res, next) => {
+  knex
+    .select()
+    .table('transactions')
+    .where('accepted_by_user_id', '=', req.params.userId)
+    .then((row) => {
+      res.json({
+        success: true,
+        data: row
+      })
+    })
+    .catch((error) => {
+      res.status(500).json({
+        success: false,
+        error: error
+      })
+    })
+});
 
 router.get('/fetchAllBorrowedForUser/:userId', (req, res, next) => {
-  knex.select().table('transactions').where('created_by_user_id', '=', req.params.userId).then((row) => {
-    res.json({
-      success: true,
-      data: row
+  knex
+    .select()
+    .table('transactions')
+    .where('created_by_user_id', '=', req.params.userId)
+    .then((row) => {
+      res.json({
+        success: true,
+        data: row
+      })
     })
-  })
-  .catch((error) => {
-    res.json({
-      success: false,
-      error: error
+    .catch((error) => {
+      res.json({
+        success: false,
+        error: error
+      })
     })
-  })
 })
 
 router.get('/:transactionId', (req, res, next) => {
@@ -148,9 +194,13 @@ router.get('/:transactionId', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  knex.select().from('transactions').then((row) => {
-    res.json(row)
-  });
+  knex
+    .where('status', '!=', 'settled')
+    .select()
+    .from('transactions')
+    .then((row) => {
+      res.json(row)
+    });
 });
 
 module.exports = router;

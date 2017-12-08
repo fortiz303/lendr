@@ -1,6 +1,27 @@
 import {API} from '../API';
 
 const transactionActions = {
+  repay: (id, token) => {
+    return (dispatch) => {
+      dispatch({type: 'LOADING', loading: true});
+      API.repayLoan(id, token)
+        .then((data) => {
+          dispatch({
+            type: 'LOAN_REPAYMENT_SUCCESS',
+            data: data
+          })
+          dispatch({type: 'LOADING', loading: false});
+        })
+        .catch((error) => {
+          dispatch({
+            type: 'LOAN_REPAYMENT_FAILURE',
+            error: error
+          })
+          dispatch({type: 'LOADING', loading: false});
+          dispatch({type: 'NEW_ERROR', error: error});
+        })
+    }
+  },
   lock: (id, token) => {
     return (dispatch) => {
       dispatch({type: 'LOADING', loading: true})
@@ -10,12 +31,15 @@ const transactionActions = {
             type: 'LOCK_TRANSACTION_SUCCESS',
             data: data
           })
+          dispatch({type: 'LOADING', loading: false});
         })
         .catch((error) => {
           dispatch({
             type: 'LOCK_TRANSACTION_FAILURE',
             error: error
           })
+          dispatch({type: 'NEW_ERROR', error: error})
+          dispatch({type: 'LOADING', loading: false});
         })
     }
   },
@@ -28,19 +52,22 @@ const transactionActions = {
             type: 'FREE_TRANSACTION_SUCCESS',
             data: data
           })
+          dispatch({type: 'LOADING', loading: false});
         })
         .catch((error) => {
           dispatch({
             type: 'FREE_TRANSACTION_FAILURE',
             error: error
           })
+          dispatch({type: 'NEW_ERROR', error: error})
+          dispatch({type: 'LOADING', loading: false});
         })
     }
   },
-  accept: (data, token) => {
+  accept: (data, token, fromUser) => {
     return (dispatch) => {
       dispatch({type: 'LOADING', loading: true});
-      API.acceptLoan(data, token)
+      API.acceptLoan(data, token, fromUser)
         .then((data) => {
           dispatch({
             type: 'LOAN_ACCEPTANCE_SUCCESS',
@@ -53,6 +80,7 @@ const transactionActions = {
             type: 'LOAN_ACCEPTANCE_FAILURE',
             error: error
           })
+          dispatch({type: 'NEW_ERROR', error: error})
           dispatch({type: 'LOADING', loading: false});
         })
     }
@@ -73,6 +101,7 @@ const transactionActions = {
             type: 'NEW_TRANSACTION_FAILURE',
             error: error
           })
+          dispatch({type: 'NEW_ERROR', error: error})
           dispatch({type: 'LOADING', loading: false});
         })
     }
@@ -85,12 +114,15 @@ const transactionActions = {
             type: 'FETCH_TRANSACTION_SUCCESS',
             data: data
           })
+          dispatch({type: 'LOADING', loading: false});
         })
         .catch((error) => {
           dispatch({
             type: 'TRANSACTION_ERROR',
             error: error
           })
+          dispatch({type: 'NEW_ERROR', error: error})
+          dispatch({type: 'LOADING', loading: false});
         })
     }
   },
@@ -98,10 +130,11 @@ const transactionActions = {
     return (dispatch) => {
       API.fetchTransactionsByUserId(id, token)
         .then((data) => {
+          console.log(data)
           dispatch({
             type: 'FETCH_TRANSACTIONS_FOR_USER_SUCCESS',
-            borrowHistory: data.data,
-            lendHistory: []
+            borrowHistory: data.borrowData.data,
+            lendHistory: data.lendData.data
           })
         })
         .catch((error) => {
@@ -109,6 +142,7 @@ const transactionActions = {
             type: 'FETCH_TRANSACTIONS_FOR_USER_FAILURE',
             error: error
           })
+          dispatch({type: 'NEW_ERROR', error: error})
         })
     }
   },
@@ -128,6 +162,7 @@ const transactionActions = {
             type: 'TRANSACTION_ERROR',
             error: error
           })
+          dispatch({type: 'NEW_ERROR', error: error})
           dispatch({type: 'LOADING', loading: false});
         })
     }

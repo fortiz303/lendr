@@ -3,6 +3,26 @@ const headers = new Headers({
 });
 
 export const API = {
+  repayLoan(id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token
+        },
+        method: 'GET'
+      };
+
+      fetch(`/api/v1/transaction/repay/${id}`, opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   freeTransaction(id, token) {
     return new Promise((resolve, reject) => {
       const opts = {
@@ -43,7 +63,8 @@ export const API = {
         })
     })
   },
-  fetchTransactionsByUserId(id, token) {
+
+  fetchBorrowHistory(id, token) {
     return new Promise((resolve, reject) => {
       const opts = {
         headers: {
@@ -54,7 +75,7 @@ export const API = {
       };
 
       fetch(`/api/v1/transaction/fetchAllBorrowedForUser/${id}`, opts)
-        .then(res => res.json())
+        .then(res => res.json())      
         .then((data) => {
           resolve(data)
         })
@@ -63,14 +84,54 @@ export const API = {
         })
     })
   },
-  acceptLoan(data, token) {
+
+  fetchLendHistory(id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token
+        },
+        method: 'GET'
+      };
+
+      fetch(`/api/v1/transaction/fetchAllLoanedByUser/${id}`, opts)
+        .then(res => res.json())      
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  fetchTransactionsByUserId(id, token) {
+    return new Promise((resolve, reject) => {
+      const borrowPromise = this.fetchBorrowHistory(id, token);
+      const lendPromise = this.fetchLendHistory(id, token);
+
+      Promise.all([borrowPromise, lendPromise])
+        .then(([borrowData, lendData]) => {
+          resolve({
+            borrowData: borrowData,
+            lendData: lendData
+          })
+        })
+        .catch((error) => {
+          reject(error);
+        })
+    })
+  },
+  acceptLoan(id, token, fromUser) {
     return new Promise((resolve, reject) => {
       const opts = {
         headers: headers,
         method: 'POST',
         body: JSON.stringify({
-          ...data,
-          token: token
+          transactionId: id,
+          token: token,
+          fromUser: fromUser
         })
       }
 

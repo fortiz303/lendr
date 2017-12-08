@@ -11,12 +11,14 @@ import {
 } from 'react-router-dom'
 
 // Redux
-import {Provider} from 'react-redux';
+import {Provider, connect} from 'react-redux';
 import {applyMiddleware, createStore, combineReducers} from 'redux';
-import {createLogger, connect} from 'redux-logger';
+import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import authReducer from '../reducers/authReducer';
+import authActions from '../actions/authActions';
+
 import transactionReducer from '../reducers/transactionReducer';
 import errorReducer from '../reducers/errorReducer';
 import loadingReducer from '../reducers/loadingReducer';
@@ -27,6 +29,8 @@ import Feed from './Feed';
 import Transaction from './Transaction';
 import About from './About';
 import Profile from './profile';
+
+import Modal from '../components/Modal'
 
 /* eslint-disable */
 const isProduction = false;
@@ -50,71 +54,123 @@ if (isProduction) {
   );
 }
 
+class Wrapper extends Component {
+  componentDidMount = () => {
+    const {user, location, dispatch} = this.props;
+    console.log(this.props)
+    if (!user) {
+      if (location.pathname !== '/login') {
+        const token = _.get(window.sessionStorage, 'token', false);
+        if (token) {
+          if (token === 'false') {
+            window.location.pathname = '/login';
+          } else {
+            dispatch(authActions.authenticate(token));
+          }
+        }
+      }
+    }
+  };
+
+  render() {
+    const {loading, error, user, modal} = this.props;
+    const shouldDisplayNav = !!user;
+    return (
+      <div className="app-wrapper">
+        {loading ? <div className="loading-bar"></div> : null}
+        {
+          error ?
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div> : null
+        }
+        {modal && modal.active ? <Modal data={modal} /> : null}
+        {shouldDisplayNav ?
+          <nav className="navbar navbar-light navbar-expand-lg main-nav">
+            <span className="navbar-brand mb-0 h1">rosco</span>
+            <div className="navbar-nav mr-auto">
+              <NavLink activeClassName="active" exact className="nav-item nav-link" to="/">feed</NavLink>
+              <NavLink activeClassName="active" className="nav-item nav-link" to="/profile">profile</NavLink>
+              <NavLink activeClassName="active" exact className="nav-item nav-link" to="/about">about</NavLink>
+            </div>
+
+            <div className="navbar-nav">
+              <NavLink className="nav-item nav-link" to="/login">logout user {user.email}</NavLink>
+            </div>
+          </nav> : null
+        }
+        {this.props.children}
+      </div>
+    );
+  }
+}
+const mapStateToProps = (state) => {
+  return {
+    authStatus: state.authReducer.status,
+    user: state.authReducer.user,
+    error: state.errorReducer.error,
+    loading: state.loadingReducer.loading,
+    modal: state.errorReducer.modal
+  }
+};
+
+const WrappedWrapper = connect(mapStateToProps)(Wrapper);
 
 class App extends Component {
   state = {
     error: false,
-    loading: false
+    loading: false,
+    user: false
   };
 
-  componentDidMount = () => {
-    store.subscribe(() => {
-      const currentStore = store.getState();
-      const error = _.get(currentStore, 'errorReducer.error', false);
-      const loading = _.get(currentStore, 'loadingReducer.loading', false);
+  // componentDidMount = () => {
+  //   store.subscribe(() => {
+  //     const currentStore = store.getState();
+  //     const error = _.get(currentStore, 'errorReducer.error', false);
+  //     const loading = _.get(currentStore, 'loadingReducer.loading', false);
+  //     const currentUser = _.get(currentStore, 'authReducer.user', false);
 
-      if (loading) {
-        this.setState({loading: loading});
-      } else {
-        setTimeout(() => {
-          this.setState({loading: false})
-        }, 250);
-      }
+  //     if (loading) {
+  //       this.setState({loading: loading});
+  //     } else {
+  //       setTimeout(() => {
+  //         this.setState({loading: false})
+  //       }, 250);
+  //     }
+      
+  //     if (currentUser) {
+  //       this.setState({
+  //         user: currentUser
+  //       })
+  //     } else {
 
-      if (error) {
-        console.log('setting error state', errorcounter + 1)
-        this.setState({error: error});
-      }
-    })
-  };
+  //     }
+
+  //     if (error) {
+  //       console.log('setting error state', errorcounter + 1)
+  //       this.setState({error: error});
+  //     }
+  //   })
+  // };
 
   render() {
-    const {error, loading} = this.state;
+    const {error, loading, user} = this.state;
     return (
       <Provider store={store}>
         <Router>
           <div className="router-wrapper">
-            {
-              loading ? <div className="loading-bar"></div> : null
-            }
-            <nav className="navbar navbar-light navbar-expand-lg main-nav">
-              <span className="navbar-brand mb-0 h1">rosco</span>
-              <div className="navbar-nav mr-auto">
-                <NavLink activeClassName="active" exact className="nav-item nav-link" to="/">feed</NavLink>
-                <NavLink activeClassName="active" className="nav-item nav-link" to="/profile">profile</NavLink>
-                <NavLink activeClassName="active" exact className="nav-item nav-link" to="/about">about</NavLink>
-              </div>
-
-              <div className="navbar-nav">
-                <NavLink className="nav-item nav-link" to="/login">logout</NavLink>
-              </div>
-            </nav>
-            {
-              error ?
-                <div className="alert alert-danger" role="alert">
-                  {error}
-                </div> : null
-            }
             <Switch>
-              <Route exact path="/login" component={Login}/>
-              <div className={`main-content-wrapper ${loading ? 'loading' : null}`}>
-                <div className="container">
-                  <Route exact component={Feed}  path="/" />
-                  <Route exact component={Transaction}  path="/transaction/:id" />
-                  <Route component={Profile} path="/profile/:id?" />
-                  <Route exact component={About}  path="/about" />
+              <WrappedWrapper>
+                <Route exact path="/login" component={Login}/>
+                <div className={`main-content-wrapper ${loading ? 'loading' : null}`}>
+                  <div className="container">
+                    <Route exact component={Feed}  path="/" />
+                    <Route exact component={Transaction}  path="/transaction/:id" />
+                    <Route component={Profile} path="/profile/:id?" />
+                    <Route exact component={About}  path="/about" />
+                  </div>
                 </div>
-              </div>
+                </WrappedWrapper>
             </Switch>
           </div>
         </Router>

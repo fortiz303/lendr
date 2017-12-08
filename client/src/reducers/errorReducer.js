@@ -1,9 +1,16 @@
 export default function transactionReduced(state = {}, action) {
   switch (action.type) {
+    case 'MODAL':
+      return {
+        ...state,
+        modal: {
+          ...action.data
+        }
+      }
     case 'NEW_ERROR':
       return {
         ...state,
-        error: action.error
+        error: JSON.stringify(action.error.message)
       }
     case 'CLEAR_ALL_ERRORS':
       return {

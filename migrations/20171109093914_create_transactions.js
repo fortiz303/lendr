@@ -9,7 +9,7 @@ exports.up = function(knex, Promise) {
     table.string('status').defaultTo('pending'); // the status (pending, accepted, active, paid, defaulted)
     table.timestamp('created_at').defaultTo(knex.fn.now()); // created at date of the transaction post
     table.integer('created_by_user_id').unsigned().references('users.id'); // the uid of the person creating the transaction - the borrower
-    table.boolean('accepted_by_user_id'); // the sender of the money - the lender
+    table.integer('accepted_by_user_id'); // the sender of the money - the lender
     table.boolean('seen_by_recipient').defaultTo(false); // has the recipient seen this transaction
     table.boolean('seen_by_sender').defaultTo(false); // has the sender seen this transaction
   })

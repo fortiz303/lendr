@@ -16,12 +16,8 @@ class Feed extends Component {
 
     const token = _.get(window.sessionStorage, 'token', false);
 
-    if (token) {
-      dispatch(authActions.authenticate(token));
-
-      if (token && !transactionFeed) {
-        dispatch(transactionActions.fetchAll(token));
-      }
+    if (token && !transactionFeed) {
+      dispatch(transactionActions.fetchAll(token));
     }
   };
 
@@ -31,17 +27,6 @@ class Feed extends Component {
     if (_.get(prevProps, 'user.id', false) !== _.get(user, 'id', false) && user.token && transactionFeed !== prevProps.transactionFeed) {
       dispatch(transactionActions.fetchAll(user.token));
     }
-  };
-
-  acceptTransaction = (transactionId) => {
-    const {dispatch, user} = this.props;
-
-    const updateData = {
-      transactionId: transactionId,
-      accepted_by_user_id: user.id
-    };
-
-    dispatch(transactionActions.accept(updateData, user.token))
   };
 
   renderTransactionFeed = () => {
@@ -60,7 +45,7 @@ class Feed extends Component {
               !isLocked ? 
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item">
-                    <span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">
+                    <span className="card-link">
                       <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
                     </span>
                   </li>

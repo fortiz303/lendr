@@ -1,6 +1,12 @@
 import {API} from '../API';
 
 const errorActions = {
+  modal: (data) => {
+    return {
+      type: 'MODAL',
+      data: data
+    }
+  },
   throw: (error) => {
     return {
       type: 'NEW_ERROR',

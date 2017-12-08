@@ -22,11 +22,9 @@ class Profile extends Component {
     const {dispatch, profile, match, user, router, history} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
+    console.log(user)
     if (token) {
-      dispatch(authActions.authenticate(token));
-
       const id = _.get(match, 'params.id', false);
-
       if (token && !profile && id) {
         dispatch(userActions.fetchById(id, token));
       }
@@ -38,31 +36,37 @@ class Profile extends Component {
 
     const id = _.get(match, 'params.id', false);
 
-    if (this.props !== prevProps && !id && user) {
-      history.push(`/profile/${user.id}`)
+    if (_.get(prevProps, 'match.params.id', 'a') !== _.get(this.props, 'match.params.id', 'b') && _.get(user, 'token') && id) {
+      // navigated to a new user - fetch new users profile
+      dispatch(userActions.fetchById(id, user.token))
+    } else if (_.get(prevProps, 'user.id') !== _.get(user, 'id') && _.get(user, 'token')) {
+      dispatch(userActions.fetchById(user.id, user.token))
     }
+    // if (prevProps.location !== this.props.location && user.token) {
+    //   debugger
+    //   dispatch(userActions.fetchById(id, user.token));
+    // }
   };
   // componentDidUpdate = (prevProps, prevState) => {
   //   const {dispatch, profile, match, user, history} = this.props;
   //   const id = _.get(match, 'params.id', false);
 
-  //   if (prevProps !== this.props && !user || !profile && !id) {
-  //     history.push(`/profile/${user.id}`)
+  //   if (prevProps.user !== this.props && !user || !profile && !id) {
+  //     dispatch(userActions.fetchById(id, token));
   //   }
-  // }
+  // };
   render() {
     const {match, user, profile} = this.props;
 
     // am I looking at myself? if so, enable settings stuff
     const isUser = user && profile && user.id === profile.id;
+
     const foundUser = !!profile;
-    const notFound = <div className="content-wrapper"><h1 className="display-2 text-primary">user not found</h1></div>;
+    const notFound = 
+      <div className="content-wrapper"><p className="lead">loading</p></div>;
 
     return foundUser && user ?
       <div className="content-wrapper">
-        <p className="lead">current rating: <strong>4.5</strong><br />
-        You've lent $960 over the past month and made $125 dollars!</p>
-        <hr />
         <div className="row">
           <div className="col">
             <ul className="nav nav-pills">
@@ -100,13 +104,13 @@ class Profile extends Component {
                   </li> : null
               }
               {
-                isUser ?
+                false ?
                   <li className="nav-item">
                     <a className="nav-link" href="#">link bank account</a>
                   </li> : null
               }
               {
-                isUser ?
+                false ?
                   <li className="nav-item">
                     <a className="nav-link disabled" href="#">help</a>
                   </li> : null
@@ -118,12 +122,14 @@ class Profile extends Component {
 
 
         <Route
+          isUser={isUser}
           exact
           component={History}
           user={profile}
           path={`${match.url}`}
         />
         <Route
+          isUser={isUser}
           exact
           component={History}
           path={`${match.url}/history`}
@@ -131,6 +137,7 @@ class Profile extends Component {
         {
           isUser ?
             <Route
+              isUser={isUser}
               exact
               component={Update}
               path={`${match.url}/update`}
@@ -140,6 +147,7 @@ class Profile extends Component {
         {
           isUser ?
           <Route
+            isUser={isUser}
             exact
             component={New}
             path={`${match.url}/new`}

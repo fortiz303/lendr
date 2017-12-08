@@ -1,7 +1,10 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import transactionActions from '../../actions/transactionActions';
+import errorActions from '../../actions/errorActions';
+
 class History extends Component {
   componentDidMount = () => {
     const {dispatch, profile, match, user, router} = this.props;
@@ -13,70 +16,96 @@ class History extends Component {
       dispatch(transactionActions.fetchAllBorrowedForUser(id, token));
     }
   };
+  
+  openRepaymentModal = (transactionId, transactionAmount) => {
+    const {dispatch} = this.props;
 
-  renderBorrowHistory = () => {
-    const {borrowHistory} = this.props;
-    return borrowHistory && borrowHistory.length ? borrowHistory.map((current, index) => {
-      return (
-        <tr key={`${index}-table-row`}>
-          <td>{current.created_at}</td>
-          <td>{current.amount}</td>
-          <td>{current.interest}</td>
-          <td>{current.memo}</td>
-          <td>{current.accepted_by_user_id}</td>
-        </tr>
-      )
-    }) : <tr><td><p>nothing borrowed</p></td></tr>;
+    dispatch(errorActions.modal({
+      type: 'MODAL',
+      // data: {
+        active: true,
+        closeFunc: this.closeModal,
+        actionFunc: this.repayLoan,
+        bodyContent: (
+          <div className="modal-body">
+            <p>Are you sure you want to repay this loan?</p>
+            <p>{transactionAmount} will be withdrawn from your account</p>
+          </div>
+        ),
+        headerContent: (
+          <h5 className="modal-title" id="exampleModalLabel">Repay</h5>
+        ),
+        closeComponent: (
+          <button onClick={this.closeModal} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+        ),
+        actionComponent: (
+          <button onClick={() => {this.repayLoan(transactionId)}} type="button" className="btn btn-primary">Repay!</button>
+        )
+      // }
+    }));
+  };
+  
+  repayLoan = (transactionId) => {
+    const {dispatch, user} = this.props;
+
+    dispatch(transactionActions.repay(transactionId, user.token));
   };
 
-  renderLendHistory = () => {
-    const {lendHistory} = this.props;
-    return lendHistory && lendHistory.length ? lendHistory.map((current, index) => {
+  closeModal = () => {
+    const {dispatch} = this.props;
+    dispatch(errorActions.modal({type: 'MODAL', active: false}));
+  };
+  
+  renderHistory = (historyObject, borrowLendString) => {
+    const {isUser} = this.props;
+
+    return historyObject && historyObject.length ? historyObject.map((current, index) => {
       return (
-        <tr key={`${index}-table-row`}>
-          <td>{current.created_at}</td>
-          <td>{current.amount}</td>
-          <td>{current.interest}</td>
-          <td>{current.memo}</td>
-          <td>{current.accepted_by_user_id}</td>
-        </tr>
+        <div className={`card feed-card ${current.status === 'settled' ? 'settled' : null}`} key={`${index}-${current.id}-card`}>
+          <div key={`${index}-table-row`} className="card-body">
+            <h4 className="card-title text-primary">${current.amount} <small>{borrowLendString} for</small> ${current.interest}</h4>
+            <p className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleDateString()}</p>
+            {current.status === 'settled' ? <p className="card-subtitle mb-2 text-muted">Settled on: {new Date(current.settled_on).toLocaleDateString()}</p> : null}
+            <p className="card-text">{current.status}</p>
+             {
+               isUser ? 
+                 <ul className="list-group list-group-flush">
+                   <li className="list-group-item">
+                     <span onClick={() => {this.acceptTransaction(current.id)}} className="card-link">
+                       <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
+                     </span>
+                   </li>
+                </ul> : null
+            }
+            {
+              !isUser && current.status === 'pending' ?
+                 <ul className="list-group list-group-flush">
+                   <li className="list-group-item">
+                     <span onClick={() => {this.openRepaymentModal(current.id), (current.amount + current.interest)}} className="card-link">
+                       repay <span className="oi oi-arrow-right text-primary"></span>
+                     </span>
+                   </li>
+                </ul> : null
+            }
+          </div>
+        </div>
       )
-    }) : <tr><td><p>nothing loaned</p></td></tr>;
+    }) : <p className="lead">nothing {borrowLendString}</p>
   };
 
   render() {
+    const {isUser, borrowHistory, lendHistory} = this.props;
+    console.log(this.props)
     return (
       <div className="row">
         <div className="col">
-          <p className="lead">borrowed</p>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">created at</th>
-                <th scope="col">amount</th>
-                <th scope="col">interest</th>
-                <th scope="col">memo</th>
-                <th scope="col">accepted by</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.renderBorrowHistory()}
-            </tbody>
-          </table>
-          <p className="lead">loaned</p>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Date</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Username</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.renderLendHistory()}
-            </tbody>
-          </table>
+          <div className="card-columns">
+            {this.renderHistory(borrowHistory, 'borrowed')}
+          </div>
+          <hr />
+          <div className="card-columns">
+            {this.renderHistory(lendHistory, 'loaned')}
+          </div>
         </div>
       </div>
     );

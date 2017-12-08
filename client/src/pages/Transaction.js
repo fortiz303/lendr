@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import transactionActions from '../actions/transactionActions';
+import errorActions from '../actions/errorActions';
 import authActions from '../actions/authActions';
 
 class Transaction extends Component {
   state = {
-    hasAcceptedTransaction: false
+    hasAcceptedTransaction: false,
+    modal: false
   };
 
   componentDidMount = () => {
@@ -16,7 +18,6 @@ class Transaction extends Component {
     const token = _.get(window.sessionStorage, 'token', false);
 
     if (token) {
-      dispatch(authActions.authenticate(token));
       const id = _.get(match, 'params.id', false);
       if (token && !transactionFeed && id) {
         dispatch(transactionActions.fetchById(id, token));
@@ -26,9 +27,9 @@ class Transaction extends Component {
 
   componentDidUpdate = (prevProps, prevState) => {
     const {user, dispatch, transaction} = this.props;
-        const token = _.get(window.sessionStorage, 'token', false);
-    if (prevProps.transaction !== transaction && transaction && transaction.status !== 'locked' && token) {
-      dispatch(transactionActions.lock(transaction.id, token))
+    const token = _.get(window.sessionStorage, 'token', false);
+    if (prevState.hasAcceptedTransaction !== this.state.hasAcceptedTransaction) {
+      this.closeModal()
     }
   };
 
@@ -42,23 +43,97 @@ class Transaction extends Component {
   };
 
   acceptTransaction = () => {
+    const {dispatch, transaction, user} = this.props;
+    dispatch(transactionActions.accept(transaction.id, user.token, user.id));
+    this.setState({
+      hasAcceptedTransaction: true
+    })
+  };
+
+  openModal = () => {
+    const {dispatch, transaction, user} = this.props;
+    const {hasAcceptedTransaction} = this.state;
+    
+    this.setState({
+      modal: true
+    });
+    
+    if (user) {
+      dispatch(errorActions.modal({
+        type: 'MODAL',
+        // data: {
+          active: true,
+          closeFunc: this.closeModal,
+          actionFunc: this.acceptTransaction,
+          bodyContent: (
+            <div className="modal-body">
+              <p>Are you sure you want to lend this money?</p>
+              <a href="#">Make sure to read our guidelines and terms of service</a>
+            </div>
+          ),
+          headerContent: (
+            <h5 className="modal-title" id="exampleModalLabel">Send ${transaction.amount}?</h5>
+          ),
+          closeComponent: (
+            <button onClick={this.closeModal} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+          ),
+          actionComponent: (
+            <button onClick={this.acceptTransaction} type="button" className="btn btn-primary">Send money!</button>
+          )
+        // }
+      }));
+      dispatch(transactionActions.lock(transaction.id, user.token));
+    }
+  };
+
+  closeModal = () => {
+    const {dispatch, transaction, user} = this.props;
+    const {hasAcceptedTransaction} = this.state;
+    
+    // this.setState({
+    //   modal: false
+    // });
+    dispatch(errorActions.modal({
+      type: 'MODAL',
+      active: false
+    }))
+    if (!hasAcceptedTransaction && user) {
+      dispatch(transactionActions.free(transaction.id, user.token));
+    }
+  };
+
+  renderModal = () => {
+    const {modal} = this.state;
     const {dispatch, transaction} = this.props;
 
+    return (
+      <div style={{display: 'block'}}className="modal show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Send ${transaction.amount}?</h5>
+              <button onClick={this.closeModal} type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>Are you sure you want to lend this money?</p>
+              <a href="#">Make sure to read our guidelines and terms of service</a>
+            </div>
+            <div className="modal-footer">
+              <button onClick={this.closeModal} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button onClick={() => {this.acceptTransaction()}} type="button" className="btn btn-primary">Send money!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
-  // accepted_by_user_id: null
-  // amount: 10000
-  // created_at: "2017-11-08T02:34:12.439Z"
-  // created_by_user_id: 1
-  // id: 4
-  // interest: 1000
-  // memo: "memo 5"
-  // promise_to_pay_date: "2017-12-31T08:00:00.000Z"
-  // seen_by_recipient: false
-  // seen_by_sender: false
-  // status: "accepted"
-
+  
   render() {
-    const {transaction} = this.props;
+    const {transaction, user} = this.props;
+    const {modal} = this.state;
+
     return transaction ? 
       <div className="content-wrapper">
         <p className="lead">Transaction details</p>
@@ -68,14 +143,13 @@ class Transaction extends Component {
           <div className="col">
             <p>User: {transaction.created_by_user_id} wants to borrow {transaction.amount} and pay back {transaction.interest} by {transaction.promise_to_pay_date}</p>
             <p>{transaction.memo}</p>
-            
           </div>
         </div>
         <hr />
         <div className="row">
           <div className="col">
             <Link className="btn btn-primary" to={`/profile/${transaction.created_by_user_id}`}>View User</Link>
-            <a className="btn btn-primary" onClick={this.acceptTransaction}>Accept Transaction</a>
+            {user && transaction && user.id !== transaction.created_by_user_id ? <button className="btn btn-primary" onClick={this.openModal}>Loan Money</button> : null}
           </div>
         </div>
       </div> : null
