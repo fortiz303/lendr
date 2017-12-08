@@ -188,9 +188,22 @@ router.get('/fetchAllBorrowedForUser/:userId', (req, res, next) => {
 })
 
 router.get('/:transactionId', (req, res, next) => {
-  knex.select().from('transactions').where({id: req.params.transactionId}).then((row) => {
-    res.json(row[0])
-  });
+  knex
+    .from('transactions')
+    .join('reviews', 'transactions.id', 'reviews.transaction_id')
+    .select()
+    .where('transactions.id', '=', req.params.transactionId)
+    .then((row) => {
+      console.log(row)
+      res.json(row[0])
+    })
+    .catch((error) => {
+      console.log(error)
+      res.status(500).json({
+        success: false,
+        error: error
+      })
+    });
 });
 
 router.get('/', (req, res, next) => {
