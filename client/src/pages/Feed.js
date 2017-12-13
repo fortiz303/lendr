@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import authActions from '../actions/authActions';
 import transactionActions from '../actions/transactionActions';
+import TransactionItem from '../components/TransactionItem';
 
 class Feed extends Component {
   state = {
@@ -30,26 +31,19 @@ class Feed extends Component {
   };
 
   renderTransactionFeed = () => {
-    const {transactionFeed} = this.props;
+    const {transactionFeed, user} = this.props;
 
     return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
       const isLocked = current.status === 'locked';
+
+      // was the card made by me?
+      const createdByCurrentUser = _.get(current, 'created_by_user_id', true) === _.get(user, 'id', false); 
       return (
-        <div className={`card feed-card ${isLocked ? 'locked' : null}`} key={`${current.id}-feed-card-${index}-${current.created_at}`}>
-          <div className="card-body">
-            <h4 className="card-title text-primary">${current.amount} <small>for</small> ${current.interest}</h4>
-            <p className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleDateString()}</p>
-            <p className="card-text">{current.memo}</p>
-          </div>
-            {
-              !isLocked ? 
-                <div className="card-footer bg-transparent">
-                  <span className="card-link">
-                    <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
-                  </span>
-                </div>: null
-             }
-        </div>
+        <TransactionItem
+          data={current}
+          isLocked={isLocked}
+          createdByCurrentUser={createdByCurrentUser}
+        />
       )
     }) : null
   };

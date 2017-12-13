@@ -92,7 +92,7 @@ class Wrapper extends Component {
                 <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/">feed</NavLink>
                 <NavLink activeClassName="btn-primary" className="nav-item nav-link" to="/profile">profile</NavLink>
                 {/*<NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">about</NavLink>*/}
-                <NavLink className="nav-item nav-link" to="/login">logout</NavLink>
+                <NavLink className="nav-item nav-link" to="/login">logout {user.id}</NavLink>
                 <hr />
                 <p className="text-center mb-0"><small class="text-muted">2017 rosco</small></p>
               </div> 

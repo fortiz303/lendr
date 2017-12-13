@@ -6611,13 +6611,17 @@ html,
 .border-transparent {
   border-color: transparent; }
 
-.feed-card {
+.card.feed-card {
   background-color: #FFFFFF;
   border: 1px solid #007bff;
-  border-bottom-width: 1px; }
-  .feed-card.settled {
-    border-color: #47D09D; }
-  .feed-card .card-header {
+  border-bottom-width: 1px;
+  margin-bottom: 20px; }
+  .card.feed-card.locked {
+    opacity: 0.3;
+    border-color: #dc3545; }
+  .card.feed-card.settled {
+    border-color: #28a745; }
+  .card.feed-card .card-header {
     background-color: #007bff;
     color: #7A7A7A; }
 

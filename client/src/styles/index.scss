@@ -64,16 +64,23 @@ html,
 .border-transparent {
   border-color: transparent
 }
-.feed-card {
-  background-color: $fill-white;
-  border: 1px solid $fill-highlight;
-  border-bottom-width: 1px;
-  &.settled {
-    border-color: $success-color;
-  }
-  .card-header {
-    background-color: $fill-highlight;
-    color: $text-medium-grey;
+.card {
+  &.feed-card {
+    background-color: $fill-white;
+    border: 1px solid $fill-highlight;
+    border-bottom-width: 1px;
+    margin-bottom: 20px;
+    &.locked {
+      opacity: 0.3;
+      border-color: $danger;
+    }
+    &.settled {
+      border-color: $success;
+    }
+    .card-header {
+      background-color: $fill-highlight;
+      color: $text-medium-grey;
+    }
   }
 }
 .login-toggle {

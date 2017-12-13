@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import transactionActions from '../../actions/transactionActions';
 import errorActions from '../../actions/errorActions';
+import TransactionItem from '../../components/TransactionItem';
 
 class History extends Component {
   componentDidMount = () => {
@@ -57,34 +58,16 @@ class History extends Component {
   };
   
   renderHistory = (historyObject, borrowLendString) => {
-    const {isUser} = this.props;
-
+    const {isUser, user} = this.props;
     return historyObject && historyObject.length ? historyObject.map((current, index) => {
       return (
-        <div className={`card feed-card ${current.status === 'settled' ? 'settled' : null}`} key={`${index}-${current.id}-card`}>
-          <div key={`${index}-table-row`} className="card-body">
-            <h4 className="card-title text-primary">${current.amount} <small>{borrowLendString} for</small> ${current.interest}</h4>
-            <p className="card-subtitle mb-2 text-muted">Repaid by: {new Date(current.promise_to_pay_date).toLocaleDateString()}</p>
-            {current.status === 'settled' ? <p className="card-subtitle mb-2 text-muted">Settled on: {new Date(current.settled_on).toLocaleDateString()}</p> : null}
-            <p className="card-text">{current.status}</p>
-          </div>
-          {
-          isUser ? 
-            <div className="card-footer bg-transparent">
-              <span className="card-link">
-                <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>
-              </span>
-            </div> : null
-          }
-          {
-            !isUser && current.status === 'pending' && borrowLendString === 'borrowed' ?
-              <div className="card-footer bg-transparent">
-                <span onClick={() => {this.openRepaymentModal(current.id), (current.amount + current.interest)}} className="card-link">
-                repay <span className="oi oi-arrow-right text-primary"></span>
-                </span>
-              </div> : null
-          }
-        </div>
+        <TransactionItem
+          data={current}
+          isLocked={current.status === 'isLocked'}
+          createdByCurrentUser={current.created_by_user_id === user.id}
+          borrowLendString={borrowLendString}
+          openRepaymentModal={this.openRepaymentModal}
+        />
       )
     }) : 
     <div className="card feed-card">
@@ -101,11 +84,14 @@ class History extends Component {
     return (
       <div className="row">
         <div className="col">
-          <div className="card-columns">
+          <h5>money you have borrowed</h5>
+          <div className="card-deckzzzz">
             {this.renderHistory(borrowHistory, 'borrowed')}
           </div>
-          <hr />
-          <div className="card-columns">
+        </div>
+        <div className="col">
+          <h5>money you have loaned</h5>
+          <div className="card-deckzzzz">
             {this.renderHistory(lendHistory, 'loaned')}
           </div>
         </div>

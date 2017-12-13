@@ -154,6 +154,7 @@ router.get('/fetchAllLoanedByUser/:userId', (req, res, next) => {
     .select()
     .table('transactions')
     .where('accepted_by_user_id', '=', req.params.userId)
+    .orderBy('created_at', 'desc')
     .then((row) => {
       res.json({
         success: true,
@@ -173,6 +174,7 @@ router.get('/fetchAllBorrowedForUser/:userId', (req, res, next) => {
     .select()
     .table('transactions')
     .where('created_by_user_id', '=', req.params.userId)
+    .orderBy('created_at', 'desc')
     .then((row) => {
       res.json({
         success: true,
@@ -188,16 +190,21 @@ router.get('/fetchAllBorrowedForUser/:userId', (req, res, next) => {
 })
 
 router.get('/:transactionId', (req, res, next) => {
-  knex.select().from('transactions').where({id: req.params.transactionId}).then((row) => {
-    res.json(row[0])
-  });
+  knex
+    .select()
+    .from('transactions')
+    .where({id: req.params.transactionId})
+    .then((row) => {
+      res.json(row[0])
+    });
 });
 
 router.get('/', (req, res, next) => {
   knex
-    .where('status', '!=', 'settled')
     .select()
     .from('transactions')
+    .where('status', '!=', 'settled')
+    .orderBy('created_at', 'desc')
     .then((row) => {
       res.json(row)
     });

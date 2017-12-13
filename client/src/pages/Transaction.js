@@ -9,7 +9,8 @@ import authActions from '../actions/authActions';
 class Transaction extends Component {
   state = {
     hasAcceptedTransaction: false,
-    modal: false
+    modal: false,
+    allowedToLockUnlock: true
   };
 
   componentDidMount = () => {
@@ -28,6 +29,13 @@ class Transaction extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     const {user, dispatch, transaction} = this.props;
     const token = _.get(window.sessionStorage, 'token', false);
+    if (prevProps.transaction !== this.props.transaction) {
+      if (transaction.status !== 'pending') {
+        this.setState({
+          allowedToLockUnlock: false
+        })
+      }
+    }
     if (prevState.hasAcceptedTransaction !== this.state.hasAcceptedTransaction) {
       this.closeModal()
     }
@@ -35,9 +43,11 @@ class Transaction extends Component {
 
   componentWillUnmount = () => {
     const {dispatch, transaction} = this.props;
-    const {hasAcceptedTransaction} = this.state;
+    const {hasAcceptedTransaction, allowedToLockUnlock} = this.state;
     const token = _.get(window.sessionStorage, 'token', false);
-    if (!hasAcceptedTransaction && token) {
+    
+    // this is very wrong
+    if (!hasAcceptedTransaction && token && allowedToLockUnlock) {
       dispatch(transactionActions.free(transaction.id, token));
     }
   };
@@ -149,7 +159,11 @@ class Transaction extends Component {
         <div className="row">
           <div className="col">
             <Link className="btn btn-primary" to={`/profile/${transaction.created_by_user_id}`}>View User</Link>
-            {user && transaction && user.id !== transaction.created_by_user_id ? <button className="btn btn-primary" onClick={this.openModal}>Loan Money</button> : null}
+            {
+              user &&
+              transaction &&
+              user.id !== transaction.created_by_user_id &&
+              transaction.status !== 'accepted' ? <button className="btn btn-primary" onClick={this.openModal}>Loan Money</button> : null}
           </div>
         </div>
       </div> : null
