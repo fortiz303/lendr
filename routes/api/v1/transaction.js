@@ -190,7 +190,7 @@ router.get('/fetchAllBorrowedForUser/:userId', (req, res, next) => {
 router.get('/:transactionId', (req, res, next) => {
   knex
     .from('transactions')
-    .join('reviews', 'transactions.id', 'reviews.transaction_id')
+    // .join('reviews', 'transactions.id', 'reviews.transaction_id')
     .select()
     .where('transactions.id', '=', req.params.transactionId)
     .then((row) => {
