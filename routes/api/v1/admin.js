@@ -82,7 +82,6 @@ router.get('/', (req, res, next) => {
     Promise
       .all([transactionPromise, userPromise, reviewPromise])
       .then(([transactions, users, reviews]) => {
-        console.log(transactions, users, reviews)
         res.json({
           success: true,
           transactions: transactions,

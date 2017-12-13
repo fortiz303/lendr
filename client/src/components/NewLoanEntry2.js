@@ -2,19 +2,9 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import DayPicker from 'react-day-picker';
 
-const MAX_STEPS = 5;
 const FORWARD_KEYS = [13, 39]
-const BACKWARD_KEYS = [8, 37]
+const BACKWARD_KEYS = [37]
 export default class NewLoanEntry extends Component {
-  state = {
-    currentStep: 0,
-    valid: false,
-    amount: '',
-    interest: '',
-    promise_to_pay_date: undefined,
-    memo: '',
-  };
-
   componentDidMount = () => {
     document.addEventListener('keydown', this.handleKeyDown);
   };
@@ -24,42 +14,27 @@ export default class NewLoanEntry extends Component {
 
   handleKeyDown = (e) => {
     if (_.includes(FORWARD_KEYS, e.keyCode)) {
-      this.paginate('fwd');
+      this.props.paginate('fwd');
     } else if (_.includes(BACKWARD_KEYS, e.keyCode)) {
-      this.paginate('back');
+      this.props.paginate('back');
     }
   };
 
   handleDayClick = (day) => {
-    this.setState({
-      promise_to_pay_date: day
-    });
-  };
-  handleInput = (e, field) => {
-    this.setState({
-      [field]: e.target.value
-    })
+    this.props.handleInput({target: {value: day}}, 'promise_to_pay_date');
   };
 
-  handleSubmit = () => {
-    this.props.handleSubmit({
-      amount: this.state.amount,
-      interest: this.state.interest,
-      promise_to_pay_date: this.state.promise_to_pay_date,
-      memo: this.state.memo
-    });
-  }
   renderSteps = () => {
-    const {currentStep} = this.state;
+    const {currentStep} = this.props;
 
     const step1 =
       <div className="step">
         <h4 className="card-title">How much do you need to borrow?</h4>
         <input
           className="new-loan-input"
-          onChange={(e) => {this.handleInput(e, 'amount')}}
+          onChange={(e) => {this.props.handleInput(e, 'amount')}}
           type="number"
-          value={this.state.amount}
+          value={this.props.amount}
         />
       </div>
 
@@ -68,9 +43,9 @@ export default class NewLoanEntry extends Component {
         <h4 className="card-title">How much interest are you going to pay?</h4>
         <input
           className="new-loan-input"
-          onChange={(e) => {this.handleInput(e, 'interest')}}
+          onChange={(e) => {this.props.handleInput(e, 'interest')}}
           type="number"
-          value={this.state.interest}
+          value={this.props.interest}
         />
       </div>
 
@@ -78,7 +53,7 @@ export default class NewLoanEntry extends Component {
       <div className="step">
         <h4 className="card-title">When do you promise to pay it back??</h4>
         <DayPicker
-          selectedDays={this.state.promise_to_pay_date}
+          selectedDays={this.props.promise_to_pay_date}
           onDayClick={this.handleDayClick}
         />
       </div>
@@ -88,9 +63,9 @@ export default class NewLoanEntry extends Component {
         <h4 className="card-title">What's it for??</h4>
         <input
           className="new-loan-input"
-          onChange={(e) => {this.handleInput(e, 'memo')}}
+          onChange={(e) => {this.props.handleInput(e, 'memo')}}
           type="text"
-          value={this.state.memo}
+          value={this.props.memo}
         />
       </div>
 
@@ -100,7 +75,7 @@ export default class NewLoanEntry extends Component {
         <a
           className="btn btn-block btn-primary"
           type="submit"
-          onClick={() => {this.handleSubmit()}}
+          onClick={() => {this.props.handleSubmit()}}
         >
           Submit
         </a>
@@ -110,7 +85,7 @@ export default class NewLoanEntry extends Component {
 
     return (
       <div className="new-loan-input-wrapper">
-        <div className="new-loan-pagination" onClick={() => {this.paginate('back')}}>
+        <div className="new-loan-pagination" onClick={() => {this.props.paginate('back')}}>
           <span className="oi oi-arrow-left"></span>
         </div>
 
@@ -118,39 +93,15 @@ export default class NewLoanEntry extends Component {
           {stepArray[currentStep]}
         </div>
 
-        <div className="new-loan-pagination" onClick={() => {this.paginate('fwd')}}>
+        <div className="new-loan-pagination" onClick={() => {this.props.paginate('fwd')}}>
           <span className="oi oi-arrow-right"></span>
         </div>
       </div>
     )
   };
 
-  paginate = (direction) => {
-    const {currentStep} = this.state;
-
-    if (direction === 'fwd') {
-      if (currentStep === MAX_STEPS - 1) {
-        return false
-      } else {
-        this.setState({currentStep: currentStep + 1})
-      }
-    } else if (direction === 'back') {
-      if (currentStep === 0) {
-        return false
-      } else {
-        this.setState({currentStep: currentStep - 1})
-      }
-    }
-  };
-
-  setStep = (step) => {
-    this.setState({
-      currentStep: step
-    });
-  };
-
   render() {
-    const {currentStep} = this.state;
+    const {currentStep} = this.props;
 
     return (
       <div className="new-loan-entry-wrapper">
@@ -158,31 +109,31 @@ export default class NewLoanEntry extends Component {
           <div className="col-lg-2 step-wrapper">
             <span
               className={`step-indicator ${currentStep === 0 ? 'active': null}`}
-              onClick={() => {this.setStep(0)}}
+              onClick={() => {this.props.setStep(0)}}
             >
               Amount
             </span>
             <span
               className={`step-indicator ${currentStep === 1 ? 'active': null}`}
-              onClick={() => {this.setStep(1)}}
+              onClick={() => {this.props.setStep(1)}}
             >
               Interest
             </span>
             <span
               className={`step-indicator ${currentStep === 2 ? 'active': null}`}
-              onClick={() => {this.setStep(2)}}
+              onClick={() => {this.props.setStep(2)}}
             >
               Payback
             </span>
             <span
               className={`step-indicator ${currentStep === 3 ? 'active': null}`}
-              onClick={() => {this.setStep(3)}}
+              onClick={() => {this.props.setStep(3)}}
             >
               Memo
             </span>
             <span
               className={`step-indicator ${currentStep === 4 ? 'active': null}`}
-              onClick={() => {this.setStep(4)}}
+              onClick={() => {this.props.setStep(4)}}
             >
               Confirm
             </span>
