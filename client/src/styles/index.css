@@ -6741,7 +6741,6 @@ html,
 
 .DayPicker-Month {
   display: table;
-  border-collapse: collapse;
   border-spacing: 0;
   user-select: none;
   margin: 0 1rem;
@@ -6810,11 +6809,13 @@ html,
 
 .DayPicker-Day {
   display: table-cell;
-  padding: 0.5rem;
+  padding: 2rem;
   text-align: center;
   cursor: pointer;
   vertical-align: middle;
-  outline: none; }
+  outline: none;
+  margin: 4px;
+  border: 1px solid transparent; }
 
 .DayPicker-WeekNumber {
   display: table-cell;
@@ -6839,7 +6840,7 @@ html,
   background-color: transparent;
   box-shadow: none;
   cursor: pointer;
-  color: #4a90e2;
+  color: #007bff;
   font-size: 0.875em; }
 
 /* Default modifiers */
@@ -6867,15 +6868,13 @@ html,
   position: relative;
   color: #f0f8ff;
   color: #f0f8ff;
-  background-color: #4a90e2;
-  border-radius: 100%; }
+  background-color: #007bff; }
 
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover {
   background-color: #51a0fa; }
 
 .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
-  background-color: #f0f8ff;
-  border-radius: 50%; }
+  border: 1px solid #007bff; }
 
 /* DayPickerInput */
 .DayPickerInput {
