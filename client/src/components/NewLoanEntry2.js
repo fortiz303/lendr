@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import DayPicker from 'react-day-picker';
 
@@ -8,16 +7,15 @@ export default class NewLoanEntry extends Component {
   state = {
     currentStep: 0,
     valid: false,
-    step1Value: '',
-    step2Value: '',
-    step3Value: '',
-    step4Value: '',
-    selectedDay: undefined
+    amount: '',
+    interest: '',
+    promise_to_pay_date: undefined,
+    memo: '',
   };
 
   handleDayClick = (day) => {
     this.setState({
-      selectedDay: day
+      promise_to_pay_date: day
     });
   };
 
@@ -27,23 +25,30 @@ export default class NewLoanEntry extends Component {
     const step1 =
       <div className="step">
         <h4 className="card-title">How much do you need to borrow?</h4>
-        <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
-        <input className="new-loan-input" onChange={(e) => {this.handleInput(e, 'step1')}} className="form-control form-control-lg" type="text" value={this.state.step1Value} />
+        <input
+          className="new-loan-input"
+          onChange={(e) => {this.handleInput(e, 'amount')}}
+          type="number"
+          value={this.state.step1Value}
+        />
       </div>
 
     const step2 =
       <div className="step">
         <h4 className="card-title">How much interest are you going to pay?</h4>
-        <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
-        <input className="new-loan-input" onChange={(e) => {this.handleInput(e, 'step2')}} className="form-control form-control-lg" type="text" value={this.state.step1Value} />
+        <input
+          className="new-loan-input"
+          onChange={(e) => {this.handleInput(e, 'interest')}}
+          type="number"
+          value={this.state.step1Value}
+        />
       </div>
 
     const step3 =
       <div className="step">
         <h4 className="card-title">When do you promise to pay it back??</h4>
-        <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
         <DayPicker
-          selectedDays={this.state.selectedDay}
+          selectedDays={this.state.promise_to_pay_date}
           onDayClick={this.handleDayClick}
         />
       </div>
@@ -51,15 +56,24 @@ export default class NewLoanEntry extends Component {
     const step4 =
       <div className="step">
         <h4 className="card-title">What's it for??</h4>
-        <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
-        <input className="new-loan-input" onChange={(e) => {this.handleInput(e, 'step4')}} className="form-control form-control-lg" type="text" value={this.state.step1Value} />
+        <input
+          className="new-loan-input"
+          onChange={(e) => {this.handleInput(e, 'memo')}}
+          type="text"
+          value={this.state.step1Value}
+        />
       </div>
 
     const step5 =
       <div className="step">
         <h4 className="card-title">Ready?</h4>
-        <p className="lead">describe this step lorem blah lblah ksjkfjfdkdf</p>
-        <button type="submit">Post!</button>
+        <button
+          className="btn btn-block btn-primary"
+          type="submit"
+          onClick={this.props.handleSubmit}
+        >
+          Submit
+        </button>
       </div>
 
     const stepArray = [step1, step2, step3, step4, step5];
