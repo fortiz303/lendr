@@ -1,8 +1,10 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import DayPicker from 'react-day-picker';
 
 const MAX_STEPS = 5;
-
+const FORWARD_KEYS = [13, 39]
+const BACKWARD_KEYS = [8, 37]
 export default class NewLoanEntry extends Component {
   state = {
     currentStep: 0,
@@ -13,12 +15,40 @@ export default class NewLoanEntry extends Component {
     memo: '',
   };
 
+  componentDidMount = () => {
+    document.addEventListener('keydown', this.handleKeyDown);
+  };
+  componentWillUnmount = () => {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  };
+
+  handleKeyDown = (e) => {
+    if (_.includes(FORWARD_KEYS, e.keyCode)) {
+      this.paginate('fwd');
+    } else if (_.includes(BACKWARD_KEYS, e.keyCode)) {
+      this.paginate('back');
+    }
+  };
+
   handleDayClick = (day) => {
     this.setState({
       promise_to_pay_date: day
     });
   };
+  handleInput = (e, field) => {
+    this.setState({
+      [field]: e.target.value
+    })
+  };
 
+  handleSubmit = () => {
+    this.props.handleSubmit({
+      amount: this.state.amount,
+      interest: this.state.interest,
+      promise_to_pay_date: this.state.promise_to_pay_date,
+      memo: this.state.memo
+    });
+  }
   renderSteps = () => {
     const {currentStep} = this.state;
 
@@ -29,7 +59,7 @@ export default class NewLoanEntry extends Component {
           className="new-loan-input"
           onChange={(e) => {this.handleInput(e, 'amount')}}
           type="number"
-          value={this.state.step1Value}
+          value={this.state.amount}
         />
       </div>
 
@@ -40,7 +70,7 @@ export default class NewLoanEntry extends Component {
           className="new-loan-input"
           onChange={(e) => {this.handleInput(e, 'interest')}}
           type="number"
-          value={this.state.step1Value}
+          value={this.state.interest}
         />
       </div>
 
@@ -60,20 +90,20 @@ export default class NewLoanEntry extends Component {
           className="new-loan-input"
           onChange={(e) => {this.handleInput(e, 'memo')}}
           type="text"
-          value={this.state.step1Value}
+          value={this.state.memo}
         />
       </div>
 
     const step5 =
       <div className="step">
         <h4 className="card-title">Ready?</h4>
-        <button
+        <a
           className="btn btn-block btn-primary"
           type="submit"
-          onClick={this.props.handleSubmit}
+          onClick={() => {this.handleSubmit()}}
         >
           Submit
-        </button>
+        </a>
       </div>
 
     const stepArray = [step1, step2, step3, step4, step5];

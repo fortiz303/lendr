@@ -9,67 +9,36 @@ class New extends Component {
   state = {
     from: '',
     to: '',
-    amount: '',
+    amount: '1000',
     interest: '',
     promise_to_pay_date: '',
     memo: ''
   };
+
   updateField = (field, e) => {
     this.setState({
       [field]: e.target.value
     })
   };
-  handleSubmit = () => {
-    const {dispatch} = this.props;
 
+  handleSubmit = (data) => {
+    const {dispatch} = this.props;
+    console.log(data)
     const transactionData = {
-      amount: this.state.amount,
-      interest: this.state.interest,
-      promise_to_pay_date: this.state.promise_to_pay_date,
-      memo: this.state.memo
+      amount: data.amount,
+      interest: data.interest,
+      promise_to_pay_date: data.promise_to_pay_date,
+      memo: data.memo
     };
 
     dispatch(transactionActions.new(transactionData, this.props.user.token));
   };
-          // <div className="form-group">
-          //  <input
-          //    value={this.state.amount}
-          //    type="text"
-          //    onChange={(e) => {this.updateField('amount', e)}}
-          //    placeholder="amount"
-          //  />
-          // </div>
-          // <div className="form-group">
-          //  <input
-          //    value={this.state.interest}
-          //    type="text"
-          //    onChange={(e) => {this.updateField('interest', e)}}
-          //    placeholder="interest"
-          //  />
-          // </div>
-          // <div className="form-group">
-          //  <input
-          //    value={this.state.promise_to_pay_date}
-          //    type="text"
-          //    onChange={(e) => {this.updateField('promise_to_pay_date', e)}}
-          //    placeholder="promise_to_pay_date"
-          //  />
-          // </div>
-          // <div className="form-group">
-          //  <input
-          //    value={this.state.memo}
-          //    type="text"
-          //    onChange={(e) => {this.updateField('memo', e)}}
-          //    placeholder="memo"
-          //  />
-          // </div>
-          // <button onClick={() => {this.handleSubmit()}}>Submit</button>
-          // </div>
+
   render() {
     return (
       <div className="row">
         <div className="col">
-          <NewLoanEntry />
+          <NewLoanEntry handleSubmit={this.handleSubmit} />
         </div>
       </div>
     );
