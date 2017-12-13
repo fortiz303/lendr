@@ -40,8 +40,6 @@ const isProduction = false;
 /* eslint-enable */
 
 let store;
-let loadingCounter = 0;
-let errorcounter = 0;
 
 if (isProduction) {
   store = createStore(
@@ -140,14 +138,7 @@ const mapStateToProps = (state) => {
 const WrappedWrapper = connect(mapStateToProps)(Wrapper);
 
 class App extends Component {
-  state = {
-    error: false,
-    loading: false,
-    user: false
-  };
-
   render() {
-    const {error, loading, user} = this.state;
     return (
       <Provider store={store}>
         <Router>
@@ -155,7 +146,7 @@ class App extends Component {
             <Switch>
               <WrappedWrapper>
                 <Route exact path="/login" component={Login}/>
-                <div className={`main-content-wrapper ${loading ? 'loading' : null}`}>
+                <div className="main-content-wrapper">
                   <div className="container">
                     <Route exact component={Feed}  path="/" />
                     <Route exact component={Transaction}  path="/transaction/:id" />

@@ -2,13 +2,12 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 // Redux
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 
 import adminActions from '../actions/adminActions';
 
 class Admin extends Component {
   componentDidUpdate = (prevProps, prevState) => {
-    const {user, dispatch, admin} = this.props;
+    const {user, dispatch} = this.props;
 
     if (user !== prevProps.user && user.token) {
       dispatch(adminActions.init(user.token));

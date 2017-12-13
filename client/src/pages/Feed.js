@@ -3,14 +3,9 @@ import React, { Component } from 'react';
 // Redux
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import authActions from '../actions/authActions';
 import transactionActions from '../actions/transactionActions';
 
 class Feed extends Component {
-  state = {
-
-  };
-
   componentDidMount = () => {
     const {dispatch, transactionFeed} = this.props;
 
@@ -42,7 +37,7 @@ class Feed extends Component {
             <p className="card-text">{current.memo}</p>
           </div>
             {
-              !isLocked ? 
+              !isLocked ?
                 <div className="card-footer bg-transparent">
                   <span className="card-link">
                     <Link to={`/transaction/${current.id}`}>details <span className="oi oi-arrow-right text-primary"></span></Link>

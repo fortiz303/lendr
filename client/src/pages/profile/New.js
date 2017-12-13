@@ -1,10 +1,9 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
 import transactionActions from '../../actions/transactionActions';
 
-import NewLoanEntry from '../../components/NewLoanEntry';
+// import NewLoanEntry from '../../components/NewLoanEntry';
 
 class New extends Component {
   state = {
