@@ -119,7 +119,7 @@ class Login extends Component {
                   </label>
                 </div> : null
               }
-              <button type="submit" className="btn btn-primary btn-block">Submit</button>
+              <button type="submit" className="btn btn-primary btn-block">{_.capitalize(method)}</button>
             </form>
             <hr />
             <div className="login-toggle">
