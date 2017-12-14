@@ -74,7 +74,7 @@ class Profile extends Component {
                       className="nav-item nav-link"
                       to={`/profile/${user.id}/update`}
                     >
-                      edit profile
+                      settings
                     </NavLink>
                   </li> : null
               }

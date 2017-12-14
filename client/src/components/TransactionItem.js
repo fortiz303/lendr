@@ -18,10 +18,16 @@ export default class TransactionItem extends Component {
       isLocked ? 'locked' : null,
       data.status === 'settled' ? 'settled' : null
     ].join(' ');
+    
+    const textClasses = [
+      isLocked ? 'text-danger' : null,
+      data.status === 'settled' ? 'text-success' : null
+    ].join(' ');
+
     return (
       <div className={classes}>
         <div className="card-body">
-          <h4 className="card-title text-primary">${data.amount} <small>for</small> ${data.interest}</h4>
+          <h4 className={`card-title ${textClasses}`}>${data.amount} <small>for</small> ${data.interest}</h4>
           <p className="card-subtitle mb-2 text-muted">promise to pay by: {new Date(data.promise_to_pay_date).toLocaleDateString()}</p>
           <p className="card-text">{data.memo}</p>
         </div>

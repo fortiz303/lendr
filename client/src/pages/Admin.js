@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
 import adminActions from '../actions/adminActions';
+import transactionActions from '../actions/transactionActions';
 
 class Admin extends Component {
   componentDidUpdate = (prevProps, prevState) => {
@@ -12,6 +13,16 @@ class Admin extends Component {
     if (user !== prevProps.user && user.token) {
       dispatch(adminActions.init(user.token));
     }
+  };
+
+  lockTransaction = (id) => {
+    const {user, dispatch} = this.props;
+    dispatch(transactionActions.lock(id, user.token));
+  };
+
+  unlockTransaction = (id) => {
+    const {user, dispatch} = this.props;
+    dispatch(transactionActions.free(id, user.token));
   };
 
   renderUsers = () => {
@@ -75,6 +86,10 @@ class Admin extends Component {
           <td>{current.seen_by_sender}</td>
           <td>{current.locked_on_timestamp}</td>
           <td>{current.settled_on}</td>
+          <td>
+            <button onClick={() => {this.lockTransaction(current.id)}} className="danger">Lock</button>
+            <button onClick={() => {this.unlockTransaction(current.id)}} className="warning">Unlock</button>
+          </td>
         </tr>
       );
     });

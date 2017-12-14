@@ -83,13 +83,13 @@ class History extends Component {
     return (
       <div className="row">
         <div className="col">
-          <h5>money you have borrowed</h5>
+          <h5>money borrowed</h5>
           <div className="card-deckzzzz">
             {this.renderHistory(borrowHistory, 'borrowed')}
           </div>
         </div>
         <div className="col">
-          <h5>money you have loaned</h5>
+          <h5>money loaned</h5>
           <div className="card-deckzzzz">
             {this.renderHistory(lendHistory, 'loaned')}
           </div>
