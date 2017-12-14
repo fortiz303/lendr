@@ -10,6 +10,11 @@ const transactionActions = {
             type: 'LOAN_REPAYMENT_SUCCESS',
             data: data
           })
+          dispatch({
+            type: 'NEW_STATUS',
+            message: 'Loan repaid. Good job!',
+            className: 'alert-success'
+          })
           dispatch({type: 'LOADING', loading: false});
         })
         .catch((error) => {
@@ -72,6 +77,11 @@ const transactionActions = {
           dispatch({
             type: 'LOAN_ACCEPTANCE_SUCCESS',
             data: data
+          })
+          dispatch({
+            type: 'NEW_STATUS',
+            message: 'Loan Accepted!',
+            className: 'alert-success'
           })
           dispatch({type: 'LOADING', loading: false});
         })

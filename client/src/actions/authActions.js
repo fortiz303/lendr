@@ -48,6 +48,11 @@ const authActions = {
             type: 'LOGIN_SUCCESS',
             data: data
           })
+          dispatch({
+            type: 'NEW_STATUS',
+            message: 'Logged in successfully',
+            className: 'alert-success'
+          })
           dispatch({type: 'LOADING', loading: false});
         })
         .catch((error) => {
