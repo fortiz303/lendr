@@ -95,6 +95,11 @@ const transactionActions = {
             data: data,
           })
           dispatch({type: 'LOADING', loading: false});
+          dispatch({
+            type: 'NEW_STATUS',
+            message: 'Transaction created!',
+            className: 'alert-success'
+          })
         })
         .catch((error) => {
           dispatch({

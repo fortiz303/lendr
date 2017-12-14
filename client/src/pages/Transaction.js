@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import transactionActions from '../actions/transactionActions';
 import errorActions from '../actions/errorActions';
-import authActions from '../actions/authActions';
 
 class Transaction extends Component {
   state = {
@@ -62,35 +61,32 @@ class Transaction extends Component {
 
   openModal = () => {
     const {dispatch, transaction, user} = this.props;
-    const {hasAcceptedTransaction} = this.state;
-    
+
     this.setState({
       modal: true
     });
-    
+
     if (user) {
       dispatch(errorActions.modal({
         type: 'MODAL',
-        // data: {
-          active: true,
-          closeFunc: this.closeModal,
-          actionFunc: this.acceptTransaction,
-          bodyContent: (
-            <div className="modal-body">
-              <p>Are you sure you want to lend this money?</p>
-              <a href="#">Make sure to read our guidelines and terms of service</a>
-            </div>
-          ),
-          headerContent: (
-            <h5 className="modal-title" id="exampleModalLabel">Send ${transaction.amount}?</h5>
-          ),
-          closeComponent: (
-            <button onClick={this.closeModal} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-          ),
-          actionComponent: (
-            <button onClick={this.acceptTransaction} type="button" className="btn btn-primary">Send money!</button>
-          )
-        // }
+        active: true,
+        closeFunc: this.closeModal,
+        actionFunc: this.acceptTransaction,
+        bodyContent: (
+          <div className="modal-body">
+            <p>Are you sure you want to lend this money?</p>
+            <a href="#">Make sure to read our guidelines and terms of service</a>
+          </div>
+        ),
+        headerContent: (
+          <h5 className="modal-title" id="exampleModalLabel">Send ${transaction.amount}?</h5>
+        ),
+        closeComponent: (
+          <button onClick={this.closeModal} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+        ),
+        actionComponent: (
+          <button onClick={this.acceptTransaction} type="button" className="btn btn-primary">Send money!</button>
+        )
       }));
       dispatch(transactionActions.lock(transaction.id, user.token));
     }
@@ -99,7 +95,7 @@ class Transaction extends Component {
   closeModal = () => {
     const {dispatch, transaction, user} = this.props;
     const {hasAcceptedTransaction} = this.state;
-    
+
     // this.setState({
     //   modal: false
     // });
@@ -113,8 +109,7 @@ class Transaction extends Component {
   };
 
   renderModal = () => {
-    const {modal} = this.state;
-    const {dispatch, transaction} = this.props;
+    const {transaction} = this.props;
 
     return (
       <div style={{display: 'block'}}className="modal show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -139,12 +134,11 @@ class Transaction extends Component {
       </div>
     )
   }
-  
+
   render() {
     const {transaction, user} = this.props;
-    const {modal} = this.state;
 
-    return transaction ? 
+    return transaction ?
       <div>
         <p className="lead">Transaction details</p>
         <p>Status: {transaction.status}</p>

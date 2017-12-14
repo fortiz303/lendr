@@ -23,12 +23,15 @@ import transactionReducer from '../reducers/transactionReducer';
 import errorReducer from '../reducers/errorReducer';
 import loadingReducer from '../reducers/loadingReducer';
 import userReducer from '../reducers/userReducer';
+import adminReducer from '../reducers/adminReducer';
 
 import Login from './Login';
 import Feed from './Feed';
 import Transaction from './Transaction';
 import About from './About';
 import Profile from './profile';
+
+import Admin from './Admin';
 
 import Modal from '../components/Modal'
 
@@ -37,19 +40,31 @@ const isProduction = false;
 /* eslint-enable */
 
 let store;
-let loadingCounter = 0;
-let errorcounter = 0;
 
 if (isProduction) {
   store = createStore(
-    combineReducers({authReducer, transactionReducer, errorReducer, loadingReducer, userReducer}),
+    combineReducers({
+      authReducer,
+      transactionReducer,
+      errorReducer,
+      loadingReducer,
+      userReducer,
+      adminReducer
+    }),
     applyMiddleware(thunk)
   );
 } else {
   const logger = createLogger({collapsed: true});
 
   store = createStore(
-    combineReducers({authReducer, transactionReducer, errorReducer, loadingReducer, userReducer}),
+    combineReducers({
+      authReducer,
+      transactionReducer,
+      errorReducer,
+      loadingReducer,
+      userReducer,
+      adminReducer
+    }),
     applyMiddleware(thunk, logger)
   );
 }
@@ -81,31 +96,31 @@ class Wrapper extends Component {
         {loading ? <div className="loading-bar"></div> : null}
         {
           error ?
-            <div className="alert alert-danger" role="alert">
-              {error}
+            <div className={`alert ${error.className}`} role="alert">
+              {error.message}
             </div> : null
         }
-        <div class="row">
+        <div className="row">
           {shouldDisplayNav ?
-            <div class="col-md-4 col-lg-2">
+            <div className="col-md-4 col-lg-2">
               <div className="content-wrapper nav-wrapper">
                 <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/">feed</NavLink>
                 <NavLink activeClassName="btn-primary" className="nav-item nav-link" to="/profile">profile</NavLink>
                 {/*<NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">about</NavLink>*/}
                 <NavLink className="nav-item nav-link" to="/login">logout {user.id}</NavLink>
                 <hr />
-                <p className="text-center mb-0"><small class="text-muted">2017 rosco</small></p>
-              </div> 
+                <p className="text-center mb-0"><small className="text-muted">2017 rosco</small></p>
+              </div>
             </div> : null
           }
-          
-          <div className="col">
+
+          <div className="col-md-8 col-lg-10">
             <div className="content-wrapper">
               {this.props.children}
             </div>
           </div>
         </div>
-        
+
       </div>
     );
   }
@@ -123,14 +138,7 @@ const mapStateToProps = (state) => {
 const WrappedWrapper = connect(mapStateToProps)(Wrapper);
 
 class App extends Component {
-  state = {
-    error: false,
-    loading: false,
-    user: false
-  };
-  
   render() {
-    const {error, loading, user} = this.state;
     return (
       <Provider store={store}>
         <Router>
@@ -138,12 +146,13 @@ class App extends Component {
             <Switch>
               <WrappedWrapper>
                 <Route exact path="/login" component={Login}/>
-                <div className={`main-content-wrapper ${loading ? 'loading' : null}`}>
+                <div className="main-content-wrapper">
                   <div className="container">
                     <Route exact component={Feed}  path="/" />
                     <Route exact component={Transaction}  path="/transaction/:id" />
                     <Route component={Profile} path="/profile/:id?" />
-                    <Route exact component={About}  path="/about" />
+                    <Route exact component={About} path="/about" />
+                    <Route exact component={Admin} path="/admin" />
                   </div>
                 </div>
                 </WrappedWrapper>

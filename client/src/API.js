@@ -3,6 +3,27 @@ const headers = new Headers({
 });
 
 export const API = {
+  fetchAdminInfo(token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token
+        },
+        method: 'GET'
+      };
+
+      fetch(`/api/v1/admin`, opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   repayLoan(id, token) {
     return new Promise((resolve, reject) => {
       const opts = {
@@ -75,7 +96,7 @@ export const API = {
       };
 
       fetch(`/api/v1/transaction/fetchAllBorrowedForUser/${id}`, opts)
-        .then(res => res.json())      
+        .then(res => res.json())
         .then((data) => {
           resolve(data)
         })
@@ -96,7 +117,7 @@ export const API = {
       };
 
       fetch(`/api/v1/transaction/fetchAllLoanedByUser/${id}`, opts)
-        .then(res => res.json())      
+        .then(res => res.json())
         .then((data) => {
           resolve(data)
         })

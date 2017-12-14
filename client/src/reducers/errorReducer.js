@@ -7,10 +7,21 @@ export default function transactionReduced(state = {}, action) {
           ...action.data
         }
       }
+    case 'NEW_STATUS':
+      return {
+        ...state,
+        error: {
+          message: action.message,
+          className: action.className
+        }
+      }
     case 'NEW_ERROR':
       return {
         ...state,
-        error: JSON.stringify(action.error.message)
+        error: {
+          message: JSON.stringify(action.error.message),
+          className: 'alert-danger'
+        }
       }
     case 'CLEAR_ALL_ERRORS':
       return {

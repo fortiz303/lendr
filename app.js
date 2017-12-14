@@ -10,7 +10,7 @@ var index = require('./routes/index');
 var apiUser = require('./routes/api/v1/user');
 var apiTransaction = require('./routes/api/v1/transaction');
 var apiAuthentication = require('./routes/api/v1/authentication');
-
+var apiAdmin = require('./routes/api/v1/admin');
 var app = express();
 
 // view engine setup
@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 app.use('/api/v1/user', apiUser)
 app.use('/api/v1/auth', apiAuthentication)
 app.use('/api/v1/transaction', apiTransaction)
+app.use('/api/v1/admin', apiAdmin)
 // catch 404 and forward to error handler
 
 app.get('*', (req, res) => {

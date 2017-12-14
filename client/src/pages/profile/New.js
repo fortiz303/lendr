@@ -1,25 +1,26 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
 import transactionActions from '../../actions/transactionActions';
 
-import NewLoanEntry from '../../components/NewLoanEntry';
-
+import NewLoanEntry from '../../components/NewLoanEntry2';
+const MAX_STEPS = 5;
 class New extends Component {
   state = {
-    from: '',
-    to: '',
+    currentStep: 0,
+    valid: false,
     amount: '',
     interest: '',
-    promise_to_pay_date: '',
-    memo: ''
+    promise_to_pay_date: undefined,
+    memo: '',
   };
-  updateField = (field, e) => {
+
+  handleInput = (e, field) => {
     this.setState({
       [field]: e.target.value
     })
   };
+
   handleSubmit = () => {
     const {dispatch} = this.props;
 
@@ -32,46 +33,46 @@ class New extends Component {
 
     dispatch(transactionActions.new(transactionData, this.props.user.token));
   };
-          // <NewLoanEntry />
+  paginate = (direction) => {
+    const {currentStep} = this.state;
+
+    if (direction === 'fwd') {
+      if (currentStep === MAX_STEPS - 1) {
+        return false
+      } else {
+        this.setState({currentStep: currentStep + 1})
+      }
+    } else if (direction === 'back') {
+      if (currentStep === 0) {
+        return false
+      } else {
+        this.setState({currentStep: currentStep - 1})
+      }
+    }
+  };
+  setStep = (step) => {
+    this.setState({
+      currentStep: step
+    });
+  };
   render() {
     return (
       <div className="row">
         <div className="col">
-          <div className="form-group">
-           <input
-             value={this.state.amount}
-             type="text"
-             onChange={(e) => {this.updateField('amount', e)}}
-             placeholder="amount"
-           />
-          </div>
-          <div className="form-group">
-           <input
-             value={this.state.interest}
-             type="text"
-             onChange={(e) => {this.updateField('interest', e)}}
-             placeholder="interest"
-           />
-          </div>
-          <div className="form-group">
-           <input
-             value={this.state.promise_to_pay_date}
-             type="text"
-             onChange={(e) => {this.updateField('promise_to_pay_date', e)}}
-             placeholder="promise_to_pay_date"
-           />
-          </div>
-          <div className="form-group">
-           <input
-             value={this.state.memo}
-             type="text"
-             onChange={(e) => {this.updateField('memo', e)}}
-             placeholder="memo"
-           />
-          </div>
-          <button onClick={() => {this.handleSubmit()}}>Submit</button>
-          </div>
+          <NewLoanEntry
+            setStep={this.setStep}
+            paginate={this.paginate}
+            currentStep={this.state.currentStep}
+            valid={this.state.valid}
+            amount={this.state.amount}
+            interest={this.state.interest}
+            promise_to_pay_date={this.state.promise_to_pay_date}
+            memo={this.state.memo}
+            handleInput={this.handleInput}
+            handleSubmit={this.handleSubmit}
+          />
         </div>
+      </div>
     );
   }
 };

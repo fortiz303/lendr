@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -8,7 +7,7 @@ import TransactionItem from '../../components/TransactionItem';
 
 class History extends Component {
   componentDidMount = () => {
-    const {dispatch, profile, match, user, router} = this.props;
+    const {dispatch, profile, user} = this.props;
 
     const token = user.token;
     const id = profile.id;
@@ -17,7 +16,7 @@ class History extends Component {
       dispatch(transactionActions.fetchAllBorrowedForUser(id, token));
     }
   };
-  
+
   openRepaymentModal = (transactionId, transactionAmount) => {
     const {dispatch} = this.props;
 
@@ -45,7 +44,7 @@ class History extends Component {
       // }
     }));
   };
-  
+
   repayLoan = (transactionId) => {
     const {dispatch, user} = this.props;
 
@@ -56,7 +55,7 @@ class History extends Component {
     const {dispatch} = this.props;
     dispatch(errorActions.modal({type: 'MODAL', active: false}));
   };
-  
+
   renderHistory = (historyObject, borrowLendString) => {
     const {isUser, user} = this.props;
     return historyObject && historyObject.length ? historyObject.map((current, index) => {
@@ -69,7 +68,7 @@ class History extends Component {
           openRepaymentModal={this.openRepaymentModal}
         />
       )
-    }) : 
+    }) :
     <div className="card feed-card">
       <div className="card-body">
         <p className="lead">there's nothing here yet!</p>
@@ -80,7 +79,7 @@ class History extends Component {
   };
 
   render() {
-    const {isUser, borrowHistory, lendHistory} = this.props;
+    const {borrowHistory, lendHistory} = this.props;
     return (
       <div className="row">
         <div className="col">

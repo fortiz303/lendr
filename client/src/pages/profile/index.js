@@ -2,14 +2,8 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  NavLink,
-  Switch
-} from 'react-router-dom'
+import {Route, NavLink} from 'react-router-dom'
 
-import authActions from '../../actions/authActions';
 import userActions from '../../actions/userActions';
 
 import History from './History';
@@ -19,7 +13,7 @@ import Update from './Update';
 class Profile extends Component {
 
   componentDidMount = () => {
-    const {dispatch, profile, match, user, router, history} = this.props;
+    const {dispatch, match, user} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
     const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
@@ -30,14 +24,14 @@ class Profile extends Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    const {dispatch, profile, user, history, match} = this.props;
+    const {dispatch, user, match} = this.props;
     const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
 
     if (prevProps.user !== this.props.user && id && user.token) {
-      dispatch(userActions.fetchById(id, user.token)); 
+      dispatch(userActions.fetchById(id, user.token));
     }
   };
-  
+
   render() {
     const {match, user, profile} = this.props;
 

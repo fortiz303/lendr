@@ -3,15 +3,10 @@ import React, { Component } from 'react';
 // Redux
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import authActions from '../actions/authActions';
 import transactionActions from '../actions/transactionActions';
 import TransactionItem from '../components/TransactionItem';
 
 class Feed extends Component {
-  state = {
-
-  };
-
   componentDidMount = () => {
     const {dispatch, transactionFeed} = this.props;
 
