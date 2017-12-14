@@ -3,6 +3,7 @@
 
 /* fills */
 $success-color: #47D09D; // green
+$danger-color: #E5382E;
 $fill-highlight: $primary; // blue
 $fill-highlight-lighter: #f0f8ff;
 $fill-star: #F5A623; // gold
@@ -43,7 +44,18 @@ html,
 .router-wrapper {
   padding: 20px;
 }
-
+.alert {
+  border: none;
+  padding: 20px;
+  &.alert-danger {
+    background-color: $danger-color;
+    color: $fill-white;
+  }
+  &.alert-success {
+    background-color: $success-color;
+    color: $fill-white;
+  }
+}
 .main-nav {
   background-color: $fill-white;
   border-bottom: 1px solid $border-grey;

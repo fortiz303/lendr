@@ -6593,6 +6593,16 @@ html,
 .router-wrapper {
   padding: 20px; }
 
+.alert {
+  border: none;
+  padding: 20px; }
+  .alert.alert-danger {
+    background-color: #E5382E;
+    color: #FFFFFF; }
+  .alert.alert-success {
+    background-color: #47D09D;
+    color: #FFFFFF; }
+
 .main-nav {
   background-color: #FFFFFF;
   border-bottom: 1px solid #DADADA; }
