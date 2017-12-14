@@ -89,9 +89,10 @@ class Wrapper extends Component {
   render() {
     const {loading, error, user, modal} = this.props;
     const shouldDisplayNav = !!user;
+    const isLoginPage = window.location.pathname === '/login';
 
     return (
-      <div className="container-fluid">
+      <div className={`container-fluid ${isLoginPage ? 'h-100' : null}`}>
         {modal && modal.active ? <Modal data={modal} /> : null}
         {loading ? <div className="loading-bar"></div> : null}
         {
@@ -100,7 +101,7 @@ class Wrapper extends Component {
               {error.message}
             </div> : null
         }
-        <div className="row">
+        <div className={`row ${isLoginPage ? 'h-100' : null}`}>
           {shouldDisplayNav ?
             <div className="col-md-4 col-lg-2">
               <div className="content-wrapper nav-wrapper">
@@ -114,7 +115,7 @@ class Wrapper extends Component {
             </div> : null
           }
 
-          <div className="col-md-8 col-lg-10">
+          <div className={`${isLoginPage ? 'col justify-content-center align-self-center' : 'col-md-8 col-lg-10'}`}>
             <div className="content-wrapper">
               {this.props.children}
             </div>

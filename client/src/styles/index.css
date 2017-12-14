@@ -6640,7 +6640,7 @@ html,
   .new-loan-entry-wrapper .step-wrapper .step-indicator {
     display: inline-block;
     width: 100%;
-    padding: 10px;
+    padding: 8px 10px;
     cursor: pointer; }
     .new-loan-entry-wrapper .step-wrapper .step-indicator:hover, .new-loan-entry-wrapper .step-wrapper .step-indicator.active {
       background-color: #007bff;
