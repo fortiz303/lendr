@@ -95,7 +95,6 @@ class Profile extends Component {
         </div>
         <hr />
 
-
         <Route
           isUser={isUser}
           exact
