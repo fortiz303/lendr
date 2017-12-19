@@ -3,6 +3,44 @@ const headers = new Headers({
 });
 
 export const API = {
+  fetchReviewsForUser(id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'GET'
+      };
+      
+      fetch(`/api/v1/reviews/${id}`, opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        });
+    });
+  },
+  addNewReview(data, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          ...data,
+          token: token
+        })
+      };
+
+      fetch('/api/v1/reviews/new', opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   fetchAdminInfo(token) {
     return new Promise((resolve, reject) => {
       const opts = {

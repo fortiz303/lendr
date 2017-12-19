@@ -76,6 +76,35 @@ html,
 .border-transparent {
   border-color: transparent
 }
+.side-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 90%;
+  left: auto;
+  z-index: 99999;
+  background-color: $fill-white;
+  padding: 20px;
+  transition: width 250ms ease;
+  &.hide {
+    width: 0;
+  }
+  &.show {
+    width: 90%;
+    @media (min-width: 768px) {
+      width: 30%;
+    }
+  }
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
 .card {
   &.feed-card {
     background-color: $fill-white;
@@ -95,7 +124,20 @@ html,
     }
   }
 }
-
+.ratings-entry-wrapper {
+  .stars {
+    justify-content: center;
+    span {
+      margin: 8px;
+      cursor: pointer;
+      font-size: 40px;
+      color: $border-grey;
+      &.active {
+        color: $fill-star;
+      }
+    }
+  }
+}
 .new-loan-entry-wrapper {
   .step-wrapper {
     border-right: 1px solid $border-grey;
@@ -110,7 +152,6 @@ html,
         color: $fill-white;
       }
     }
-
   }
   .new-loan-input-wrapper {
     display: flex;
@@ -126,6 +167,9 @@ html,
     }
     .new-loan-input-content {
       flex: 1;
+      .step {
+        flex-direction: row;
+      }
     }
     .new-loan-pagination {
       max-width: 50px;
@@ -151,7 +195,6 @@ html,
     flex: 1;
     text-align: center;
     padding: 10px;
-    border-radius: 6px;
     &.active {
       border: 1px solid $fill-highlight;
       font-weight: bolder;
@@ -159,14 +202,7 @@ html,
   }
 }
 
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-}
+
 
 .loading-bar {
   height: 100%;

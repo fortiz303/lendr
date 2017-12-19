@@ -192,7 +192,7 @@ router.get('/fetchAllBorrowedForUser/:userId', (req, res, next) => {
 router.get('/:transactionId', (req, res, next) => {
   knex
     .from('transactions')
-    // .join('reviews', 'transactions.id', 'reviews.transaction_id')
+    .leftJoin('reviews', 'transactions.id', 'reviews.transaction_id')
     .select()
     .where('transactions.id', '=', req.params.transactionId)
     .then((row) => {
@@ -209,10 +209,12 @@ router.get('/:transactionId', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
+  const userId = req.decoded.id;
   knex
     .select()
     .from('transactions')
     .where('status', '!=', 'settled')
+    .andWhere('created_by_user_id', '!=', userId)
     .orderBy('created_at', 'desc')
     .then((row) => {
       res.json(row)

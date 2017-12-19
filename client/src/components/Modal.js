@@ -1,6 +1,17 @@
 import React, {Component} from 'react';
 
 export default class Modal extends Component {
+  static defaultProps = {
+    active: false,
+    data: {
+      closeFunc: () => null,
+      bodyContent: '',
+      headerContent: '',
+      closeComponent: '',
+      actionComponent: ''
+    }
+  };
+
   render() {
     const {
       closeFunc,
@@ -9,29 +20,31 @@ export default class Modal extends Component {
       closeComponent,
       actionComponent
     } = this.props.data;
+    const {active} = this.props;
+    
+    const showHideClasses = [
+      'side-modal',
+      active ? 'show' : 'hide'
+    ].join(' ');
 
     return (
       <div>
-        <div style={{display: 'block'}}className="modal show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                {headerContent}
-                <button onClick={closeFunc} type="button" className="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
+        <div className={showHideClasses} id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-header">
+            {headerContent}
+            <button onClick={closeFunc} type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
 
-              {bodyContent}
+          {bodyContent}
 
-              <div className="modal-footer">
-                {closeComponent}
-                {actionComponent}
-              </div>
-            </div>
+          <div className="modal-footer">
+            {closeComponent}
+            {actionComponent}
           </div>
         </div>
-        <div onClick={closeFunc} className="modal-backdrop"></div>
+        {active ? <div onClick={closeFunc} className="modal-backdrop"></div> : null}
       </div>
     );
   }

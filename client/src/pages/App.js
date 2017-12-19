@@ -24,6 +24,7 @@ import errorReducer from '../reducers/errorReducer';
 import loadingReducer from '../reducers/loadingReducer';
 import userReducer from '../reducers/userReducer';
 import adminReducer from '../reducers/adminReducer';
+import reviewReducer from '../reducers/reviewReducer';
 
 import Login from './Login';
 import Feed from './Feed';
@@ -49,7 +50,8 @@ if (isProduction) {
       errorReducer,
       loadingReducer,
       userReducer,
-      adminReducer
+      adminReducer,
+      reviewReducer
     }),
     applyMiddleware(thunk)
   );
@@ -63,7 +65,8 @@ if (isProduction) {
       errorReducer,
       loadingReducer,
       userReducer,
-      adminReducer
+      adminReducer,
+      reviewReducer
     }),
     applyMiddleware(thunk, logger)
   );
@@ -93,7 +96,7 @@ class Wrapper extends Component {
 
     return (
       <div className={`container-fluid ${isLoginPage ? 'h-100' : null}`}>
-        {modal && modal.active ? <Modal data={modal} /> : null}
+        <Modal active={modal && modal.active} data={modal} />
         {loading ? <div className="loading-bar"></div> : null}
         {
           error ?
