@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import transactionActions from '../actions/transactionActions';
 import errorActions from '../actions/errorActions';
+import TransactionItem from '../components/TransactionItem';
 
 class Transaction extends Component {
   state = {
@@ -44,7 +45,7 @@ class Transaction extends Component {
     const {dispatch, transaction} = this.props;
     const {hasAcceptedTransaction, allowedToLockUnlock} = this.state;
     const token = _.get(window.sessionStorage, 'token', false);
-    
+
     // this is very wrong
     if (!hasAcceptedTransaction && token && allowedToLockUnlock) {
       dispatch(transactionActions.free(transaction.id, token));
@@ -59,7 +60,7 @@ class Transaction extends Component {
     })
   };
 
-  openModal = () => {
+  openAcceptanceModal = () => {
     const {dispatch, transaction, user} = this.props;
 
     this.setState({
@@ -90,6 +91,34 @@ class Transaction extends Component {
       }));
       dispatch(transactionActions.lock(transaction.id, user.token));
     }
+  };
+
+  openRepaymentModal = (transactionId, transactionAmount) => {
+    const {dispatch} = this.props;
+
+    dispatch(errorActions.modal({
+      type: 'MODAL',
+      // data: {
+        active: true,
+        closeFunc: this.closeModal,
+        actionFunc: this.repayLoan,
+        bodyContent: (
+          <div className="modal-body">
+            <p>Are you sure you want to repay this loan?</p>
+            <p>{transactionAmount} will be withdrawn from your account</p>
+          </div>
+        ),
+        headerContent: (
+          <h5 className="modal-title" id="exampleModalLabel">Repay</h5>
+        ),
+        closeComponent: (
+          <button onClick={this.closeModal} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+        ),
+        actionComponent: (
+          <button onClick={() => {this.repayLoan(transactionId)}} type="button" className="btn btn-primary">Repay!</button>
+        )
+      // }
+    }));
   };
 
   closeModal = () => {
@@ -138,29 +167,17 @@ class Transaction extends Component {
   render() {
     const {transaction, user} = this.props;
 
-    return transaction ?
-      <div>
-        <p className="lead">Transaction details</p>
-        <p>Status: {transaction.status}</p>
-        <hr />
-        <div className="row">
-          <div className="col">
-            <p>User: {transaction.created_by_user_id} wants to borrow {transaction.amount} and pay back {transaction.interest} by {transaction.promise_to_pay_date}</p>
-            <p>{transaction.memo}</p>
-          </div>
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col">
-            <Link className="btn btn-primary" to={`/profile/${transaction.created_by_user_id}`}>View User</Link>
-            {
-              user &&
-              transaction &&
-              user.id !== transaction.created_by_user_id &&
-              transaction.status !== 'accepted' ? <button className="btn btn-primary" onClick={this.openModal}>Loan Money</button> : null}
-          </div>
-        </div>
-      </div> : null
+    return transaction && user ?
+      <TransactionItem
+        showRepaymentButton={true}
+        showDetailsButton={false}
+        showRatingsButton={transaction.accepted_by_user_id === user.id}
+        isLocked={transaction.status === 'locked'}
+        data={transaction}
+        createdByCurrentUser={transaction.created_by_user_id === user.id}
+        borrowLendString={'borrowed'}
+        openRepaymentModal={this.openRepaymentModal}
+      /> : null
   }
 }
 

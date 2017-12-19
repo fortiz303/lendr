@@ -3,6 +3,12 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 
 export default class TransactionItem extends Component {
+  static defaultProps = {
+    showRepaymentButton: true,
+    showDetailsButton: true,
+    showRatingsButton: true
+  };
+
   render() {
     const {
       isLocked,
@@ -10,7 +16,10 @@ export default class TransactionItem extends Component {
       createdByCurrentUser,
       borrowLendString,
       openRepaymentModal,
-      openRatingsModal
+      openRatingsModal,
+      showRepaymentButton,
+      showDetailsButton,
+      showRatingsButton
     } = this.props;
 
     const classes = [
@@ -19,7 +28,7 @@ export default class TransactionItem extends Component {
       isLocked ? 'locked' : null,
       data.status === 'settled' ? 'settled' : null
     ].join(' ');
-    
+
     const textClasses = [
       isLocked ? 'text-danger' : null,
       data.status === 'settled' ? 'text-success' : null,
@@ -33,22 +42,22 @@ export default class TransactionItem extends Component {
           <p className="card-subtitle mb-2 text-muted">promise to pay by: {new Date(data.promise_to_pay_date).toLocaleDateString()}</p>
           <p className="card-text">{data.memo}</p>
         </div>
-          
+
           <div className="list-group">
               <Link className={`${textClasses} list-group-item list-group-item-action`} to={`/profile/${data.created_by_user_id}`}>
                 {createdByCurrentUser ? 'my profile' : 'view user'}
               </Link>
 
           {
-            !isLocked ? 
+            !isLocked && showDetailsButton ?
                 <Link className={`${textClasses} list-group-item list-group-item-action`} to={`/transaction/${data.id}`}>loan details</Link> : null
            }
            {
-            !createdByCurrentUser && borrowLendString === 'loaned' && data.status === 'settled' ?
+            showRatingsButton && !createdByCurrentUser && borrowLendString === 'loaned' && data.status === 'settled' ?
                 <a onClick={() => {openRatingsModal(data)}} className={`${textClasses} list-group-item list-group-item-action`} href="#">rate experience </a> : null
            }
            {
-             createdByCurrentUser && data.status !== 'locked' && data.status !== 'settled' && borrowLendString === 'borrowed' ?
+             showRepaymentButton && createdByCurrentUser && data.status !== 'locked' && data.status !== 'settled' && borrowLendString === 'borrowed' ?
                  <a onClick={() => {openRepaymentModal(data.id, (data.amount + data.interest))}} className={`${textClasses} list-group-item list-group-item-action`} href="#">repay </a> : null
            }
           </div>

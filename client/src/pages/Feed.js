@@ -28,16 +28,20 @@ class Feed extends Component {
   renderTransactionFeed = () => {
     const {transactionFeed, user} = this.props;
 
-    return transactionFeed && transactionFeed.length ? transactionFeed.map((current, index) => {
+    return transactionFeed && transactionFeed.length && user ? transactionFeed.map((current, index) => {
       const isLocked = current.status === 'locked';
-
       // was the card made by me?
-      const createdByCurrentUser = _.get(current, 'created_by_user_id', true) === _.get(user, 'id', false); 
+      const createdByCurrentUser = _.get(current, 'created_by_user_id', true) === _.get(user, 'id', false);
+
       return (
         <TransactionItem
-          data={current}
+          showRepaymentButton={false}
+          showDetailsButton={true}
+          showRatingsButton={false}
           isLocked={isLocked}
-          createdByCurrentUser={createdByCurrentUser}
+          data={current}
+          createdByCurrentUser={current.created_by_user_id === user.id}
+          borrowLendString={'borrowed'}
         />
       )
     }) : null
