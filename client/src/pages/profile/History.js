@@ -8,7 +8,7 @@ import errorActions from '../../actions/errorActions';
 import TransactionItem from '../../components/TransactionItem';
 import RatingsComponent from '../../components/RatingsComponent';
 
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
+import {Pie, PieChart, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
 
 class History extends Component {
   componentDidMount = () => {
@@ -127,7 +127,7 @@ class History extends Component {
     const {borrowHistory, lendHistory, user} = this.props;
 
     let totalBorrowed = 0;
-    let totalLoaned = 0;
+    let totalLoaned = 100;
     let totalInterestPaid = 0;
     let totalInterestReceived = 0;
 
@@ -152,16 +152,26 @@ class History extends Component {
         }
       }) : null;
 
+    const pieData = [
+      {name: 'Borrowed', value: (totalBorrowed + totalInterestPaid)},
+      {name: 'Loaned', value: (totalLoaned + totalInterestReceived)}
+    ];
+
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="col">
-            <h2>${totalBorrowed}</h2>
-            <h3>(${totalInterestPaid}) interest</h3>
-            <hr />
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  fill="#007bff"
+                  label
+                  data={pieData}
+                />
 
-            <h2>${totalLoaned}</h2>
-            <h3>(${totalInterestReceived}) interest</h3>
+                <Tooltip/>
+              </PieChart>
+            </ResponsiveContainer>
           </div>
           <div className="col">
             <ResponsiveContainer width="100%" height={200}>
@@ -176,7 +186,7 @@ class History extends Component {
 
                 <Tooltip/>
 
-                <Bar type='monotone' dataKey='borrowed' stroke='#8884d8' fill='#8884d8' />
+                <Bar type='monotone' dataKey='borrowed' stroke='#007bff' fill='#007bff' />
                 <Bar type='monotone' dataKey='loaned' stroke='#82ca9d' fill='#82ca9d' />
               </BarChart>
             </ResponsiveContainer>
