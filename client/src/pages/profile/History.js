@@ -8,16 +8,7 @@ import errorActions from '../../actions/errorActions';
 import TransactionItem from '../../components/TransactionItem';
 import RatingsComponent from '../../components/RatingsComponent';
 
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
-const data = [
-      {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-      {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-];
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
 
 class History extends Component {
   componentDidMount = () => {
@@ -135,51 +126,60 @@ class History extends Component {
   render() {
     const {borrowHistory, lendHistory, user} = this.props;
 
-    // let graphXLength = _.get(borrowHistory, 'length', 0) > _.get(lendHistory, 'length', 0) ?
-    //   _.get(borrowHistory, 'length', 0) :
-    //   _.get(lendHistory, 'length', 0);
-    _.compact(_.concat(borrowHistory, lendHistory))
+    let totalBorrowed = 0;
+    let totalLoaned = 0;
+    let totalInterestPaid = 0;
+    let totalInterestReceived = 0;
 
-    let graphData = borrowHistory && lendHistory && user ?
-      return _.compact(_.concat(borrowHistory, lendHistory)).map((current, index) => {
+    let graphData = ((borrowHistory || lendHistory) && user) ?
+      _.compact(_.concat(borrowHistory, lendHistory)).map((current, index) => {
+        const borrowed = current.created_by_user_id === user.id;
+        const loaned = current.accepted_by_user_id === user.id;
+
+        if (borrowed) {
+          totalBorrowed = totalBorrowed + current.amount;
+          totalInterestPaid = totalInterestPaid + current.interest
+        } else if (loaned) {
+          totalLoaned = totalLoaned + current.amount;
+          totalInterestReceived = totalInterestReceived + current.interest
+        }
+
         return {
-          date: current.created_at,
-          borrowed: current.created_by_user_id === user.id,
-          loaned: current.accepted_by_user_id === user.id,
+          date: new Date(current.created_at).toLocaleString(),
+          borrowed: borrowed ? (current.amount + current.interest) : 0,
+          loaned: loaned ? (current.amount + current.interest) : 0,
           amt: (current.amount + current.interest)
         }
       }) : null;
 
-    console.log(graphData)
-
-    // for (let x = 0; x < graphXLength; x += 1) {
-    //   graphData.push({
-    //     date:
-    //   })
-    // }
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="col">
-            <BarChart
-              width={600}
-              height={300}
-              data={graphData}
-              margin={{top: 5, right: 30, left: 0, bottom: 5}}
-            >
-             <XAxis dataKey="date"/>
-             <YAxis/>
+            <h2>${totalBorrowed}</h2>
+            <h3>(${totalInterestPaid}) interest</h3>
+            <hr />
 
-             <CartesianGrid strokeDasharray="3 3"/>
+            <h2>${totalLoaned}</h2>
+            <h3>(${totalInterestReceived}) interest</h3>
+          </div>
+          <div className="col">
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart
+                data={graphData}
+                syncId="anyId"
+              >
+                <XAxis dataKey="date"/>
+                <YAxis/>
 
-             <Tooltip/>
+                <CartesianGrid strokeDasharray="3 3"/>
 
-             <Legend />
+                <Tooltip/>
 
-             <Bar dataKey="borrowed" fill="#8884d8" />
-             <Bar dataKey="loaned" fill="#82ca9d" />
-
-            </BarChart>
+                <Bar type='monotone' dataKey='borrowed' stroke='#8884d8' fill='#8884d8' />
+                <Bar type='monotone' dataKey='loaned' stroke='#82ca9d' fill='#82ca9d' />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
         <div className="row">
