@@ -8,7 +8,7 @@ import errorActions from '../../actions/errorActions';
 import TransactionItem from '../../components/TransactionItem';
 import RatingsComponent from '../../components/RatingsComponent';
 
-import {Pie, PieChart, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
+import {Pie, Cell, PieChart, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
 
 class History extends Component {
   componentDidMount = () => {
@@ -145,7 +145,7 @@ class History extends Component {
         }
 
         return {
-          date: new Date(current.created_at).toLocaleString(),
+          date: new Date(current.created_at).toLocaleDateString(),
           borrowed: borrowed ? (current.amount + current.interest) : 0,
           loaned: loaned ? (current.amount + current.interest) : 0,
           amt: (current.amount + current.interest)
@@ -161,46 +161,55 @@ class History extends Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col">
+            <h5 className="font-weight-light">overview</h5>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col pr-0 col-4">
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
                 <Pie
                   fill="#007bff"
                   label
                   data={pieData}
-                />
-
+                >
+                  {
+                    pieData.map((entry, index) => <Cell index={index} fill={index === 0 ? '#007bff' : '#47D09D'}/>)
+                  }
+                </Pie>
                 <Tooltip/>
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="col">
+          <div className="col pl-0 col-8">
             <ResponsiveContainer width="100%" height={200}>
               <BarChart
                 data={graphData}
                 syncId="anyId"
               >
-                <XAxis dataKey="date"/>
+                <XAxis dataKey="date" />
                 <YAxis/>
 
                 <CartesianGrid strokeDasharray="3 3"/>
 
                 <Tooltip/>
 
-                <Bar type='monotone' dataKey='borrowed' stroke='#007bff' fill='#007bff' />
-                <Bar type='monotone' dataKey='loaned' stroke='#82ca9d' fill='#82ca9d' />
+                <Bar type='monotone' stackId="a" dataKey='borrowed' stroke='#007bff' fill='#007bff' />
+                <Bar type='monotone' stackId="a" dataKey='loaned' stroke='#47D09D' fill='#47D09D' />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
+        <hr />
         <div className="row">
           <div className="col">
-            <h5>money borrowed</h5>
+            <h5 className="font-weight-light">borrowed</h5>
             <div className="card-deckzzzz">
               {this.renderHistory(borrowHistory, 'borrowed')}
             </div>
           </div>
           <div className="col">
-            <h5>money loaned</h5>
+            <h5 className="font-weight-light">loaned</h5>
             <div className="card-deckzzzz">
               {this.renderHistory(lendHistory, 'loaned')}
             </div>

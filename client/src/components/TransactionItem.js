@@ -32,14 +32,17 @@ export default class TransactionItem extends Component {
     const textClasses = [
       isLocked ? 'text-danger' : null,
       data.status === 'settled' ? 'text-success' : null,
-      data.status === 'pending' ? 'text-primary' : null
+      data.status === 'pending' || data.status === 'accepted' ? 'text-primary' : null
     ].join(' ');
 
     return (
       <div className={classes}>
         <div className="card-body">
-          <h4 className={`card-title ${textClasses}`}>${data.amount} <small>for</small> ${data.interest}</h4>
-          <p className="card-subtitle mb-2 text-muted">promise to pay by: {new Date(data.promise_to_pay_date).toLocaleDateString()}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 className={`card-title mb-0 font-weight-light ${textClasses}`}>${data.amount} <small>for</small> ${data.interest}</h4>
+            <p className="text-muted small m-0"><pre className="m-0">{data.status}</pre></p>
+          </div>
+          <p className="card-subtitle mb-2 mt-2 text-muted">promise to pay by: {new Date(data.promise_to_pay_date).toLocaleDateString()}</p>
           <p className="card-text">{data.memo}</p>
         </div>
 

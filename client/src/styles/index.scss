@@ -85,12 +85,12 @@ html,
   left: auto;
   z-index: 99999;
   background-color: $fill-white;
-  padding: 20px;
   transition: width 250ms ease;
   &.hide {
     width: 0;
   }
   &.show {
+    padding: 20px;
     width: 90%;
     @media (min-width: 768px) {
       width: 30%;

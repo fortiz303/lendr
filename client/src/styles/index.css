@@ -6630,11 +6630,11 @@ html,
   left: auto;
   z-index: 99999;
   background-color: #FFFFFF;
-  padding: 20px;
   transition: width 250ms ease; }
   .side-modal.hide {
     width: 0; }
   .side-modal.show {
+    padding: 20px;
     width: 90%; }
     @media (min-width: 768px) {
       .side-modal.show {
