@@ -11,7 +11,6 @@ class Feed extends Component {
     const {dispatch, transactionFeed} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
-
     if (token && !transactionFeed) {
       dispatch(transactionActions.fetchAll(token));
     }

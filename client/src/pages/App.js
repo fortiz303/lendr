@@ -79,15 +79,15 @@ if (isProduction) {
 class Wrapper extends Component {
   componentDidMount = () => {
     const {user, location, dispatch} = this.props;
-    if (!user) {
+    const token = _.get(window.sessionStorage, 'token', false);
+
+    if (!user || !token) {
       if (location.pathname !== '/login') {
         const token = _.get(window.sessionStorage, 'token', false);
-        if (token) {
-          if (token === 'false') {
-            window.location.pathname = '/login';
-          } else {
-            dispatch(authActions.authenticate(token));
-          }
+        if (!token || token === 'false') {
+          window.location.pathname = '/login';
+        } else {
+          dispatch(authActions.authenticate(token));
         }
       }
     }
