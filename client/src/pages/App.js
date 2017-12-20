@@ -36,6 +36,10 @@ import Admin from './Admin';
 
 import Modal from '../components/Modal'
 
+import ioClient from 'socket.io-client'
+
+let io = ioClient('/')
+
 /* eslint-disable */
 const isProduction = false;
 /* eslint-enable */
@@ -93,6 +97,15 @@ class Wrapper extends Component {
     const {loading, error, user, modal} = this.props;
     const shouldDisplayNav = !!user;
     const isLoginPage = window.location.pathname === '/login';
+
+    io.on('connection', function(socket){
+      console.log('socket connected')
+      socket.emit('test_message', {id: 1, test: 'two', random: Math.random()});
+    });
+
+    io.on('hello', function(socket) {
+      console.log('hello', socket)
+    })
 
     return (
       <div className={`container-fluid ${isLoginPage ? 'h-100' : null}`}>

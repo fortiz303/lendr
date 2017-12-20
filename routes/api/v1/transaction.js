@@ -11,6 +11,8 @@ var knex = require('knex')(knexConfig);
 var jwt  = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 
+const socketApi = require('../../../socketApi.js');
+
 router.use((req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
   if (token) {
@@ -37,14 +39,15 @@ router.post('/accept', (req, res, next) => {
       status: 'accepted',
       accepted_by_user_id: req.body.fromUser
     })
-    .then(() => {
+    .then((row) => {
       res.json({
         success: true,
         message: 'Transaction updated'
       })
+
+      socketApi.sendUpdates('TRANSACTION_UPDATED', row);
     })
     .catch((error) => {
-      console.log(error)
       res.status(500).json({
         success: false,
         message: 'Transaction failed to update'
@@ -64,11 +67,12 @@ router.post('/new', (req, res, next) => {
   knex
     .insert(transaction)
     .into('transactions')
-    .then(() => {
+    .then((row) => {
       res.json({
         success: true,
         message: 'Transaction added'
       })
+      socketApi.sendUpdates('TRANSACTION_ADDED', row);
     })
     .catch((error) => {
       res.status(500).json({
@@ -92,6 +96,7 @@ router.get('/lock/:transactionId', (req, res, next) => {
         success: true,
         data: row[0]
       })
+      socketApi.sendUpdates('TRANSACTION_LOCKED', row);
     })
     .catch((error) => {
       res.status(500).json({
@@ -210,6 +215,7 @@ router.get('/:transactionId', (req, res, next) => {
 
 router.get('/', (req, res, next) => {
   const userId = req.decoded.id;
+
   knex
     .select()
     .from('transactions')
