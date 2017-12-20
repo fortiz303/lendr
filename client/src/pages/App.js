@@ -103,7 +103,7 @@ class Wrapper extends Component {
       socket.emit('test_message', {id: 1, test: 'two', random: Math.random()});
     });
 
-    io.on('hello', function(socket) {
+    io.on('TRANSACTION_LOCKED', function(socket) {
       console.log('hello', socket)
     })
 
