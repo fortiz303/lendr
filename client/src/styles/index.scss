@@ -111,6 +111,22 @@ html,
     border: 1px solid $fill-highlight;
     border-bottom-width: 1px;
     margin-bottom: 20px;
+    .card-open-header {
+      transition: all 250ms ease;
+      cursor: pointer;
+      // &:hover {
+      //   &:after {
+      //     position: absolute;
+      //     top: 0;
+      //     left: 0;
+      //     width: 100%;
+      //     height: 100%;
+      //     content: '';
+      //     z-index: 9;
+      //     background: pink;
+      //   }
+      // }
+    }
     &.locked {
       opacity: 0.3;
       border-color: $danger;

@@ -164,7 +164,7 @@ class History extends Component {
             <h5 className="font-weight-light">overview</h5>
           </div>
         </div>
-        <div className="row">
+        <div className="row mb-5">
           <div className="col pr-0 col-4">
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -200,7 +200,7 @@ class History extends Component {
             </ResponsiveContainer>
           </div>
         </div>
-        <hr />
+
         <div className="row">
           <div className="col">
             <h5 className="font-weight-light">borrowed</h5>
