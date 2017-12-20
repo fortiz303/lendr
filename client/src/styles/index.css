@@ -6655,6 +6655,16 @@ html,
   .card.feed-card .card-open-header {
     transition: all 250ms ease;
     cursor: pointer; }
+    .card.feed-card .card-open-header .card-header-status-wrapper p:last-of-type {
+      margin-left: 10px; }
+    .card.feed-card .card-open-header .toggle-info.hide-hover {
+      display: block; }
+    .card.feed-card .card-open-header .toggle-info.show-hover {
+      display: none; }
+    .card.feed-card .card-open-header:hover .toggle-info.hide-hover {
+      display: none; }
+    .card.feed-card .card-open-header:hover .toggle-info.show-hover {
+      display: block; }
   .card.feed-card.locked {
     opacity: 0.3;
     border-color: #dc3545; }

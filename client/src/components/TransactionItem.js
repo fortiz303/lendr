@@ -49,7 +49,10 @@ export default class TransactionItem extends Component {
         <div className="card-body">
           <div onClick={() => {this.toggleOpen()}} class="d-flex justify-content-between align-items-center card-open-header">
             <h4 className={`card-title mb-0 font-weight-light ${textClasses}`}>${data.amount} <small>for</small> ${data.interest}</h4>
-            <p className="text-muted small m-0"><pre className="m-0">{data.status}</pre></p>
+            <div className="card-header-status-wrapper d-flex align-items-center">
+              <p className="text-muted small m-0 toggle-info hide-hover"><pre className="m-0">{data.status}</pre></p>
+              <p className="text-muted small m-0 toggle-info show-hover"><pre className="m-0">{open ? 'view less' : 'view more'}</pre></p>
+            </div>
           </div>
 
           {open ? <p className="card-subtitle mb-2 mt-2 text-muted">promise to pay by: {new Date(data.promise_to_pay_date).toLocaleDateString()}</p> : null}

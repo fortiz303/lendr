@@ -113,18 +113,23 @@ html,
     .card-open-header {
       transition: all 250ms ease;
       cursor: pointer;
-      // &:hover {
-      //   &:after {
-      //     position: absolute;
-      //     top: 0;
-      //     left: 0;
-      //     width: 100%;
-      //     height: 100%;
-      //     content: '';
-      //     z-index: 9;
-      //     background: pink;
-      //   }
-      // }
+      .card-header-status-wrapper {
+        p {
+          &:last-of-type {
+            margin-left: 10px;
+          }
+        }
+      }
+      .toggle-info {
+        &.hide-hover {display: block;}
+        &.show-hover {display: none;}
+      }
+      &:hover {
+        .toggle-info {
+          &.hide-hover {display: none;}
+          &.show-hover {display: block;}
+        }
+      }
     }
     &.locked {
       opacity: 0.3;
