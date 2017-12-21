@@ -93,9 +93,9 @@ class Transaction extends Component {
     }
   };
 
-  openRepaymentModal = (transactionId, transactionAmount) => {
-    const {dispatch} = this.props;
-
+  openRepaymentModal = (transactionId) => {
+    const {dispatch, transaction} = this.props;
+    const transactionAmount = (transaction.amount + transaction.interest);
     dispatch(errorActions.modal({
       type: 'MODAL',
       // data: {
@@ -120,6 +120,34 @@ class Transaction extends Component {
       // }
     }));
   };
+
+  // openAcceptanceModal = (transactionId, transactionAmount) => {
+  //   const {dispatch} = this.props;
+
+  //   dispatch(errorActions.modal({
+  //     type: 'MODAL',
+  //     // data: {
+  //       active: true,
+  //       closeFunc: this.closeModal,
+  //       actionFunc: this.acceptTransaction,
+  //       bodyContent: (
+  //         <div className="modal-body">
+  //           <p>Are you sure you want to accept this loan?</p>
+  //           <p>WARNING TEXT ABOUT DANGERS OF LOANING MONEY</p>
+  //         </div>
+  //       ),
+  //       headerContent: (
+  //         <h5 className="modal-title" id="exampleModalLabel">Repay</h5>
+  //       ),
+  //       closeComponent: (
+  //         <button onClick={this.closeModal} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+  //       ),
+  //       actionComponent: (
+  //         <button onClick={() => {this.acceptTransaction()}} type="button" className="btn btn-primary">Accept!</button>
+  //       )
+  //     // }
+  //   }));
+  // };
 
   closeModal = () => {
     const {dispatch, transaction, user} = this.props;
@@ -171,12 +199,14 @@ class Transaction extends Component {
       <TransactionItem
         showRepaymentButton={true}
         showDetailsButton={false}
+        showAcceptanceButton={transaction.created_by_user_id !== user.id && transaction.status === 'pending'}
         showRatingsButton={transaction.accepted_by_user_id === user.id}
         isLocked={transaction.status === 'locked'}
         data={transaction}
         createdByCurrentUser={transaction.created_by_user_id === user.id}
         borrowLendString={'borrowed'}
         openRepaymentModal={this.openRepaymentModal}
+        openAcceptanceModal={this.openAcceptanceModal}
       /> : null
   }
 }

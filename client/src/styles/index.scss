@@ -110,6 +110,11 @@ html,
     border: 1px solid $fill-highlight;
     border-bottom-width: 1px;
     margin-bottom: 20px;
+    transition: all 250ms ease;
+    &.show {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px 1px $border-light-grey;
+    }
     .card-open-header {
       transition: all 250ms ease;
       cursor: pointer;

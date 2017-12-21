@@ -96,7 +96,8 @@ router.get('/lock/:transactionId', (req, res, next) => {
         success: true,
         data: row[0]
       })
-      socketApi.sendUpdates('TRANSACTION_LOCKED', row);
+      console.log(row)
+      socketApi.sendUpdates('TRANSACTION_LOCKED', {transactionId: transactionId});
     })
     .catch((error) => {
       res.status(500).json({
@@ -121,6 +122,7 @@ router.get('/free/:transactionId', (req, res, next) => {
         success: true,
         data: row[0]
       })
+      socketApi.sendUpdates('TRANSACTION_FREED', {transactionId: transactionId});
     })
     .catch((error) => {
       res.status(500).json({
@@ -201,7 +203,6 @@ router.get('/:transactionId', (req, res, next) => {
     .select()
     .where('transactions.id', '=', req.params.transactionId)
     .then((row) => {
-      console.log(row)
       res.json(row[0])
     })
     .catch((error) => {

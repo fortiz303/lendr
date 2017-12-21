@@ -32,6 +32,7 @@ const transactionActions = {
       dispatch({type: 'LOADING', loading: true})
       API.lockTransaction(id, token)
         .then((data) => {
+          console.log(data)
           dispatch({
             type: 'LOCK_TRANSACTION_SUCCESS',
             data: data

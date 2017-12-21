@@ -6,7 +6,8 @@ export default class TransactionItem extends Component {
   static defaultProps = {
     showRepaymentButton: true,
     showDetailsButton: true,
-    showRatingsButton: true
+    showRatingsButton: true,
+    showAcceptanceButton: false
   };
   state = {
     open: false
@@ -27,7 +28,9 @@ export default class TransactionItem extends Component {
       openRatingsModal,
       showRepaymentButton,
       showDetailsButton,
-      showRatingsButton
+      showRatingsButton,
+      showAcceptanceButton,
+      openAcceptanceModal
     } = this.props;
 
     const classes = [
@@ -76,6 +79,10 @@ export default class TransactionItem extends Component {
              {
                showRepaymentButton && createdByCurrentUser && data.status !== 'locked' && data.status !== 'settled' && borrowLendString === 'borrowed' ?
                    <a onClick={() => {openRepaymentModal(data.id, (data.amount + data.interest))}} className={`${textClasses} list-group-item list-group-item-action`} href="#">repay </a> : null
+             }
+             {
+               showAcceptanceButton && !createdByCurrentUser && data.status !== 'locked' && data.status !== 'settled' && borrowLendString === 'borrowed' ?
+                   <a onClick={() => {openAcceptanceModal(data.id, (data.amount + data.interest))}} className={`${textClasses} list-group-item list-group-item-action`} href="#">accept </a> : null
              }
             </div> :
             null

@@ -6651,7 +6651,11 @@ html,
   background-color: #FFFFFF;
   border: 1px solid #007bff;
   border-bottom-width: 1px;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  transition: all 250ms ease; }
+  .card.feed-card.show {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px 1px #EAEAEA; }
   .card.feed-card .card-open-header {
     transition: all 250ms ease;
     cursor: pointer; }

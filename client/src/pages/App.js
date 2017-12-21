@@ -38,7 +38,7 @@ import Modal from '../components/Modal'
 
 import ioClient from 'socket.io-client'
 
-let io = ioClient('/')
+let io = ioClient()
 
 /* eslint-disable */
 const isProduction = false;
@@ -100,12 +100,8 @@ class Wrapper extends Component {
 
     io.on('connection', function(socket){
       console.log('socket connected')
-      socket.emit('test_message', {id: 1, test: 'two', random: Math.random()});
+      // socket.emit('test_message', {id: 1, test: 'two', random: Math.random()});
     });
-
-    io.on('TRANSACTION_LOCKED', function(socket) {
-      console.log('hello', socket)
-    })
 
     return (
       <div className={`container-fluid ${isLoginPage ? 'h-100' : null}`}>
