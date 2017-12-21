@@ -118,9 +118,11 @@ class Wrapper extends Component {
         {loading ? <div className="loading-bar"></div> : null}
         {
           error ?
-            <div className={`alert ${error.className}`} role="alert">
-              {error.message}
-            </div> : null
+            <div className="row">
+              <div className={`alert ${error.className}`} role="alert">
+                {error.message}
+              </div>
+            </div>: null
         }
         <div className={`row ${isLoginPage ? 'h-100' : null}`}>
           {shouldDisplayNav ?

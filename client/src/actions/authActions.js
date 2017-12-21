@@ -1,4 +1,5 @@
 import {API} from '../API';
+import {dispatchWithTimeout} from '../utils';
 
 const authActions = {
   logout: () => {
@@ -48,11 +49,15 @@ const authActions = {
             type: 'LOGIN_SUCCESS',
             data: data
           })
-          dispatch({
-            type: 'NEW_STATUS',
-            message: 'Logged in successfully',
-            className: 'alert-success'
-          })
+
+          dispatchWithTimeout(
+            dispatch,
+            5000,
+            {message: 'Logged in successfully', className: 'alert-success'},
+            'NEW_STATUS',
+            'CLEAR_ALL_ERRORS'
+          )
+
           dispatch({type: 'LOADING', loading: false});
         })
         .catch((error) => {

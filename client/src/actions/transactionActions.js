@@ -1,4 +1,5 @@
 import {API} from '../API';
+import {dispatchWithTimeout} from '../utils';
 
 const transactionActions = {
   repay: (id, token) => {
@@ -10,12 +11,15 @@ const transactionActions = {
             type: 'LOAN_REPAYMENT_SUCCESS',
             data: data
           })
-          dispatch({
-            type: 'NEW_STATUS',
-            message: 'Loan repaid. Good job!',
-            className: 'alert-success'
-          })
+          dispatchWithTimeout(
+            dispatch,
+            5000,
+            {message: 'Loan repaid. Good job!', className: 'alert-success'},
+            'NEW_STATUS',
+            'CLEAR_ALL_ERRORS'
+          )
           dispatch({type: 'LOADING', loading: false});
+          dispatch({type: 'MODAL', active: false});
         })
         .catch((error) => {
           dispatch({
@@ -32,7 +36,6 @@ const transactionActions = {
       dispatch({type: 'LOADING', loading: true})
       API.lockTransaction(id, token)
         .then((data) => {
-          console.log(data)
           dispatch({
             type: 'LOCK_TRANSACTION_SUCCESS',
             data: data
@@ -79,12 +82,15 @@ const transactionActions = {
             type: 'LOAN_ACCEPTANCE_SUCCESS',
             data: data
           })
-          dispatch({
-            type: 'NEW_STATUS',
-            message: 'Loan Accepted!',
-            className: 'alert-success'
-          })
+          dispatchWithTimeout(
+            dispatch,
+            5000,
+            {message: 'Loan Accepted!', className: 'alert-success'},
+            'NEW_STATUS',
+            'CLEAR_ALL_ERRORS'
+          )
           dispatch({type: 'LOADING', loading: false});
+          dispatch({type: 'MODAL', active: false});
         })
         .catch((error) => {
           dispatch({
@@ -106,11 +112,14 @@ const transactionActions = {
             data: data,
           })
           dispatch({type: 'LOADING', loading: false});
-          dispatch({
-            type: 'NEW_STATUS',
-            message: 'Transaction created!',
-            className: 'alert-success'
-          })
+
+          dispatchWithTimeout(
+            dispatch,
+            5000,
+            {message: 'Transaction created!', className: 'alert-success'},
+            'NEW_STATUS',
+            'CLEAR_ALL_ERRORS'
+          )
         })
         .catch((error) => {
           dispatch({

@@ -6,7 +6,6 @@ const adminActions = {
       dispatch({type: 'LOADING', loading: true});
       API.fetchAdminInfo(token)
         .then((data) => {
-          console.log(data)
           dispatch({type: 'LOADING', loading: false});
           dispatch({
             type: 'FETCH_ADMIN_INFO_SUCCESS',
