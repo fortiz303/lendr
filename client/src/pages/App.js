@@ -91,6 +91,14 @@ class Wrapper extends Component {
         }
       }
     }
+
+    io.on('TRANSACTION_LOCKED', function(socket) {
+      console.log('trans locked', socket)
+    })
+
+    io.on('TRANSACTION_FREED', function(socket) {
+      console.log('trans freed', socket)
+    })
   };
 
   render() {

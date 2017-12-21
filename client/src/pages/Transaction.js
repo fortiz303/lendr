@@ -207,6 +207,7 @@ class Transaction extends Component {
         borrowLendString={'borrowed'}
         openRepaymentModal={this.openRepaymentModal}
         openAcceptanceModal={this.openAcceptanceModal}
+        alwaysRenderOpen={true}
       /> : null
   }
 }

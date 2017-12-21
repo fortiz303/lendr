@@ -7,7 +7,8 @@ export default class TransactionItem extends Component {
     showRepaymentButton: true,
     showDetailsButton: true,
     showRatingsButton: true,
-    showAcceptanceButton: false
+    showAcceptanceButton: false,
+    alwaysRenderOpen: false,
   };
   state = {
     open: false
@@ -18,7 +19,6 @@ export default class TransactionItem extends Component {
     })
   }
   render() {
-    const {open} = this.state;
     const {
       isLocked,
       data,
@@ -30,9 +30,12 @@ export default class TransactionItem extends Component {
       showDetailsButton,
       showRatingsButton,
       showAcceptanceButton,
-      openAcceptanceModal
+      openAcceptanceModal,
+      alwaysRenderOpen
     } = this.props;
 
+    const open = alwaysRenderOpen ? true : this.state.open;
+    
     const classes = [
       'card',
       'feed-card',
@@ -46,6 +49,7 @@ export default class TransactionItem extends Component {
       data.status === 'settled' ? 'text-success' : null,
       data.status === 'pending' || data.status === 'accepted' ? 'text-primary' : null
     ].join(' ');
+
 
     return (
       <div className={classes}>
