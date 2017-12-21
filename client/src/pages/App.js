@@ -35,6 +35,7 @@ import Profile from './profile';
 import Admin from './Admin';
 
 import Modal from '../components/Modal'
+import NotificationManager from '../components/NotificationManager';
 
 import ioClient from 'socket.io-client'
 
@@ -129,6 +130,7 @@ class Wrapper extends Component {
                 <NavLink activeClassName="btn-primary" className="nav-item nav-link" to="/profile">profile</NavLink>
                 {/*<NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">about</NavLink>*/}
                 <NavLink className="nav-item nav-link" to="/login">logout {user.id}</NavLink>
+                <NotificationManager user={user} />
                 <hr />
                 <p className="text-center mb-0"><small className="text-muted">2017 rosco</small></p>
               </div>

@@ -6639,6 +6639,34 @@ html,
       .side-modal.show {
         width: 30%; } }
 
+.notification-link {
+  cursor: pointer;
+  position: relative;
+  transition: all 250ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; }
+  .notification-link span.indicator {
+    border: 1px solid #007bff;
+    padding: 4px;
+    background-color: #FFFFFF; }
+    .notification-link span.indicator pre {
+      color: #007bff;
+      margin: 0;
+      font-size: 12px; }
+  .notification-link:hover {
+    background-color: #007bff; }
+    .notification-link:hover span {
+      color: #FFFFFF; }
+      .notification-link:hover span.indicator pre {
+        color: #007bff; }
+  .notification-link .notification-popout {
+    position: absolute;
+    left: calc(100% - 15px);
+    z-index: 9;
+    top: 0;
+    min-width: 400px; }
+
 .modal-backdrop {
   position: fixed;
   top: 0;

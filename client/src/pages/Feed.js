@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import transactionActions from '../actions/transactionActions';
 import TransactionItem from '../components/TransactionItem';
+import NoData from '../components/NoData';
 
 class Feed extends Component {
   componentDidMount = () => {
@@ -43,7 +44,7 @@ class Feed extends Component {
           borrowLendString={'borrowed'}
         />
       )
-    }) : null
+    }) : <NoData />
   };
   render() {
     return (
