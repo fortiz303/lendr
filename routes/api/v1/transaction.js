@@ -45,7 +45,7 @@ router.post('/accept', (req, res, next) => {
         message: 'Transaction updated'
       })
 
-      socketApi.sendUpdates('TRANSACTION_UPDATED', row);
+      socketApi.sendUpdates('TRANSACTION_ACCEPTED', {transactionId: req.body.transactionId});
     })
     .catch((error) => {
       res.status(500).json({
@@ -68,11 +68,17 @@ router.post('/new', (req, res, next) => {
     .insert(transaction)
     .into('transactions')
     .then((row) => {
-      res.json({
-        success: true,
-        message: 'Transaction added'
-      })
-      socketApi.sendUpdates('TRANSACTION_ADDED', row);
+      knex
+        .select()
+        .from('transactions')
+        .where('status', '!=', 'settled')
+        .andWhere('created_by_user_id', '!=', req.decoded.id)
+        .orderBy('created_at', 'desc')
+        .then((row) => {
+          res.json(row)
+        });
+      // sending this up without an actual trans id 
+      // is probably going to cause us some problems...
     })
     .catch((error) => {
       res.status(500).json({
@@ -96,7 +102,7 @@ router.get('/lock/:transactionId', (req, res, next) => {
         success: true,
         data: row[0]
       })
-      console.log(row)
+
       socketApi.sendUpdates('TRANSACTION_LOCKED', {transactionId: transactionId});
     })
     .catch((error) => {

@@ -1,5 +1,13 @@
-export default function transactionReduced(state = {}, action) {
+const initialState = {
+  transactionFeed: []
+};
+export default function transactionReduced(state = initialState, action) {
   switch (action.type) {
+    case 'SOCKET_NEW_TRANSACTION_SUCCESS':
+      return {
+        ...state,
+        transactionFeed: state.transactionFeed.unshift(action.data)
+      }
     case 'FETCH_TRANSACTIONS_FOR_USER_SUCCESS':
       return {
         ...state,

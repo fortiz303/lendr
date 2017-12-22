@@ -39,7 +39,7 @@ import NotificationManager from '../components/NotificationManager';
 
 import ioClient from 'socket.io-client'
 
-let io = ioClient()
+let io = ioClient();
 
 /* eslint-disable */
 const isProduction = false;
@@ -93,13 +93,20 @@ class Wrapper extends Component {
       }
     }
 
-    io.on('TRANSACTION_LOCKED', function(socket) {
-      console.log('trans locked', socket)
-    })
+    io.on('FETCH_ALL_TRANSACTIONS', (data) => {
+      dispatch({
+        type: 'FETCH_ALL_TRANSACTIONS',
+        data: data
+      });
+    });
 
-    io.on('TRANSACTION_FREED', function(socket) {
-      console.log('trans freed', socket)
-    })
+    // io.on('TRANSACTION_LOCKED', function(socket) {
+    //   console.log('trans locked', socket)
+    // })
+
+    // io.on('TRANSACTION_FREED', function(socket) {
+    //   console.log('trans freed', socket)
+    // })
   };
 
   render() {
@@ -124,17 +131,28 @@ class Wrapper extends Component {
               </div>
             </div>: null
         }
+        {shouldDisplayNav ?
+          <div className="row">
+            <div className="col">
+              <div className="content-wrapper nav">
+                <div className="col-lg-2 d-flex align-items-center">
+                  <pre className="rosco mb-0 text-muted">rosco</pre>
+                </div>
+                <div className="col d-flex justify-content-end">
+                  <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">help</NavLink>
+                  <NavLink className="nav-item nav-link" to="/login">logout {user.id}</NavLink>
+                </div>
+              </div>
+            </div>
+          </div> : null
+        }
         <div className={`row ${isLoginPage ? 'h-100' : null}`}>
           {shouldDisplayNav ?
             <div className="col-md-4 col-lg-2">
               <div className="content-wrapper nav-wrapper">
                 <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/">feed</NavLink>
                 <NavLink activeClassName="btn-primary" className="nav-item nav-link" to="/profile">profile</NavLink>
-                {/*<NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">about</NavLink>*/}
-                <NavLink className="nav-item nav-link" to="/login">logout {user.id}</NavLink>
                 <NotificationManager user={user} />
-                <hr />
-                <p className="text-center mb-0"><small className="text-muted">2017 rosco</small></p>
               </div>
             </div> : null
           }
@@ -145,6 +163,21 @@ class Wrapper extends Component {
             </div>
           </div>
         </div>
+
+        {shouldDisplayNav ?
+          <div className="row">
+            <div className="col">
+              <div className="content-wrapper nav">
+                <div className="col-lg-2 d-flex align-items-center">
+                  <pre className="rosco mb-0 text-muted">rosco</pre>
+                </div>
+                <div className="col d-flex justify-content-end">
+                  <p>Footer footer footer</p>
+                </div>
+              </div>
+            </div>
+          </div> : null
+        }
 
       </div>
     );

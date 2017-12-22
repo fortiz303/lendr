@@ -91,6 +91,10 @@ html,
   background-color: $fill-white;
   border: 1px solid $border-grey;
   border-bottom-width: 2px;
+  margin-bottom: 30px;
+  &.nav {
+    padding: 10px;
+  }
 }
 .nav-wrapper {
   padding: 20px 0;
@@ -171,12 +175,23 @@ html,
   &.feed-card {
     background-color: $fill-white;
     border: 1px solid $fill-highlight;
-    border-bottom-width: 1px;
-    margin-bottom: 20px;
+    // border-bottom-width: 0;
     transition: all 250ms ease;
+    &:hover {
+      &.hide {
+        background-color: $border-grey;
+      }
+    }
+    &:last-of-type {
+      border-bottom-width: 1px;
+    }
+    &.hide {
+      transform: scale(0.95);
+    }
     &.show {
-      transform: translateY(-1px);
-      box-shadow: 0 3px 10px 1px $border-light-grey;
+      transform: translateY(-10px) scale(1);
+      box-shadow: 0 3px 10px 1px #bdc3cc;
+      border-bottom-width: 1px;
     }
     .card-open-header {
       transition: all 250ms ease;
@@ -226,6 +241,7 @@ html,
     }
   }
 }
+.settings-wrapper,
 .new-loan-entry-wrapper {
   .step-wrapper {
     border-right: 1px solid $border-grey;

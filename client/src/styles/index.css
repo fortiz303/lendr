@@ -6643,7 +6643,11 @@ html,
   padding: 40px 20px;
   background-color: #FFFFFF;
   border: 1px solid #DADADA;
-  border-bottom-width: 2px; }
+  border-bottom-width: 2px;
+  margin-bottom: 30px; }
+  .nav-wrapper.nav,
+  .content-wrapper.nav {
+    padding: 10px; }
 
 .nav-wrapper {
   padding: 20px 0; }
@@ -6709,12 +6713,17 @@ html,
 .card.feed-card {
   background-color: #FFFFFF;
   border: 1px solid #007bff;
-  border-bottom-width: 1px;
-  margin-bottom: 20px;
   transition: all 250ms ease; }
+  .card.feed-card:hover.hide {
+    background-color: #DADADA; }
+  .card.feed-card:last-of-type {
+    border-bottom-width: 1px; }
+  .card.feed-card.hide {
+    transform: scale(0.95); }
   .card.feed-card.show {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 10px 1px #EAEAEA; }
+    transform: translateY(-10px) scale(1);
+    box-shadow: 0 3px 10px 1px #bdc3cc;
+    border-bottom-width: 1px; }
   .card.feed-card .card-open-header {
     transition: all 250ms ease;
     cursor: pointer; }
@@ -6747,39 +6756,51 @@ html,
     .ratings-entry-wrapper .stars span.active {
       color: #F5A623; }
 
+.settings-wrapper .step-wrapper,
 .new-loan-entry-wrapper .step-wrapper {
   border-right: 1px solid #DADADA; }
+  .settings-wrapper .step-wrapper .step-indicator,
   .new-loan-entry-wrapper .step-wrapper .step-indicator {
     display: inline-block;
     width: 100%;
     padding: 8px 10px;
     cursor: pointer; }
-    .new-loan-entry-wrapper .step-wrapper .step-indicator:hover, .new-loan-entry-wrapper .step-wrapper .step-indicator.active {
+    .settings-wrapper .step-wrapper .step-indicator:hover, .settings-wrapper .step-wrapper .step-indicator.active,
+    .new-loan-entry-wrapper .step-wrapper .step-indicator:hover,
+    .new-loan-entry-wrapper .step-wrapper .step-indicator.active {
       background-color: #007bff;
       color: #FFFFFF; }
 
+.settings-wrapper .new-loan-input-wrapper,
 .new-loan-entry-wrapper .new-loan-input-wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
   height: 100%; }
+  .settings-wrapper .new-loan-input-wrapper .new-loan-input-content,
+  .settings-wrapper .new-loan-input-wrapper .new-loan-pagination,
   .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-input-content,
   .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-pagination {
     align-items: center;
     height: 100%;
     display: flex;
     justify-content: center; }
+  .settings-wrapper .new-loan-input-wrapper .new-loan-input-content,
   .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-input-content {
     flex: 1; }
+    .settings-wrapper .new-loan-input-wrapper .new-loan-input-content .step,
     .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-input-content .step {
       flex-direction: row; }
+  .settings-wrapper .new-loan-input-wrapper .new-loan-pagination,
   .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-pagination {
     max-width: 50px;
     font-size: 40px; }
+    .settings-wrapper .new-loan-input-wrapper .new-loan-pagination:hover,
     .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-pagination:hover {
       cursor: pointer;
       background-color: #007bff;
       color: #FFFFFF; }
+  .settings-wrapper .new-loan-input-wrapper .new-loan-input,
   .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-input {
     border: none;
     border-bottom: 1px solid #DADADA;

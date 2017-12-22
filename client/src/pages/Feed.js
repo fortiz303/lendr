@@ -12,7 +12,7 @@ class Feed extends Component {
     const {dispatch, transactionFeed} = this.props;
 
     const token = _.get(window.sessionStorage, 'token', false);
-    if (token && !transactionFeed) {
+    if (token && !transactionFeed.length) {
       dispatch(transactionActions.fetchAll(token));
     }
   };
@@ -35,9 +35,9 @@ class Feed extends Component {
 
       return (
         <TransactionItem
-          showRepaymentButton={false}
+          showRepaymentButton={true}
           showDetailsButton={true}
-          showRatingsButton={false}
+          showRatingsButton={true}
           isLocked={isLocked}
           data={current}
           createdByCurrentUser={current.created_by_user_id === user.id}
@@ -47,12 +47,11 @@ class Feed extends Component {
     }) : <NoData />
   };
   render() {
+    console.log(this.props.transactionFeed)
     return (
       <div className="row">
         <div className="col">
-          <div className="card-columns">
-            {this.renderTransactionFeed()}
-          </div>
+          {this.renderTransactionFeed()}
         </div>
       </div>
     )
