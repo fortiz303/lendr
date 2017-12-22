@@ -35,7 +35,7 @@ export default class TransactionItem extends Component {
     } = this.props;
 
     const open = alwaysRenderOpen ? true : this.state.open;
-    
+
     const classes = [
       'card',
       'feed-card',
@@ -64,6 +64,7 @@ export default class TransactionItem extends Component {
 
           {open ? <p className="card-subtitle mb-2 mt-2 text-muted">promise to pay by: {new Date(data.promise_to_pay_date).toLocaleDateString()}</p> : null}
           {open ? <p className="card-text">{data.memo}</p> : null}
+
         </div>
         {
           open ?

@@ -42,12 +42,13 @@ html,
   font-weight: lighter;
 }
 .router-wrapper {
-  // padding: 20px;
+  padding: 20px;
 }
 .alert {
   border: none;
   padding: 20px;
   width: 100%;
+  transform: translateY(-20px);
   animation: alertAnimation 1000ms linear 1 both;
   &.alert-danger {
     background-color: $danger-color;
