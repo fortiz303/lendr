@@ -10,6 +10,6 @@ beta_settings:
 env_variables:
   SQL_USER: postgres
   SQL_PASSWORD: password
-  SQL_DATABASE: rosco-dev-1
+  SQL_DATABASE: rosco-dev-2
   # e.g. my-awesome-project:us-central1:my-cloud-sql-instance
   INSTANCE_CONNECTION_NAME: lender-184617:us-central1:rosco-dev-1
