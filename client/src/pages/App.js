@@ -152,7 +152,7 @@ class Wrapper extends Component {
               <div className="content-wrapper nav-wrapper">
                 <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/">feed</NavLink>
                 <NavLink activeClassName="btn-primary" className="nav-item nav-link" to="/profile">profile</NavLink>
-                <NotificationManager user={user} />
+                {false ? <NotificationManager user={user} /> : null}
               </div>
             </div> : null
           }
@@ -164,7 +164,7 @@ class Wrapper extends Component {
           </div>
         </div>
 
-        {shouldDisplayNav ?
+        {false ?
           <div className="row">
             <div className="col">
               <div className="content-wrapper nav">

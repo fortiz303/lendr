@@ -6774,15 +6774,14 @@ html,
 .settings-wrapper .new-loan-input-wrapper,
 .new-loan-entry-wrapper .new-loan-input-wrapper {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   height: 100%; }
   .settings-wrapper .new-loan-input-wrapper .new-loan-input-content,
   .settings-wrapper .new-loan-input-wrapper .new-loan-pagination,
   .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-input-content,
   .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-pagination {
     align-items: center;
-    height: 100%;
     display: flex;
     justify-content: center; }
   .settings-wrapper .new-loan-input-wrapper .new-loan-input-content,
@@ -6790,13 +6789,13 @@ html,
     flex: 1; }
     .settings-wrapper .new-loan-input-wrapper .new-loan-input-content .step,
     .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-input-content .step {
+      flex: 1;
       flex-direction: row; }
   .settings-wrapper .new-loan-input-wrapper .new-loan-pagination,
   .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-pagination {
-    max-width: 50px;
-    font-size: 40px; }
-    .settings-wrapper .new-loan-input-wrapper .new-loan-pagination:hover,
-    .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-pagination:hover {
+    justify-content: space-between; }
+    .settings-wrapper .new-loan-input-wrapper .new-loan-pagination span,
+    .new-loan-entry-wrapper .new-loan-input-wrapper .new-loan-pagination span {
       cursor: pointer;
       background-color: #007bff;
       color: #FFFFFF; }
@@ -6949,7 +6948,7 @@ html,
 
 .DayPicker-Day {
   display: table-cell;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
   cursor: pointer;
   vertical-align: middle;

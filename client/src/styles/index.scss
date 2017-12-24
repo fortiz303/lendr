@@ -259,26 +259,25 @@ html,
   }
   .new-loan-input-wrapper {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     height: 100%;
     .new-loan-input-content,
     .new-loan-pagination {
       align-items: center;
-      height: 100%;
       display: flex;
       justify-content: center;
     }
     .new-loan-input-content {
       flex: 1;
       .step {
+        flex: 1;
         flex-direction: row;
       }
     }
-    .new-loan-pagination {
-      max-width: 50px;
-      font-size: 40px;
-      &:hover {
+    .new-loan-pagination {  
+      justify-content: space-between;
+      span {
         cursor: pointer;
         background-color: $fill-highlight;
         color: $fill-white;
@@ -447,7 +446,7 @@ html,
 
 .DayPicker-Day {
   display: table-cell;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
   cursor: pointer;
   vertical-align: middle;
