@@ -214,6 +214,12 @@ html,
         }
       }
     }
+    &.accepted {
+      border-color: $warning;
+    }
+    &.pending {
+      border-color: $fill-highlight;
+    } 
     &.locked {
       opacity: 0.3;
       border-color: $danger;

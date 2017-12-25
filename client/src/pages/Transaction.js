@@ -4,7 +4,10 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import transactionActions from '../actions/transactionActions';
 import errorActions from '../actions/errorActions';
+import reviewActions from '../actions/reviewActions';
 import TransactionItem from '../components/TransactionItem';
+import {acceptTransaction} from '../utils.js';
+import RatingsComponent from '../components/RatingsComponent';
 
 class Transaction extends Component {
   state = {
@@ -58,6 +61,12 @@ class Transaction extends Component {
     this.setState({
       hasAcceptedTransaction: true
     })
+  };
+
+  repayLoan = (transactionId) => {
+    const {dispatch, user} = this.props;
+
+    dispatch(transactionActions.repay(transactionId, user.token));
   };
 
   openAcceptanceModal = () => {
@@ -164,7 +173,56 @@ class Transaction extends Component {
       dispatch(transactionActions.free(transaction.id, user.token));
     }
   };
+  openRepaymentModal = (transactionId, transactionAmount) => {
+    const {dispatch} = this.props;
 
+    dispatch(errorActions.modal({
+      type: 'MODAL',
+      active: true,
+      closeFunc: this.closeModal,
+      actionFunc: this.repayLoan,
+      bodyContent: (
+        <div className="modal-body">
+          <p>Are you sure you want to repay this loan?</p>
+          <p>{transactionAmount} will be withdrawn from your account</p>
+        </div>
+      ),
+      headerContent: (
+        <h5 className="modal-title" id="exampleModalLabel">Repay</h5>
+      ),
+      closeComponent: (
+        <button onClick={this.closeModal} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+      ),
+      actionComponent: (
+        <button onClick={() => {this.repayLoan(transactionId)}} type="button" className="btn btn-primary">Repay!</button>
+      )
+    }));
+  };
+
+  rateUser = (data) => {
+    const {dispatch, user} = this.props;
+
+    dispatch(reviewActions.postReview(data, user.token));
+  };
+
+  openRatingsModal = (data) => {
+    const {dispatch, user} = this.props;
+
+    dispatch(errorActions.modal({
+      type: 'MODAL',
+      active: true,
+      closeFunc: this.closeModal,
+      actionFunc: this.rateUser,
+      headerContent: (
+        <h5 className="modal-title" id="exampleModalLabel">Rate your experience</h5>
+      ),
+      bodyContent: (
+        <div className="modal-body">
+          <RatingsComponent onSubmit={this.rateUser} transactionData={data} userData={user} />
+        </div>
+      ),
+    }))
+  }
   renderModal = () => {
     const {transaction} = this.props;
 
@@ -197,6 +255,7 @@ class Transaction extends Component {
 
     return transaction && user ?
       <TransactionItem
+        longForm={true}
         showRepaymentButton={true}
         showDetailsButton={false}
         showAcceptanceButton={transaction.created_by_user_id !== user.id && transaction.status === 'pending'}
@@ -207,6 +266,7 @@ class Transaction extends Component {
         borrowLendString={'borrowed'}
         openRepaymentModal={this.openRepaymentModal}
         openAcceptanceModal={this.openAcceptanceModal}
+        openRatingsModal={this.openRatingsModal}
         alwaysRenderOpen={true}
       /> : null
   }
