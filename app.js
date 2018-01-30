@@ -12,6 +12,8 @@ var apiTransaction = require('./routes/api/v1/transaction');
 var apiAuthentication = require('./routes/api/v1/authentication');
 var apiAdmin = require('./routes/api/v1/admin');
 var apiReviews = require('./routes/api/v1/reviews');
+var apiDwolla = require('./routes/api/v1/dwolla');
+
 var app = express();
 
 // view engine setup
@@ -32,6 +34,7 @@ app.use('/api/v1/auth', apiAuthentication)
 app.use('/api/v1/transaction', apiTransaction)
 app.use('/api/v1/admin', apiAdmin)
 app.use('/api/v1/reviews', apiReviews)
+app.use('/api/v1/dwolla', apiDwolla)
 
 // catch 404 and forward to error handler
 
