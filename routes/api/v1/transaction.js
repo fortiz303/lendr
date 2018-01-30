@@ -166,6 +166,7 @@ router.get('/fetchAllLoanedByUser/:userId', (req, res, next) => {
   knex
     .select()
     .table('transactions')
+    .leftJoin('reviews', 'transactions.id', 'reviews.transaction_id')
     .where('accepted_by_user_id', '=', req.params.userId)
     .orderBy('created_at', 'desc')
     .then((row) => {
@@ -186,6 +187,7 @@ router.get('/fetchAllBorrowedForUser/:userId', (req, res, next) => {
   knex
     .select()
     .table('transactions')
+    .leftJoin('reviews', 'transactions.id', 'reviews.transaction_id')
     .where('created_by_user_id', '=', req.params.userId)
     .orderBy('created_at', 'desc')
     .then((row) => {
@@ -212,7 +214,6 @@ router.get('/:transactionId', (req, res, next) => {
       res.json(row[0])
     })
     .catch((error) => {
-      console.log(error)
       res.status(500).json({
         success: false,
         error: error

@@ -26,7 +26,7 @@ class Profile extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     const {dispatch, user, match} = this.props;
     const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
-
+    console.log(user)
     if (prevProps.user !== this.props.user && id && user.token) {
       dispatch(userActions.fetchById(id, user.token));
     }
@@ -37,7 +37,7 @@ class Profile extends Component {
 
     // am I looking at myself? if so, enable settings stuff
     const isUser = user && profile && user.id === profile.id;
-
+    console.log(user, profile)
     const foundUser = !!profile;
     const notFound = <p className="lead text-center">loading</p>;
     return foundUser && user && user.id ?

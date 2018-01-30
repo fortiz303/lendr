@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import ReviewDisplay from './ReviewDisplay';
 
 export default class TransactionItem extends Component {
   static defaultProps = {
@@ -50,7 +51,6 @@ export default class TransactionItem extends Component {
       data.status === 'pending' || data.status === 'accepted' ? 'text-primary' : null
     ].join(' ');
 
-
     return (
       <div className={classes}>
         <div className="card-body">
@@ -62,13 +62,14 @@ export default class TransactionItem extends Component {
             </div>
           </div>
 
-          {open ? <p className="card-subtitle mb-2 mt-2 text-muted">promise to pay by: {new Date(data.promise_to_pay_date).toLocaleDateString()}</p> : null}
+          {open ? <p className="card-subtitle mb-2 mt-2 text-muted">payback: {new Date(data.promise_to_pay_date).toLocaleDateString()}</p> : null}
           {open ? <p className="card-text">{data.memo}</p> : null}
 
         </div>
         {
           open ?
             <div className="list-group">
+                {!!data.review_id ? <ReviewDisplay data={data} /> : null}
                 <Link className={`${textClasses} list-group-item list-group-item-action`} to={`/profile/${data.created_by_user_id}`}>
                   {createdByCurrentUser ? 'my profile' : 'view user'}
                 </Link>

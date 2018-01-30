@@ -177,6 +177,7 @@ html,
     border: 1px solid $fill-highlight;
     // border-bottom-width: 0;
     transition: all 250ms ease;
+    margin-bottom: 20px;
     &:hover {
       &.hide {
         background-color: $border-grey;
@@ -186,12 +187,13 @@ html,
       border-bottom-width: 1px;
     }
     &.hide {
-      transform: scale(0.95);
+      // transform: scale(0.95);
     }
     &.show {
       transform: translateY(-10px) scale(1);
       box-shadow: 0 3px 10px 1px #bdc3cc;
       border-bottom-width: 1px;
+      margin-bottom: 0;
     }
     .card-open-header {
       transition: all 250ms ease;
@@ -231,6 +233,20 @@ html,
       background-color: $fill-highlight;
       color: $text-medium-grey;
     }
+  }
+}
+.review-display-wrapper {
+  padding: 10px;
+  // padding-left: 50px;
+  background-color: $fill-lighter-grey;
+  border-top: 1px solid $border-grey;
+  .review-display-memo {}
+  .review-display-stars {
+    color: $fill-star;
+  }
+  .review-display-pic {
+    max-width: 60px;
+    border-radius: 100%;
   }
 }
 .ratings-entry-wrapper {

@@ -40,6 +40,7 @@ class Feed extends Component {
           showRatingsButton={true}
           isLocked={isLocked}
           data={current}
+          alwaysRenderOpen={true}
           createdByCurrentUser={current.created_by_user_id === user.id}
           borrowLendString={'borrowed'}
         />

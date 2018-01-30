@@ -34,8 +34,7 @@ router.post('/authenticate', (req, res) => {
             success: true,
             message: 'Valid token. User authenticated.',
             token: token,
-            email: row[0].email,
-            id: row[0].id
+            ...row[0]
           })
         })
         .catch((error) => {
@@ -84,8 +83,7 @@ router.post('/login', (req, res) => {
                 success: true,
                 message: 'Token Issued.',
                 token: token,
-                email: row[0].email,
-                id: row[0].id
+                ...row[0]
               });
             }
           })

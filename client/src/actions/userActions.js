@@ -5,6 +5,7 @@ const userActions = {
     return (dispatch) => {
       API.fetchUserById(id, token)
         .then((data) => {
+          console.log(data)
           dispatch({
             type: 'FETCH_PROFILE_SUCCESS',
             data: data

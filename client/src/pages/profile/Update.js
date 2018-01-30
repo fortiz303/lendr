@@ -5,14 +5,27 @@ class Update extends Component {
   state = {
     currentStep: 0
   };
+  
+  setStep = (step) => {
+    this.setState({currentStep: step});
+  };
+
   renderCurrentScreen = () => {
     const {currentStep} = this.state;
-
-    return (
+    
+    const profileStep = 
       <div className="step">
-        <p className="lead">hello</p>
+        <form>
+          <div className="form-group">
+            <label for="exampleFormControlInput1">Email address</label>
+            <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+          </div>
+        </form>
       </div>
-    );
+    
+    const stepArray = [profileStep];
+
+    return stepArray[currentStep];
   }
   render() {
     const {currentStep} = this.state;
@@ -21,13 +34,13 @@ class Update extends Component {
         <div className="col-lg-2 step-wrapper">
           <span
             className={`step-indicator ${currentStep === 0 ? 'active': null}`}
-            onClick={() => {this.props.setStep(0)}}
+            onClick={() => {this.state.setStep(0)}}
           >
             Profile
           </span>
           <span
             className={`step-indicator ${currentStep === 1 ? 'active': null}`}
-          onClick={() => {this.props.setStep(1)}}
+          onClick={() => {this.state.setStep(1)}}
           >
             Bank Account
           </span>

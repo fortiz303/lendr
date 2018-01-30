@@ -7,6 +7,7 @@ import reviewActions from '../../actions/reviewActions';
 import errorActions from '../../actions/errorActions';
 import TransactionItem from '../../components/TransactionItem';
 import RatingsComponent from '../../components/RatingsComponent';
+import ReviewDisplay from '../../components/ReviewDisplay';
 
 import {Pie, Cell, PieChart, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
 
@@ -102,6 +103,7 @@ class History extends Component {
           borrowLendString={borrowLendString}
           openRepaymentModal={this.openRepaymentModal}
           openRatingsModal={this.openRatingsModal}
+          showRatingsButton={!!!current.review_id}
         />
       )
     }) :
@@ -123,6 +125,35 @@ class History extends Component {
   //       {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
   //       {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
   // ];
+  calculateOverallRating = () => {
+    const {borrowHistory} = this.props;
+    
+    if (!borrowHistory) {
+      return 0
+    }
+
+    const totalRating = borrowHistory.map((current) => {
+      return current.review_rating
+    });
+
+    const compact = _.compact(totalRating);
+
+    return _.round(compact.reduce((acc, curr) => acc + curr) / compact.length, 1)
+  };
+
+  renderReviewHistory = () => {
+    const {borrowHistory} = this.props;
+    if (!borrowHistory) {
+      return null
+    };
+
+    return borrowHistory.map((current, index) => {
+      if (!current.review_rating || !current.review_rating) {
+        return null
+      }
+      return <ReviewDisplay data={current} />
+    });
+  };
   render() {
     const {borrowHistory, lendHistory, user} = this.props;
 
@@ -165,6 +196,12 @@ class History extends Component {
           </div>
         </div>
         <div className="row mb-5">
+          <div className="col col-2 d-flex justify-content-center align-items-center flex-column text-primary">
+            <h1 className="display-1 mb-0">
+              {this.calculateOverallRating()}
+            </h1>
+            <p className="lead text-muted">overall rating</p>
+          </div>
           <div className="col pr-0 col-4">
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -181,7 +218,7 @@ class History extends Component {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="col pl-0 col-8">
+          <div className="col pl-0 col-6">
             <ResponsiveContainer width="100%" height={200}>
               <BarChart
                 data={graphData}
@@ -203,16 +240,22 @@ class History extends Component {
 
         <div className="row">
           <div className="col">
-            <h5 className="font-weight-light">borrowed</h5>
+            <h5 className="font-weight-light text-muted">borrowed</h5>
             <div className="card-deckzzzz">
               {this.renderHistory(borrowHistory, 'borrowed')}
             </div>
           </div>
           <div className="col">
-            <h5 className="font-weight-light">loaned</h5>
+            <h5 className="font-weight-light text-muted">loaned</h5>
             <div className="card-deckzzzz">
               {this.renderHistory(lendHistory, 'loaned')}
             </div>
+          </div>
+          <div className="col">
+            <h5 className="font-weight-light text-muted">reviews</h5>
+              <div className="border border-secondary">
+                {this.renderReviewHistory()}
+              </div>
           </div>
         </div>
       </div>
