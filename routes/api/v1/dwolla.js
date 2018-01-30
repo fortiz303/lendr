@@ -50,6 +50,12 @@ var accountToken = new dwollaClient.Token({access_token: TOKEN});
 // 1) User signs up for Rosco
 // 2) In the profile, surface a: 'Add Payment Source' button
 // 3) Once clicked, user is presented with a form with the info below
+
+// Clicking 'add bank account' creates a dwolla user
+// IAV flow is presented
+// after successful IAV, a funding source is created for the user
+// user is now cleared to make and accept loans
+
 console.log(accountToken)
 function createClient(firstName, lastName, email, type, address1, city, state, postalCode, dateOfBirth, ssn) {
   if (!firstName || !lastName || !email || !type || !address1 || !city || !state || !postalCode || !dateOfBirth || !ssn) {
