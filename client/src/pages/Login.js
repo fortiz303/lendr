@@ -78,15 +78,47 @@ class Login extends Component {
     const {email, password, method} = this.state;
 
     return (
-      <div className="container h-100 justify-content-center align-items-center">
-        <div className="row h-100 justify-content-center align-items-center">
-          <div class="col-lg-8">
+      <div className="container align-items-center">
+        <div className="row align-items-center">
+          <div className="col-lg-8">
+            <div className="row align-items-center">
+              <div className="jumbotron mb-0 bg-transparent">
+                <h1 className="display-3">Hello, money!</h1>
+                <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-4">
+            <img src="https://www.placehold.it/300x300" />
+          </div>
+        </div>
+
+        <hr />
+
+        <div className="row align-items-center">
+          <div className="col-lg-4">
+            <img src="https://www.placehold.it/300x300" />
+          </div>
+          <div className="col-lg-8">
+            <div className="row align-items-center">
+              <div className="jumbotron mb-0 bg-transparent">
+                <h1 className="display-3">Hello, money!</h1>
+                <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div className="row align-items-center">
+          <div className="col-lg-8">
             <div className="jumbotron mb-0 bg-transparent">
-              <h1 className="display-3">Hello, money!</h1>
+              <h1 className="display-3">What is this?</h1>
               <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div className="col-lg-4">
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">Email address</label>

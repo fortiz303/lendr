@@ -221,7 +221,7 @@ html,
     }
     &.pending {
       border-color: $fill-highlight;
-    } 
+    }
     &.locked {
       opacity: 0.3;
       border-color: $danger;
@@ -297,7 +297,7 @@ html,
         flex-direction: row;
       }
     }
-    .new-loan-pagination {  
+    .new-loan-pagination {
       justify-content: space-between;
       span {
         cursor: pointer;

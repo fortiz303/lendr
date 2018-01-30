@@ -77,7 +77,7 @@ router.post('/new', (req, res, next) => {
         .then((row) => {
           res.json(row)
         });
-      // sending this up without an actual trans id 
+      // sending this up without an actual trans id
       // is probably going to cause us some problems...
     })
     .catch((error) => {

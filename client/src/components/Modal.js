@@ -21,7 +21,7 @@ export default class Modal extends Component {
       actionComponent
     } = this.props.data;
     const {active} = this.props;
-    
+
     const showHideClasses = [
       'side-modal',
       active ? 'show' : 'hide'
@@ -29,7 +29,7 @@ export default class Modal extends Component {
 
     return (
       <div>
-        <div className={showHideClasses} id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className={showHideClasses} id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-header">
             {headerContent}
             <button onClick={closeFunc} type="button" className="close" data-dismiss="modal" aria-label="Close">
