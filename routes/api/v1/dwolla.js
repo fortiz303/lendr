@@ -114,20 +114,20 @@ router.post('/create', (req, res, next) => {
     req.body.ssn
   )
   .then((data) => {
-    console.log(data)
-    const dwollaUrl = _.get(data, 'headers.Headers._headers.location', false);
+    const dwollaUrl = data.headers.get('location');
     if (!dwollaUrl) {
       return res.status(500).json({success: false, error: 'Unable to get Dwolla User ID but user should be created.'})
+    } else {
+      knex('users')
+        .where('id', '=', req.body.user_id)
+        .update({
+          connected_to_dwolla: true,
+          dwolla_id: dwollaUrl
+        })
+        .then((row) => {
+          res.status(200).json({success: true, data: dwollaUrl});
+        })
     }
-    knex('users')
-      .where('id', '=', req.body.user_id)
-      .update({
-        connected_to_dwolla: true,
-        dwolla_id: dwollaUrl
-      })
-      .then((row) => {
-        res.status(200).json({success: true, data: dwollaUrl});
-      })
   })
   .catch((error) => {
     res.status(500).json({success: false, error: error});
