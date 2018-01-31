@@ -78,6 +78,19 @@ function createClient(firstName, lastName, email, type = "personal", address1, c
   }
 }
 
+function getClient(url) {
+  if (!url) {
+    return false
+  } else {
+    return dwollaClient.auth.client().then(client => {
+      return client.get(url)
+    })
+    .catch((error) => {
+      return error
+    })
+  }
+}
+
 // createClient('null', 'Peter', 'Margaritoff', 'pmargaritoff@gmail.com')
 
 router.use((req, res, next) => {
@@ -97,6 +110,12 @@ router.use((req, res, next) => {
       message: 'No token provided'
     })
   }
+});
+
+router.get('/user', (req, res, next) => {
+  const dwollaUrl = req.body.dwolla_id;
+
+
 });
 
 // Post a new review
