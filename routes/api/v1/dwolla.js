@@ -120,8 +120,15 @@ router.use((req, res, next) => {
 });
 
 router.get('/user', (req, res, next) => {
-  const dwollaUrl = req.body.dwolla_id;
+  const dwollaUrl = req.headers.dwolla_id;
 
+  getClient(dwollaUrl)
+    .then((data) => {
+      res.status(200).json({success: true, data: data.body});
+    })
+    .catch((error) => {
+      res.status(500).json({success: false, error: error})
+    })
 
 });
 

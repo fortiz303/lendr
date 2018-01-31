@@ -4,7 +4,29 @@ const headers = new Headers({
 
 export const API = {
   // Dwolla
+  // Fetches an existing Dwolla customer
 
+  fetchDwollaUser(url, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token,
+          'dwolla_id': url
+        },
+        method: 'GET'
+      };
+
+      fetch(`/api/v1/dwolla/user`, opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        });
+    })
+  },
   // Creates a new Dwolla 'customer'
   createNewDwollaUser(data, token) {
     return new Promise((resolve, reject) => {
@@ -34,7 +56,7 @@ export const API = {
         headers: headers,
         method: 'GET'
       };
-      
+
       fetch(`/api/v1/reviews/${id}`, opts)
         .then(res => res.json())
         .then((data) => {

@@ -18,18 +18,32 @@ class Profile extends Component {
     const token = _.get(window.sessionStorage, 'token', false);
     const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
 
+    const dwollaId = _.get(user, 'dwolla_id', false);
+
     if (token && id) {
       dispatch(userActions.fetchById(id, token));
+    }
+
+    if (dwollaId && token) {
+      dispatch(userActions.fetchDwollaUser(dwollaId, token));
     }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    const {dispatch, user, match} = this.props;
+    const {dispatch, user, match, dwollaUser} = this.props;
     const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
 
     if (prevProps.user !== this.props.user && id && user.token) {
+      const dwollaId = _.get(user, 'dwolla_id', false);
+      console.log(dwollaId, dwollaUser)
       dispatch(userActions.fetchById(id, user.token));
+
+      if (dwollaId && !(!!dwollaUser)) {
+        dispatch(userActions.fetchDwollaUser(dwollaId, user.token));
+      }
     }
+
+
   };
 
   render() {

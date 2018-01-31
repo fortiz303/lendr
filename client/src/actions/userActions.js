@@ -1,6 +1,23 @@
 import {API} from '../API';
 
 const userActions = {
+  fetchDwollaUser: (url, token) => {
+    return (dispatch) => {
+      API.fetchDwollaUser(url, token)
+        .then((data) => {
+          dispatch({
+            type: 'FETCH_DWOLLA_USER_SUCCESS',
+            data: data
+          })
+        })
+        .catch((error) => {
+          dispatch({
+            type: 'FETCH_DWOLLA_USER_FAILURE',
+            error: error
+          })
+        })
+    }
+  },
   createNewDwollaUser: (data, token) => {
     return (dispatch) => {
       API.createNewDwollaUser(data, token)
