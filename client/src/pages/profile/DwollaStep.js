@@ -85,9 +85,6 @@ class DwollaStep extends Component {
     city: this.props.dwollaUser.data.city,
     state: this.props.dwollaUser.data.state,
     postalCode: this.props.dwollaUser.data.postalCode,
-    day: this.props.dwollaUser.data.day,
-    month: this.props.dwollaUser.data.month,
-    year: this.props.dwollaUser.data.year,
     ssn: this.props.dwollaUser.data.ssn
   };
 
@@ -104,7 +101,7 @@ class DwollaStep extends Component {
   updateSsn = (e) => {this.setState({ssn: e.target.value})};
 
   handleSubmit = () => {
-    const {dispatch, user} = this.props;
+    const {dispatch, user, dwollaUser} = this.props;
     const {
       dateOfBirth,
       firstName,
@@ -129,6 +126,7 @@ class DwollaStep extends Component {
         'CLEAR_ALL_ERRORS'
       )
     }
+
     const data = {
       dateOfBirth: `${year}-${month}-${day}`,
       firstName: firstName,
@@ -141,8 +139,13 @@ class DwollaStep extends Component {
       ssn: ssn,
       user_id: user.id
     };
-
-    dispatch(userActions.createNewDwollaUser(data, user.token));
+    if (dwollaUser.id) {
+      // if there is an id, update the user
+      dispatch(userActions.createNewDwollaUser(data, user.token, dwollaUser.id))
+    } else {
+      // if not, create one
+      dispatch(userActions.createNewDwollaUser(data, user.token));
+    }
   };
 
   render() {

@@ -57,15 +57,27 @@ var accountToken = new dwollaClient.Token({access_token: TOKEN});
 // after successful IAV, a funding source is created for the user
 // user is now cleared to make and accept loans
 
-function createClient(firstName, lastName, email, type = "personal", address1, city, state, postalCode, dateOfBirth, ssn) {
+function createClient(
+  firstName,
+  lastName,
+  email,
+  type = "personal",
+  address1,
+  city,
+  state,
+  postalCode,
+  dateOfBirth,
+  ssn,
+  dwolla_id = false
+) {
 
   if (!firstName || !lastName || !email || !type || !address1 || !city || !state || !postalCode || !dateOfBirth || !ssn) {
     return false;
   } else {
-
+    const postUrl = dwolla_id ? `customers/${dwolla_id}` : 'customers';
     return dwollaClient.auth.client()
       .then(client => {
-        return client.post('customers', {
+        return client.post(postUrl, {
           firstName: firstName,
           lastName: lastName,
           email: email,
@@ -133,7 +145,7 @@ router.get('/user', (req, res, next) => {
 });
 
 // Post a new review
-router.post('/create', (req, res, next) => {
+router.post('/create/:dwolla_id', (req, res, next) => {
   createClient(
     req.body.firstName,
     req.body.lastName,

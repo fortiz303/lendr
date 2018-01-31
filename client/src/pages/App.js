@@ -37,6 +37,8 @@ import Admin from './Admin';
 import Modal from '../components/Modal'
 import NotificationManager from '../components/NotificationManager';
 
+import LoginForm from './LoginForm';
+
 import ioClient from 'socket.io-client'
 
 let io = ioClient();
@@ -130,21 +132,20 @@ class Wrapper extends Component {
               </div>
             </div>: null
         }
-        {shouldDisplayNav ?
-          <div className="row">
-            <div className="col">
-              <div className="content-wrapper nav">
-                <div className="col-lg-2 d-flex align-items-center">
-                  <pre className="rosco mb-0 text-muted">rosco</pre>
-                </div>
-                <div className="col d-flex justify-content-end">
-                  <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">help</NavLink>
-                  <NavLink className="nav-item nav-link" to="/login">logout {user.id}</NavLink>
-                </div>
+
+        <div className="row">
+          <div className="col">
+            <div className="content-wrapper nav">
+              <div className="col-lg-2 d-flex align-items-center">
+                <pre className="rosco mb-0 text-muted">rosco</pre>
+              </div>
+              <div className="col d-flex justify-content-end">
+                <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">help</NavLink>
+                <LoginForm isLoginPage={isLoginPage} />
               </div>
             </div>
-          </div> : null
-        }
+          </div>
+        </div>
         <div className={`row ${isLoginPage ? 'h-100' : null}`}>
           {shouldDisplayNav ?
             <div className="col-md-4 col-lg-2">
@@ -156,7 +157,7 @@ class Wrapper extends Component {
             </div> : null
           }
 
-          <div className={`${isLoginPage ? 'col justify-content-center align-self-center' : 'col-md-8 col-lg-10'}`}>
+          <div className="col justify-content-center">
             <div className="content-wrapper">
               {this.props.children}
             </div>

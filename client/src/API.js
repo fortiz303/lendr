@@ -28,7 +28,7 @@ export const API = {
     })
   },
   // Creates a new Dwolla 'customer'
-  createNewDwollaUser(data, token) {
+  createNewDwollaUser(data, token, dwolla_id) {
     return new Promise((resolve, reject) => {
       const opts = {
         headers: headers,
@@ -39,7 +39,9 @@ export const API = {
         })
       };
 
-      fetch('/api/v1/dwolla/create', opts)
+      const url = dwolla_id ? `/api/v1/dwolla/create/${dwolla_id}` : '/api/v1/dwolla/create';
+
+      fetch(url, opts)
         .then(res => res.json())
         .then((data) => {
           resolve(data);

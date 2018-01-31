@@ -1,9 +1,9 @@
 import {API} from '../API';
 
 const userActions = {
-  fetchDwollaUser: (url, token) => {
+  fetchDwollaUser: (url, token, dwolla_id = false) => {
     return (dispatch) => {
-      API.fetchDwollaUser(url, token)
+      API.fetchDwollaUser(url, token, dwolla_id)
         .then((data) => {
           dispatch({
             type: 'FETCH_DWOLLA_USER_SUCCESS',
