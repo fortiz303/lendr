@@ -70,6 +70,7 @@ function createClient(firstName, lastName, email, type = "personal", address1, c
           dateOfBirth: dateOfBirth,
           ssn: ssn,
         })
+        // .then(res => {console.log(res); return res.body})
       })
       .catch((error) => {
         return error
@@ -113,9 +114,11 @@ router.post('/create', (req, res, next) => {
     req.body.ssn
   )
   .then((data) => {
-
-    const dwollaUrl = _.get(data, 'Headers._headers.location', false);
-    
+    console.log(data)
+    const dwollaUrl = _.get(data, 'headers.Headers._headers.location', false);
+    if (!dwollaUrl) {
+      return res.status(500).json({success: false, error: 'Unable to get Dwolla User ID but user should be created.'})
+    }
     knex('users')
       .where('id', '=', req.body.user_id)
       .update({
