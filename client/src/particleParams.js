@@ -8,13 +8,13 @@ export default {
       }
     },
     "color":{
-      "value":"#007bff"
+      "value":"#ffffff"
     },
     "shape":{
       "type":"circle",
       "stroke":{
         "width":0,
-        "color":"#007bff"
+        "color":"#ffffff"
       },
       "polygon":{
         "nb_sides":5
@@ -43,7 +43,7 @@ export default {
     "line_linked":{
       "enable":true,
       "distance":150,
-      "color":"#007bff",
+      "color":"#ffffff",
       "opacity":0.4,
       "width":1
     },
