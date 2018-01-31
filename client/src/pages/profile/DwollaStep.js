@@ -78,17 +78,17 @@ const US_STATES = [
 
 class DwollaStep extends Component {
   state = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    address1: '',
-    city: '',
-    state: '',
-    postalCode: '',
-    day: '',
-    month: '',
-    year: '',
-    ssn: ''
+    firstName: this.props.dwollaUser.data.firstName,
+    lastName: this.props.dwollaUser.data.lastName,
+    email: this.props.dwollaUser.data.email,
+    address1: this.props.dwollaUser.data.address1,
+    city: this.props.dwollaUser.data.city,
+    state: this.props.dwollaUser.data.state,
+    postalCode: this.props.dwollaUser.data.postalCode,
+    day: this.props.dwollaUser.data.day,
+    month: this.props.dwollaUser.data.month,
+    year: this.props.dwollaUser.data.year,
+    ssn: this.props.dwollaUser.data.ssn
   };
 
   updateFirstName = (e) => {this.setState({firstName: e.target.value})};
@@ -323,7 +323,8 @@ class DwollaStep extends Component {
 const mapStateToProps = (state) => {
   return {
     authStatus: state.authReducer.status,
-    user: state.authReducer.user
+    user: state.authReducer.user,
+    dwollaUser: state.userReducer.dwollaUser
   }
 };
 
