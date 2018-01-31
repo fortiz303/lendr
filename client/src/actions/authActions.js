@@ -1,4 +1,5 @@
 import {API} from '../API';
+import React from 'react';
 import {dispatchWithTimeout} from '../utils';
 
 const authActions = {
@@ -15,6 +16,13 @@ const authActions = {
             type: 'LOGIN_SUCCESS',
             data: data
           })
+          if (!data.connected_to_dwolla && !data.dwolla_id) {
+            dispatch({
+              type: 'NEW_STATUS',
+              message: <p className="mb-0"><span className="oi oi-warning"></span> You have not connected a funding source. Please visit your <a href="/profile">profile</a> to set one up</p>,
+              className: 'alert-warning'
+            })
+          }
         })
         .catch((error) => {
           dispatch({type: 'LOADING', loading: false});
@@ -57,6 +65,14 @@ const authActions = {
             'NEW_STATUS',
             'CLEAR_ALL_ERRORS'
           )
+
+          if (!data.connected_to_dwolla && !data.dwolla_id) {
+            dispatch({
+              type: 'NEW_STATUS',
+              message: <p className="mb-0"><span className="oi oi-warning"></span> You have not connected a funding source. Please visit your <a href="/profile">profile</a> to set one up</p>,
+              className: 'alert-warning'
+            })
+          }
 
           dispatch({type: 'LOADING', loading: false});
         })

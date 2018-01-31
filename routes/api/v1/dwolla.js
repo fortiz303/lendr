@@ -51,17 +51,19 @@ var accountToken = new dwollaClient.Token({access_token: TOKEN});
 // 2) In the profile, surface a: 'Add Payment Source' button
 // 3) Once clicked, user is presented with a form with the info below
 
+
 // Clicking 'add bank account' creates a dwolla user
 // IAV flow is presented
 // after successful IAV, a funding source is created for the user
 // user is now cleared to make and accept loans
 
-console.log(accountToken)
-function createClient(firstName, lastName, email, type, address1, city, state, postalCode, dateOfBirth, ssn) {
+function createClient(firstName, lastName, email, type = "personal", address1, city, state, postalCode, dateOfBirth, ssn) {
+
   if (!firstName || !lastName || !email || !type || !address1 || !city || !state || !postalCode || !dateOfBirth || !ssn) {
     return false;
   } else {
-    dwollaClient.auth.client()
+
+    return dwollaClient.auth.client()
       .then(client => {
         return client.post('customers', {
           firstName: firstName,
@@ -75,42 +77,87 @@ function createClient(firstName, lastName, email, type, address1, city, state, p
           dateOfBirth: dateOfBirth,
           ssn: ssn,
         })
-      })
-      .then((data) => {
-        console.log('Success creating client', data);
-        return data
+        // .then(res => {console.log(res); return res.body})
       })
       .catch((error) => {
-        console.log('Error creating client', error);
+        return error
       })
+  }
+}
+
+function getClient(url) {
+  if (!url) {
+    return false
+  } else {
+    return dwollaClient.auth.client().then(client => {
+      return client.get(url)
+    })
+    .catch((error) => {
+      return error
+    })
   }
 }
 
 // createClient('null', 'Peter', 'Margaritoff', 'pmargaritoff@gmail.com')
 
-console.log(dwollaClient)
+router.use((req, res, next) => {
+  const token = req.body.token || req.query.token || req.headers['x-access-token'];
+  if (token) {
+    jwt.verify(token, appConfig.secret, (err, decoded) => {
+      if (err) {
+        return res.status(400).json({success: false, message: 'Failed to Authenticate'});
+      } else {
+        req.decoded = decoded;
+        next();
+      }
+    })
+  } else {
+    return res.json({
+      success: false,
+      message: 'No token provided'
+    })
+  }
+});
 
-// router.use((req, res, next) => {
-//   const token = req.body.token || req.query.token || req.headers['x-access-token'];
-//   if (token) {
-//     jwt.verify(token, appConfig.secret, (err, decoded) => {
-//       if (err) {
-//         return res.status(400).json({success: false, message: 'Failed to Authenticate'});
-//       } else {
-//         req.decoded = decoded;
-//         next();
-//       }
-//     })
-//   } else {
-//     return res.json({
-//       success: false,
-//       message: 'No token provided'
-//     })
-//   }
-// });
+router.get('/user', (req, res, next) => {
+  const dwollaUrl = req.body.dwolla_id;
+
+
+});
 
 // Post a new review
-router.post('/new', (req, res, next) => {
+router.post('/create', (req, res, next) => {
+  createClient(
+    req.body.firstName,
+    req.body.lastName,
+    req.body.email,
+    req.body.type,
+    req.body.address1,
+    req.body.city,
+    req.body.state,
+    req.body.postalCode,
+    req.body.dateOfBirth,
+    req.body.ssn
+  )
+  .then((data) => {
+    const dwollaUrl = data.headers.get('location');
+    if (!dwollaUrl) {
+      return res.status(500).json({success: false, error: 'Unable to get Dwolla User ID but user should be created.'})
+    } else {
+      knex('users')
+        .where('id', '=', req.body.user_id)
+        .update({
+          connected_to_dwolla: true,
+          dwolla_id: dwollaUrl
+        })
+        .then((row) => {
+          res.status(200).json({success: true, data: dwollaUrl});
+        })
+    }
+  })
+  .catch((error) => {
+    res.status(500).json({success: false, error: error});
+  });
 
 });
 
