@@ -3,6 +3,31 @@ const headers = new Headers({
 });
 
 export const API = {
+  // Dwolla
+
+  // Creates a new Dwolla 'customer'
+  createNewDwollaUser(data, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          ...data,
+          token: token
+        })
+      };
+
+      fetch('/api/v1/dwolla/create', opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   fetchReviewsForUser(id, token) {
     return new Promise((resolve, reject) => {
       const opts = {

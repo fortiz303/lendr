@@ -26,22 +26,23 @@ class Profile extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     const {dispatch, user, match} = this.props;
     const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
-    console.log(user)
+
     if (prevProps.user !== this.props.user && id && user.token) {
       dispatch(userActions.fetchById(id, user.token));
     }
   };
 
   render() {
-    const {match, user, profile} = this.props;
+    const {match, user, profile, dwollaUser} = this.props;
 
     // am I looking at myself? if so, enable settings stuff
     const isUser = user && profile && user.id === profile.id;
-    console.log(user, profile)
+
     const foundUser = !!profile;
     const notFound = <p className="lead text-center">loading</p>;
     return foundUser && user && user.id ?
       <div>
+        {dwollaUser ? <p>Verified!</p> : null}
         <div className="row">
           <div className="col">
             <ul className="nav nav-pills">
@@ -137,7 +138,8 @@ const mapStateToProps = (state) => {
   return {
     authStatus: state.authReducer.status,
     user: state.authReducer.user,
-    profile: state.userReducer.profile
+    profile: state.userReducer.profile,
+    dwollaUser: state.userReducer.dwollaUser
   }
 };
 

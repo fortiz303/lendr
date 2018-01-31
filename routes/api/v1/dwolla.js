@@ -50,12 +50,13 @@ var accountToken = new dwollaClient.Token({access_token: TOKEN});
 // 1) User signs up for Rosco
 // 2) In the profile, surface a: 'Add Payment Source' button
 // 3) Once clicked, user is presented with a form with the info below
-console.log(accountToken)
-function createClient(firstName, lastName, email, type, address1, city, state, postalCode, dateOfBirth, ssn) {
+
+function createClient(firstName, lastName, email, type = "personal", address1, city, state, postalCode, dateOfBirth, ssn) {
   if (!firstName || !lastName || !email || !type || !address1 || !city || !state || !postalCode || !dateOfBirth || !ssn) {
     return false;
   } else {
-    dwollaClient.auth.client()
+
+    return dwollaClient.auth.client()
       .then(client => {
         return client.post('customers', {
           firstName: firstName,
@@ -70,41 +71,64 @@ function createClient(firstName, lastName, email, type, address1, city, state, p
           ssn: ssn,
         })
       })
-      .then((data) => {
-        console.log('Success creating client', data);
-        return data
-      })
       .catch((error) => {
-        console.log('Error creating client', error);
+        return error
       })
   }
 }
 
 // createClient('null', 'Peter', 'Margaritoff', 'pmargaritoff@gmail.com')
 
-console.log(dwollaClient)
-
-// router.use((req, res, next) => {
-//   const token = req.body.token || req.query.token || req.headers['x-access-token'];
-//   if (token) {
-//     jwt.verify(token, appConfig.secret, (err, decoded) => {
-//       if (err) {
-//         return res.status(400).json({success: false, message: 'Failed to Authenticate'});
-//       } else {
-//         req.decoded = decoded;
-//         next();
-//       }
-//     })
-//   } else {
-//     return res.json({
-//       success: false,
-//       message: 'No token provided'
-//     })
-//   }
-// });
+router.use((req, res, next) => {
+  const token = req.body.token || req.query.token || req.headers['x-access-token'];
+  if (token) {
+    jwt.verify(token, appConfig.secret, (err, decoded) => {
+      if (err) {
+        return res.status(400).json({success: false, message: 'Failed to Authenticate'});
+      } else {
+        req.decoded = decoded;
+        next();
+      }
+    })
+  } else {
+    return res.json({
+      success: false,
+      message: 'No token provided'
+    })
+  }
+});
 
 // Post a new review
-router.post('/new', (req, res, next) => {
+router.post('/create', (req, res, next) => {
+  createClient(
+    req.body.firstName,
+    req.body.lastName,
+    req.body.email,
+    req.body.type,
+    req.body.address1,
+    req.body.city,
+    req.body.state,
+    req.body.postalCode,
+    req.body.dateOfBirth,
+    req.body.ssn
+  )
+  .then((data) => {
+
+    const dwollaUrl = _.get(data, 'Headers._headers.location', false);
+    
+    knex('users')
+      .where('id', '=', req.body.user_id)
+      .update({
+        connected_to_dwolla: true,
+        dwolla_id: dwollaUrl
+      })
+      .then((row) => {
+        res.status(200).json({success: true, data: dwollaUrl});
+      })
+  })
+  .catch((error) => {
+    res.status(500).json({success: false, error: error});
+  });
 
 });
 

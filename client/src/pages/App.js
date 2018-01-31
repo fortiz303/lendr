@@ -93,12 +93,12 @@ class Wrapper extends Component {
       }
     }
 
-    io.on('FETCH_ALL_TRANSACTIONS', (data) => {
-      dispatch({
-        type: 'FETCH_ALL_TRANSACTIONS',
-        data: data
-      });
-    });
+    // io.on('FETCH_ALL_TRANSACTIONS', (data) => {
+    //   dispatch({
+    //     type: 'FETCH_ALL_TRANSACTIONS',
+    //     data: data
+    //   });
+    // });
 
     // io.on('TRANSACTION_LOCKED', function(socket) {
     //   console.log('trans locked', socket)
@@ -114,11 +114,10 @@ class Wrapper extends Component {
     const shouldDisplayNav = !!user;
     const isLoginPage = window.location.pathname === '/login';
 
-    io.on('connection', function(socket){
-      console.log('socket connected')
-      // socket.emit('test_message', {id: 1, test: 'two', random: Math.random()});
-    });
-
+    // io.on('connection', function(socket){
+    //   console.log('socket connected')
+    //   // socket.emit('test_message', {id: 1, test: 'two', random: Math.random()});
+    // });
     return (
       <div className={`container-fluid ${isLoginPage ? 'h-100' : null}`}>
         <Modal active={modal && modal.active} data={modal} />

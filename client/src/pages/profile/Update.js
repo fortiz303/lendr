@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import DwollaStep from '../DwollaStep';
 
 class Update extends Component {
   state = {
@@ -11,6 +12,7 @@ class Update extends Component {
   };
 
   renderCurrentScreen = () => {
+    const {user} = this.props;
     const {currentStep} = this.state;
     
     const profileStep = 
@@ -23,7 +25,8 @@ class Update extends Component {
         </form>
       </div>
     
-    const stepArray = [profileStep];
+    const dwollaStep = <DwollaStep user={user} />;
+    const stepArray = [profileStep, dwollaStep];
 
     return stepArray[currentStep];
   }
@@ -34,13 +37,13 @@ class Update extends Component {
         <div className="col-lg-2 step-wrapper">
           <span
             className={`step-indicator ${currentStep === 0 ? 'active': null}`}
-            onClick={() => {this.state.setStep(0)}}
+            onClick={() => {this.setStep(0)}}
           >
             Profile
           </span>
           <span
             className={`step-indicator ${currentStep === 1 ? 'active': null}`}
-          onClick={() => {this.state.setStep(1)}}
+          onClick={() => {this.setStep(1)}}
           >
             Bank Account
           </span>
