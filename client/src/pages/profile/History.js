@@ -127,7 +127,7 @@ class History extends Component {
   // ];
   calculateOverallRating = () => {
     const {borrowHistory} = this.props;
-    
+
     if (!borrowHistory) {
       return 0
     }
@@ -138,7 +138,7 @@ class History extends Component {
 
     const compact = _.compact(totalRating);
 
-    return _.round(compact.reduce((acc, curr) => acc + curr) / compact.length, 1)
+    return compact.length ? _.round(compact.reduce((acc, curr) => acc + curr) / compact.length, 1) : 0;
   };
 
   renderReviewHistory = () => {
