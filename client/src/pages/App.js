@@ -41,7 +41,11 @@ import LoginForm from './LoginForm';
 
 import ioClient from 'socket.io-client'
 
+import particleParams from '../particleParams';
+import Particles from 'react-particles-js';
+
 let io = ioClient();
+
 
 /* eslint-disable */
 const isProduction = false;
@@ -122,6 +126,9 @@ class Wrapper extends Component {
     // });
     return (
       <div className={`container-fluid ${isLoginPage ? 'h-100' : null}`}>
+        {isLoginPage ?
+            <Particles className="particle-wrapper" params={particleParams} width={'100%'} height={'100%'}/> : null
+        }
         <Modal active={modal && modal.active} data={modal} />
         {loading ? <div className="loading-bar"></div> : null}
         {
@@ -140,7 +147,6 @@ class Wrapper extends Component {
                 <pre className="rosco mb-0 text-muted">rosco</pre>
               </div>
               <div className="col d-flex justify-content-end">
-                <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">help</NavLink>
                 <LoginForm isLoginPage={isLoginPage} />
               </div>
             </div>

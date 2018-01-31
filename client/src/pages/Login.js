@@ -24,6 +24,7 @@ class Login extends Component {
   render() {
     return (
       <div className="container align-items-center">
+
         {/*<div className="row align-items-center">
           <div className="col-lg-8">
             <div className="row align-items-center">

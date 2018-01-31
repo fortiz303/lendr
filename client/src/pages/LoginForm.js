@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import authActions from '../actions/authActions';
 import errorActions from '../actions/errorActions';
-
+import {NavLink} from 'react-router-dom'
 class LoginForm extends Component {
   static defaultProps = {
     isLoginPage: false
@@ -117,10 +117,11 @@ class LoginForm extends Component {
   render() {
     const {email, password, method, isOpen} = this.state;
     const {isLoginPage} = this.props;
-    console.log(isOpen)
     const content = !isLoginPage ?
       <div className="login-nav card">
-        <p>logout</p>
+        <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">help</NavLink>
+        <hr />
+        <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/login">logout</NavLink>
       </div> :
       <div className="login-nav card">
         <form onSubmit={this.handleSubmit}>
@@ -172,6 +173,8 @@ class LoginForm extends Component {
             Signup
           </span>
         </div>
+        <hr />
+        <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">help</NavLink>
       </div>
 
     return (
