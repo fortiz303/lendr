@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import DwollaStep from '../DwollaStep';
+import DwollaStep from './DwollaStep';
 
 class Update extends Component {
   state = {
     currentStep: 0
   };
-  
+
   setStep = (step) => {
     this.setState({currentStep: step});
   };
@@ -14,8 +14,8 @@ class Update extends Component {
   renderCurrentScreen = () => {
     const {user} = this.props;
     const {currentStep} = this.state;
-    
-    const profileStep = 
+
+    const profileStep =
       <div className="step">
         <form>
           <div className="form-group">
@@ -24,7 +24,7 @@ class Update extends Component {
           </div>
         </form>
       </div>
-    
+
     const dwollaStep = <DwollaStep user={user} />;
     const stepArray = [profileStep, dwollaStep];
 

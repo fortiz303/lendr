@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import userActions from '../actions/userActions';
+import userActions from '../../actions/userActions';
 import {connect} from 'react-redux';
-import {dispatchWithTimeout} from '../utils';
+import {dispatchWithTimeout} from '../../utils';
 
 const US_STATES = [
   {short: "AL", long: "Alabama"},
@@ -90,7 +90,7 @@ class DwollaStep extends Component {
     year: '',
     ssn: ''
   };
-  
+
   updateFirstName = (e) => {this.setState({firstName: e.target.value})};
   updateLastName = (e) => {this.setState({lastName: e.target.value})};
   updateEmail = (e) => {this.setState({email: e.target.value})};
@@ -115,8 +115,8 @@ class DwollaStep extends Component {
       state,
       postalCode,
       ssn,
-      day, 
-      month, 
+      day,
+      month,
       year
     } = this.state;
 
@@ -189,7 +189,7 @@ class DwollaStep extends Component {
               </div>
             </div>
           </div>
-          
+
           <div className="row">
             <div className="col">
               <div className="form-group">
@@ -202,7 +202,7 @@ class DwollaStep extends Component {
                     onChange={this.updateDay}
                     value={day}
                  />
-                
+
                   <input
                     className="form-control"
                     type="number"
@@ -210,7 +210,7 @@ class DwollaStep extends Component {
                     onChange={this.updateMonth}
                     value={month}
                   />
-                
+
                   <input
                     className="form-control"
                     type="number"
@@ -305,7 +305,7 @@ class DwollaStep extends Component {
                 </select>
               </div>
             </div>
-          </div>          
+          </div>
         </form>
 
         <button
