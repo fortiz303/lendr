@@ -131,6 +131,7 @@ function getIAVToken(dwolla_id) {
       reject('No Dwolla ID Passed');
     } else {
       dwollaClient.auth.client().then(client => {
+        console.log(client, dwolla_id)
         client.post(`customers/${dwolla_id}/iav-token`)
           .then((data) => {
             resolve(data)

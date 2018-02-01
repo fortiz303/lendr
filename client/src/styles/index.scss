@@ -126,6 +126,22 @@ html,
 .border-transparent {
   border-color: transparent
 }
+
+.verify-badge {
+  border-width: 1px;
+  border-style: solid;
+  padding: 8px;
+  display:  inline-block;
+  .oi {
+    margin-right: 8px;
+  }
+  small {}
+  &.verified {
+    background-color: $success-color;
+    color: $white;
+  }
+
+}
 .side-modal {
   position: fixed;
   top: 0;

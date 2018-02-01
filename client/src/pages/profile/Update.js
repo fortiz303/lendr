@@ -34,6 +34,8 @@ class Update extends Component {
   }
   render() {
     const {currentStep} = this.state;
+    const {dwollaUser, user} = this.props;
+
     return (
       <div className="row settings-wrapper">
         <div className="col-lg-2 step-wrapper">
@@ -59,6 +61,18 @@ class Update extends Component {
         </div>
 
         <div className="col-lg-10">
+          <img src="https://placehold.it/100x100" />
+          <h1>{user.email}</h1>
+          {
+            dwollaUser ?
+              <span className="verify-badge verified">
+                <span class="oi oi-check"> </span>
+                Verified!<br />
+                <small>You can send and receive money</small>
+              </span> :
+              null
+          }
+          <hr />
           {this.renderCurrentScreen()}
         </div>
       </div>
@@ -69,7 +83,8 @@ class Update extends Component {
 const mapStateToProps = (state) => {
   return {
     authStatus: state.authReducer.status,
-    user: state.authReducer.user
+    user: state.authReducer.user,
+    dwollaUser: state.userReducer.dwollaUser
   }
 };
 

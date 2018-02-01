@@ -56,7 +56,6 @@ class Profile extends Component {
     const notFound = <p className="lead text-center">loading</p>;
     return foundUser && user && user.id ?
       <div>
-        {dwollaUser ? <p>Verified!</p> : null}
         <div className="row">
           <div className="col">
             <ul className="nav nav-pills">
