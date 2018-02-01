@@ -61,7 +61,7 @@ class Update extends Component {
         </div>
 
         <div className="col-lg-10">
-          <img src="https://placehold.it/100x100" />
+          <img src="https://placehold.it/100x100" alt="profile" />
           <h1>{user.email}</h1>
           {
             dwollaUser ?

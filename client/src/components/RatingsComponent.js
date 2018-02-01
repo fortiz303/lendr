@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import DayPicker from 'react-day-picker';
 
 const FORWARD_KEYS = [13, 39]
 const BACKWARD_KEYS = [37]
@@ -31,7 +30,7 @@ export default class RatingsComponent extends Component {
   handleDayClick = (day) => {
     this.props.handleInput({target: {value: day}}, 'promise_to_pay_date');
   };
-  
+
   setRating = (rating) => {
     this.setState({
       rating: rating,
@@ -55,7 +54,7 @@ export default class RatingsComponent extends Component {
       </div>
     );
   };
-  
+
   handleSubmit = () => {
     const data = {
       memo: this.state.memo,
@@ -70,7 +69,7 @@ export default class RatingsComponent extends Component {
 
   render() {
     const {hasBeenModified} = this.state;
-    const {currentStep} = this.props;
+
     return (
       <div className="ratings-entry-wrapper">
         <div className="col">

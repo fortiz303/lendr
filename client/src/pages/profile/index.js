@@ -35,7 +35,6 @@ class Profile extends Component {
 
     if (prevProps.user !== this.props.user && id && user.token) {
       const dwollaId = _.get(user, 'dwolla_id', false);
-      console.log(dwollaId, dwollaUser)
       dispatch(userActions.fetchById(id, user.token));
 
       if (dwollaId && !(!!dwollaUser)) {
@@ -47,7 +46,7 @@ class Profile extends Component {
   };
 
   render() {
-    const {match, user, profile, dwollaUser} = this.props;
+    const {match, user, profile} = this.props;
 
     // am I looking at myself? if so, enable settings stuff
     const isUser = user && profile && user.id === profile.id;

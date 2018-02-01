@@ -39,12 +39,12 @@ import NotificationManager from '../components/NotificationManager';
 
 import LoginForm from './LoginForm';
 
-import ioClient from 'socket.io-client'
+// import ioClient from 'socket.io-client'
 
 import particleParams from '../particleParams';
 import Particles from 'react-particles-js';
 
-let io = ioClient();
+// let io = ioClient();
 
 
 /* eslint-disable */

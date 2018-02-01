@@ -18,7 +18,6 @@ class LoginForm extends Component {
   };
 
   componentDidMount = () => {
-    const {dispatch} = this.props;
     window.addEventListener('click', this.handleOutsideClick);
   };
 
@@ -56,14 +55,6 @@ class LoginForm extends Component {
         isOpen: !prevState.isOpen
       }
     })
-  };
-
-  componentDidUpdate = (prevProps, prevState) => {
-    const {history} = this.props;
-
-    // if (prevProps !== this.props && _.get(this.props, 'user.token', false)) {
-    //   history.replace('/')
-    // }
   };
 
   handleSubmit = (e) => {

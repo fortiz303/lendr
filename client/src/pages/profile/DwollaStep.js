@@ -112,7 +112,6 @@ class DwollaStep extends Component {
   handleSubmit = () => {
     const {dispatch, user, dwollaUser} = this.props;
     const {
-      dateOfBirth,
       firstName,
       lastName,
       email,

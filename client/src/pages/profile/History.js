@@ -92,7 +92,7 @@ class History extends Component {
   };
 
   renderHistory = (historyObject, borrowLendString) => {
-    const {isUser, user} = this.props;
+    const {user} = this.props;
     return historyObject && historyObject.length ? historyObject.map((current, index) => {
       return (
         <TransactionItem

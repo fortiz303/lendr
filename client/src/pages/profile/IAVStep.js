@@ -1,16 +1,14 @@
 import _ from 'lodash'
 import {API} from '../../API'
 import React, { Component } from 'react';
-import userActions from '../../actions/userActions';
 import {connect} from 'react-redux';
-import {dispatchWithTimeout} from '../../utils';
 import Script from 'react-load-script';
 
 class IAVStep extends Component {
   state = {
     scriptLoaded: false
   };
-  
+
   handleScriptLoad = () => {
     this.setState({
       scriptLoaded: true
@@ -36,7 +34,7 @@ class IAVStep extends Component {
 
   initializeIAV = () => {
     const {dwollaUser, user} = this.props;
-    
+
     const editHref = _.get(dwollaUser, 'data._links.edit.href', '');
     const editHrefSplit = editHref.split('/');
     const dwollaId = editHrefSplit[editHrefSplit.length - 1];
@@ -52,10 +50,6 @@ class IAVStep extends Component {
       console.log(error)
       return error
     });
-  };
-
-  componentDidUpdate = (prevProps, prevState) => {
-    const {scriptLoaded} = this.state;
   };
 
   render() {

@@ -18,11 +18,11 @@ export default class ReviewDisplay extends Component {
         <div className="container">
           <div className="row">
             <div>
-              <img className="review-display-pic" src="https://www.placecage.com/200/200" />
+              <img className="review-display-pic" src="https://www.placecage.com/200/200" alt="user profile"/>
             </div>
             <div className="col">
               <div className="review-display-stars">
-                {this.renderStars()}  
+                {this.renderStars()}
               </div>
 
               <div className="review-display-memo">

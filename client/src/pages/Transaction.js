@@ -1,12 +1,10 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom'
 import transactionActions from '../actions/transactionActions';
 import errorActions from '../actions/errorActions';
 import reviewActions from '../actions/reviewActions';
 import TransactionItem from '../components/TransactionItem';
-import {acceptTransaction} from '../utils.js';
 import RatingsComponent from '../components/RatingsComponent';
 
 class Transaction extends Component {
@@ -30,8 +28,8 @@ class Transaction extends Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    const {user, dispatch, transaction} = this.props;
-    const token = _.get(window.sessionStorage, 'token', false);
+    const {transaction} = this.props;
+
     if (prevProps.transaction !== this.props.transaction) {
       if (transaction.status !== 'pending') {
         this.setState({

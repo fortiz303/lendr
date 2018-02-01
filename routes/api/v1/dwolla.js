@@ -76,7 +76,7 @@ function createClient(
       reject('missing params');
     } else {
       const postUrl = dwolla_id ? dwolla_id : 'customers';
-      
+
       const data = {
         firstName: firstName,
         lastName: lastName,
@@ -89,7 +89,7 @@ function createClient(
         dateOfBirth: dateOfBirth,
         ssn: ssn
       };
-      
+
       if (dwolla_id) {
         delete data.ssn;
         delete data.dateOfBirth;
@@ -144,7 +144,7 @@ function getIAVToken(dwolla_id) {
         reject(error);
       })
     }
-    
+
   })
 }
 
@@ -210,13 +210,16 @@ router.post('/create', (req, res, next) => {
   )
   .then((data) => {
     const dwollaUrl = data.headers.get('location');
-    if (dwollaUrl) {
+    const dwollaSplit = dwollaUr.split('/');
+    const dwolla_id = dwollaSplit[dwollaSplit.length - 1];
+
+    if (dwolla_id) {
       // the response from a create should have a location header
       knex('users')
         .where('id', '=', req.body.user_id)
         .update({
           connected_to_dwolla: true,
-          dwolla_id: dwollaUrl
+          dwolla_id: dwolla_id
         })
         .then((row) => {
           res.status(200).json({success: true, data: dwollaUrl});

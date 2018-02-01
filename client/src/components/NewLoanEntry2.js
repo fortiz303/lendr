@@ -158,13 +158,7 @@ export default class NewLoanEntry extends Component {
   };
 
   render() {
-    const {
-      currentStep,
-      promise_to_pay_date,
-      amount,
-      interest,
-      memo
-    } = this.props;
+    const {currentStep} = this.props;
 
     return (
       <div className="new-loan-entry-wrapper">

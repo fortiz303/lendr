@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 // Redux
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import transactionActions from '../actions/transactionActions';
 import TransactionItem from '../components/TransactionItem';
 import NoData from '../components/NoData';
@@ -31,8 +30,6 @@ class Feed extends Component {
     return transactionFeed && transactionFeed.length && user ? transactionFeed.map((current, index) => {
       const isLocked = current.status === 'locked';
       // was the card made by me?
-      const createdByCurrentUser = _.get(current, 'created_by_user_id', true) === _.get(user, 'id', false);
-
       return (
         <TransactionItem
           showRepaymentButton={true}
