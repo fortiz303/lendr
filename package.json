@@ -6,7 +6,8 @@
     "node": "8.9.0"
   },
   "scripts": {
-    "start": "node --inspect ./bin/www",
+    "start": "node ./bin/www",
+    "start-debug": "node --inspect ./bin/www",
     "prestart": "knex migrate:latest"
   },
   "dependencies": {
