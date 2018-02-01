@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react';
 import userActions from '../../actions/userActions';
 import {connect} from 'react-redux';
@@ -78,14 +79,14 @@ const US_STATES = [
 
 class DwollaStep extends Component {
   state = {
-    firstName: this.props.dwollaUser.data.firstName,
-    lastName: this.props.dwollaUser.data.lastName,
-    email: this.props.dwollaUser.data.email,
-    address1: this.props.dwollaUser.data.address1,
-    city: this.props.dwollaUser.data.city,
-    state: this.props.dwollaUser.data.state,
-    postalCode: this.props.dwollaUser.data.postalCode,
-    ssn: this.props.dwollaUser.data.ssn
+    firstName: _.get(this.props, 'dwollaUser.data.firstName', ''),
+    lastName: _.get(this.props, 'dwollaUser.data.lastName', ''),
+    email: _.get(this.props, 'dwollaUser.data.email', ''),
+    address1: _.get(this.props, 'dwollaUser.data.address1', ''),
+    city: _.get(this.props, 'dwollaUser.data.city', ''),
+    state: _.get(this.props, 'dwollaUser.data.state', ''),
+    postalCode: _.get(this.props, 'dwollaUser.data.postalCode', ''),
+    ssn: _.get(this.props, 'dwollaUser.data.ssn', '')
   };
 
   updateFirstName = (e) => {this.setState({firstName: e.target.value})};
@@ -99,6 +100,14 @@ class DwollaStep extends Component {
   updateMonth = (e) => {this.setState({month: e.target.value})};
   updateYear = (e) => {this.setState({year: e.target.value})};
   updateSsn = (e) => {this.setState({ssn: e.target.value})};
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.dwollaUser !== this.props.dwollaUser) {
+      this.setState({
+        ...this.props.dwollaUser.data
+      })
+    }
+  };
 
   handleSubmit = () => {
     const {dispatch, user, dwollaUser} = this.props;
@@ -139,9 +148,10 @@ class DwollaStep extends Component {
       ssn: ssn,
       user_id: user.id
     };
-    if (dwollaUser.id) {
+
+    if (_.get(dwollaUser, 'data._links.edit.href', false)) {
       // if there is an id, update the user
-      dispatch(userActions.createNewDwollaUser(data, user.token, dwollaUser.id))
+      dispatch(userActions.createNewDwollaUser(data, user.token, _.get(dwollaUser, 'data._links.edit.href', false)))
     } else {
       // if not, create one
       dispatch(userActions.createNewDwollaUser(data, user.token));
@@ -162,6 +172,7 @@ class DwollaStep extends Component {
       year,
       ssn
     } = this.state;
+
     return (
       <div className="step">
         <p>In order to get you set up, we will need a few things. Please fill out the form below to set up a funding source.</p>

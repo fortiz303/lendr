@@ -35,13 +35,12 @@ export const API = {
         method: 'POST',
         body: JSON.stringify({
           ...data,
-          token: token
+          token: token,
+          dwolla_id: dwolla_id
         })
       };
 
-      const url = dwolla_id ? `/api/v1/dwolla/create/${dwolla_id}` : '/api/v1/dwolla/create';
-
-      fetch(url, opts)
+      fetch('/api/v1/dwolla/create', opts)
         .then(res => res.json())
         .then((data) => {
           resolve(data);

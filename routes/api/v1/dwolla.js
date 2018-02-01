@@ -71,30 +71,45 @@ function createClient(
   dwolla_id = false
 ) {
 
-  if (!firstName || !lastName || !email || !type || !address1 || !city || !state || !postalCode || !dateOfBirth || !ssn) {
-    return false;
-  } else {
-    const postUrl = dwolla_id ? `customers/${dwolla_id}` : 'customers';
-    return dwollaClient.auth.client()
-      .then(client => {
-        return client.post(postUrl, {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          type: type,
-          address1: address1,
-          city: city,
-          state: state,
-          postalCode: postalCode,
-          dateOfBirth: dateOfBirth,
-          ssn: ssn,
+  return new Promise((resolve, reject) => {
+    if (!firstName || !lastName || !email || !type || !address1 || !city || !state || !postalCode || (!dwolla_id && (!dateOfBirth || !ssn))) {
+      reject('missing params');
+    } else {
+      const postUrl = dwolla_id ? dwolla_id : 'customers';
+      
+      const data = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        type: type,
+        address1: address1,
+        city: city,
+        state: state,
+        postalCode: postalCode,
+        dateOfBirth: dateOfBirth,
+        ssn: ssn
+      };
+      
+      if (dwolla_id) {
+        delete data.ssn;
+        delete data.dateOfBirth;
+      }
+
+      dwollaClient.auth.client()
+        .then(client => {
+          client.post(postUrl, data)
+            .then((data) => {
+              resolve(data)
+            })
+            .catch((error) => {
+              reject(error)
+            })
         })
-        // .then(res => {console.log(res); return res.body})
-      })
-      .catch((error) => {
-        return error
-      })
-  }
+        .catch((error) => {
+          reject(error);
+        })
+    }
+  })
 }
 
 function getClient(url) {
@@ -145,7 +160,7 @@ router.get('/user', (req, res, next) => {
 });
 
 // Post a new review
-router.post('/create/:dwolla_id', (req, res, next) => {
+router.post('/create', (req, res, next) => {
   createClient(
     req.body.firstName,
     req.body.lastName,
@@ -156,13 +171,13 @@ router.post('/create/:dwolla_id', (req, res, next) => {
     req.body.state,
     req.body.postalCode,
     req.body.dateOfBirth,
-    req.body.ssn
+    req.body.ssn,
+    req.body.dwolla_id
   )
   .then((data) => {
     const dwollaUrl = data.headers.get('location');
-    if (!dwollaUrl) {
-      return res.status(500).json({success: false, error: 'Unable to get Dwolla User ID but user should be created.'})
-    } else {
+    if (dwollaUrl) {
+      // the response from a create should have a location header
       knex('users')
         .where('id', '=', req.body.user_id)
         .update({
@@ -172,6 +187,11 @@ router.post('/create/:dwolla_id', (req, res, next) => {
         .then((row) => {
           res.status(200).json({success: true, data: dwollaUrl});
         })
+    } else if (_.get(data, 'body', false)) {
+      // the response from an update call
+      res.status(200).json({success: true, data: data.body});
+    } else {
+      return res.status(500).json({success: false, error: 'Unable to get Dwolla User ID but user should be created.'})
     }
   })
   .catch((error) => {

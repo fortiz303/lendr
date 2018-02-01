@@ -1,9 +1,9 @@
 import {API} from '../API';
 
 const userActions = {
-  fetchDwollaUser: (url, token, dwolla_id = false) => {
+  fetchDwollaUser: (url, token) => {
     return (dispatch) => {
-      API.fetchDwollaUser(url, token, dwolla_id)
+      API.fetchDwollaUser(url, token)
         .then((data) => {
           dispatch({
             type: 'FETCH_DWOLLA_USER_SUCCESS',
@@ -18,9 +18,9 @@ const userActions = {
         })
     }
   },
-  createNewDwollaUser: (data, token) => {
+  createNewDwollaUser: (data, token, dwolla_id = false) => {
     return (dispatch) => {
-      API.createNewDwollaUser(data, token)
+      API.createNewDwollaUser(data, token, dwolla_id)
         .then((data) => {
           dispatch({
             type: 'CREATE_DWOLLA_USER_SUCCESS',
