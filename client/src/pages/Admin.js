@@ -6,7 +6,19 @@ import {connect} from 'react-redux';
 import adminActions from '../actions/adminActions';
 import transactionActions from '../actions/transactionActions';
 
+import LoadingButton from '../components/LoadingButton';
+
 class Admin extends Component {
+  state = {
+    loading: false
+  };
+
+  testButton = () => {
+    this.setState({
+      loading: !this.state.loading
+    })
+  };
+
   componentDidUpdate = (prevProps, prevState) => {
     const {user, dispatch} = this.props;
 
@@ -124,6 +136,15 @@ class Admin extends Component {
   render() {
     return (
       <div className="row">
+
+        <LoadingButton
+          className="btn btn-block btn-primary"
+          onClick={this.testButton}
+          loading={this.state.loading}
+        >
+          Test
+        </LoadingButton>
+
         <div className="col">
           <p className="lead">Transactions</p>
           {this.renderTransactions()}
