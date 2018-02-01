@@ -109,11 +109,11 @@ class Profile extends Component {
             {
               _.get(dwollaUser, 'success', false) ?
                 <span className="verify-badge verified">
-                  <span class="oi oi-check"> </span>
+                  <span className="oi oi-check"> </span>
                   Verified
                 </span> :
                 <span className="verify-badge">
-                  <span class="oi oi-circle-x"></span>
+                  <span className="oi oi-circle-x"></span>
                   Not Verified
                 </span>
             }

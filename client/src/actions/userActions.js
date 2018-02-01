@@ -26,7 +26,6 @@ const userActions = {
             type: 'CREATE_DWOLLA_USER_SUCCESS',
             data: data
           })
-          console.log(data)
         })
         .catch((error) => {
           dispatch({
@@ -40,7 +39,6 @@ const userActions = {
     return (dispatch) => {
       API.fetchUserById(id, token)
         .then((data) => {
-          console.log(data)
           dispatch({
             type: 'FETCH_PROFILE_SUCCESS',
             data: data

@@ -21,7 +21,7 @@ class Update extends Component {
       <div className="step">
         <form>
           <div className="form-group">
-            <label for="exampleFormControlInput1">Email address</label>
+            <label htmlFor="exampleFormControlInput1">Email address</label>
             <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
           </div>
         </form>

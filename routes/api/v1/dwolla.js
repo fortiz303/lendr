@@ -210,8 +210,7 @@ router.get('/user', (req, res, next) => {
       res
         .status(200)
         .json({
-          success: true,
-          data: dwollaData
+          ...dwollaData
         });
     })
     .catch((error) => {
