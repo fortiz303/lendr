@@ -4,8 +4,29 @@ const headers = new Headers({
 
 export const API = {
   // Dwolla
-  // Fetches an existing Dwolla customer
+  // Generates an IAV Token 
+  generateIAVToken(dwolla_token, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          dwolla_token: dwolla_token,
+          token: token
+        })
+      };
 
+      fetch('/api/v1/dwolla/iav', opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  // Fetches an existing Dwolla customer
   fetchDwollaUser(url, token) {
     return new Promise((resolve, reject) => {
       const opts = {

@@ -125,6 +125,28 @@ function getClient(url) {
   }
 }
 
+function getIAVToken(dwolla_id) {
+  return new Promise((resolve, reject) => {
+    if (!dwolla_id) {
+      reject('No Dwolla ID Passed');
+    } else {
+      dwollaClient.auth.client().then(client => {
+        client.post(`customers/${dwolla_id}/iav-token`)
+          .then((data) => {
+            resolve(data)
+          })
+          .catch((error) => {
+            reject(error)
+          })
+      })
+      .catch((error) => {
+        reject(error);
+      })
+    }
+    
+  })
+}
+
 // createClient('null', 'Peter', 'Margaritoff', 'pmargaritoff@gmail.com')
 
 router.use((req, res, next) => {
@@ -144,6 +166,17 @@ router.use((req, res, next) => {
       message: 'No token provided'
     })
   }
+});
+
+router.post('/iav', (req, res, next) => {
+  const dwollaUrl = req.body.dwolla_token;
+  getIAVToken(dwollaUrl)
+    .then((data) => {
+      res.status(200).json({success: true, data: data.body});
+    })
+    .catch((error) => {
+      res.status(500).json({success: false, error: error})
+    })
 });
 
 router.get('/user', (req, res, next) => {

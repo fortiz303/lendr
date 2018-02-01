@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import DwollaStep from './DwollaStep';
+import IAVStep from './IAVStep';
 
 class Update extends Component {
   state = {
@@ -25,8 +26,9 @@ class Update extends Component {
         </form>
       </div>
 
+    const iavStep = <IAVStep user={user} />;
     const dwollaStep = <DwollaStep user={user} />;
-    const stepArray = [profileStep, dwollaStep];
+    const stepArray = [profileStep, dwollaStep, iavStep];
 
     return stepArray[currentStep];
   }
@@ -45,7 +47,14 @@ class Update extends Component {
             className={`step-indicator ${currentStep === 1 ? 'active': null}`}
           onClick={() => {this.setStep(1)}}
           >
-            Bank Account
+            Bank Verification
+          </span>
+
+          <span
+            className={`step-indicator ${currentStep === 2 ? 'active': null}`}
+          onClick={() => {this.setStep(2)}}
+          >
+            Funding Sources
           </span>
         </div>
 
