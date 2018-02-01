@@ -42,8 +42,9 @@ class IAVStep extends Component {
     API.generateIAVToken(dwollaId, user.token).then((data) => {
       window.dwolla.iav.start(data.data.token, {
         container: 'iav-container'
-      }, (e) => {
+      }, (e, res) => {
         clearInterval(this.interval)
+        console.log(res)
       });
     })
     .catch((error) => {

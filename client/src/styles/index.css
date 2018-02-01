@@ -6682,12 +6682,13 @@ html,
   border-width: 1px;
   border-style: solid;
   padding: 8px;
-  display: inline; }
+  display: inline;
+  background-color: #E5382E;
+  color: #fff; }
   .verify-badge .oi {
     margin-right: 8px; }
   .verify-badge.verified {
-    background-color: #47D09D;
-    color: #fff; }
+    background-color: #47D09D; }
 
 .side-modal {
   position: fixed;

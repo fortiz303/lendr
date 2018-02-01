@@ -46,7 +46,7 @@ class Profile extends Component {
   };
 
   render() {
-    const {match, user, profile} = this.props;
+    const {match, user, profile, dwollaUser} = this.props;
 
     // am I looking at myself? if so, enable settings stuff
     const isUser = user && profile && user.id === profile.id;
@@ -104,6 +104,19 @@ class Profile extends Component {
                   </li> : null
               }
             </ul>
+          </div>
+          <div className="col d-flex justify-content-end">
+            {
+              _.get(dwollaUser, 'success', false) ?
+                <span className="verify-badge verified">
+                  <span class="oi oi-check"> </span>
+                  Verified
+                </span> :
+                <span className="verify-badge">
+                  <span class="oi oi-circle-x"></span>
+                  Not Verified
+                </span>
+            }
           </div>
         </div>
         <hr />

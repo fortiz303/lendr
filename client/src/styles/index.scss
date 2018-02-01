@@ -132,13 +132,14 @@ html,
   border-style: solid;
   padding: 8px;
   display:  inline;
+  background-color: $danger-color;
+  color: $white;
   .oi {
     margin-right: 8px;
   }
   small {}
   &.verified {
     background-color: $success-color;
-    color: $white;
   }
 
 }

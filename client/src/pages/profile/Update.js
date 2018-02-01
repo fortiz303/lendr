@@ -42,15 +42,6 @@ class Update extends Component {
         <div className="row d-flex align-items-center justify-content-between">
           <img className="profile-picture" src="https://placehold.it/100x100" alt="profile" />
           <h4>{user.email}</h4>
-          {
-            _.get(dwollaUser, 'success', false) ?
-              <span className="verify-badge verified">
-                <span class="oi oi-check"> </span>
-                Verified!<br />
-                <small>You can send and receive money</small>
-              </span> :
-              null
-          }
         </div>
         <div className="row">
         </div>
