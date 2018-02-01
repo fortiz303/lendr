@@ -117,7 +117,10 @@ function getClient(id) {
     return false
   } else {
     return dwollaClient.auth.client().then(client => {
-      return client.get(`customers/${id}`)
+      const clientPromise = client.get(`customers/${id}`);
+      const fundingPromise = client.get(`customers/${id}/funding-sources`);
+
+      return Promise.all([clientPromise, fundingPromise]);
     })
     .catch((error) => {
       return error
@@ -146,7 +149,19 @@ function getIAVToken(dwolla_id) {
     }
 
   })
-}
+};
+
+// function getFundingSources(dwolla_id) {
+//   return new Promise((resolve, reject) => {
+//     if (!dwolla_id) {
+//       reject('No dwolla ID passed');
+//     } else {
+//       dwollaClient.auth.client().then(client => {
+//         client.get
+//       })
+//     }
+//   })
+// }
 
 // createClient('null', 'Peter', 'Margaritoff', 'pmargaritoff@gmail.com')
 
@@ -169,6 +184,8 @@ router.use((req, res, next) => {
   }
 });
 
+
+// Generates a one time token for IAV flow
 router.post('/iav', (req, res, next) => {
   const dwollaUrl = req.body.dwolla_token;
   getIAVToken(dwollaUrl)
@@ -180,22 +197,30 @@ router.post('/iav', (req, res, next) => {
     })
 });
 
+// Gets a dwolla users info & their funding sources
 router.get('/user', (req, res, next) => {
   const dwollaUrl = req.headers.dwolla_id;
-
   getClient(dwollaUrl)
     .then((data) => {
-      res.status(200).json({success: true, data: data.body});
+      const dwollaData = {
+        success: true,
+        data: _.get(data, '[0].body', {}),
+        funding: _.get(data, '[1].body._embedded.funding-sources', [])
+      }
+      res
+        .status(200)
+        .json({
+          success: true,
+          data: dwollaData
+        });
     })
     .catch((error) => {
       res.status(500).json({success: false, error: error})
     })
-
 });
 
-// Post a new review
+// Creates or updates a dwolla user
 router.post('/create', (req, res, next) => {
-  console.log(req)
   createClient(
     req.body.firstName,
     req.body.lastName,
@@ -227,15 +252,12 @@ router.post('/create', (req, res, next) => {
         })
     } else if (_.get(data, 'body', false)) {
       // the response from an update call
-      console.lgo(data)
       res.status(200).json({success: true, data: data.body});
     } else {
-      console.log(data)
       res.status(500).json({success: false, error: 'Unable to get Dwolla User ID but user should be created.'})
     }
   })
   .catch((error) => {
-    console.log(error)
     res.status(500).json({success: false, error: error});
   });
 
