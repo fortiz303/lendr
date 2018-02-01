@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import DwollaStep from './DwollaStep';
@@ -36,6 +37,25 @@ class Update extends Component {
     const {currentStep} = this.state;
     const {dwollaUser, user} = this.props;
 
+    const settingsInfoScreen =
+      <div className="container">
+        <div className="row d-flex align-items-center justify-content-between">
+          <img className="profile-picture" src="https://placehold.it/100x100" alt="profile" />
+          <h4>{user.email}</h4>
+          {
+            _.get(dwollaUser, 'success', false) ?
+              <span className="verify-badge verified">
+                <span class="oi oi-check"> </span>
+                Verified!<br />
+                <small>You can send and receive money</small>
+              </span> :
+              null
+          }
+        </div>
+        <div className="row">
+        </div>
+      </div>
+
     return (
       <div className="row settings-wrapper">
         <div className="col-lg-2 step-wrapper">
@@ -61,17 +81,7 @@ class Update extends Component {
         </div>
 
         <div className="col-lg-10">
-          <img src="https://placehold.it/100x100" alt="profile" />
-          <h1>{user.email}</h1>
-          {
-            dwollaUser ?
-              <span className="verify-badge verified">
-                <span class="oi oi-check"> </span>
-                Verified!<br />
-                <small>You can send and receive money</small>
-              </span> :
-              null
-          }
+          {settingsInfoScreen}
           <hr />
           {this.renderCurrentScreen()}
         </div>

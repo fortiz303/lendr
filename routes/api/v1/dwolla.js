@@ -112,12 +112,12 @@ function createClient(
   })
 }
 
-function getClient(url) {
-  if (!url) {
+function getClient(id) {
+  if (!id) {
     return false
   } else {
     return dwollaClient.auth.client().then(client => {
-      return client.get(url)
+      return client.get(`customers/${id}`)
     })
     .catch((error) => {
       return error
@@ -195,6 +195,7 @@ router.get('/user', (req, res, next) => {
 
 // Post a new review
 router.post('/create', (req, res, next) => {
+  console.log(req)
   createClient(
     req.body.firstName,
     req.body.lastName,
@@ -210,7 +211,7 @@ router.post('/create', (req, res, next) => {
   )
   .then((data) => {
     const dwollaUrl = data.headers.get('location');
-    const dwollaSplit = dwollaUr.split('/');
+    const dwollaSplit = dwollaUrl.split('/');
     const dwolla_id = dwollaSplit[dwollaSplit.length - 1];
 
     if (dwolla_id) {
@@ -226,12 +227,15 @@ router.post('/create', (req, res, next) => {
         })
     } else if (_.get(data, 'body', false)) {
       // the response from an update call
+      console.lgo(data)
       res.status(200).json({success: true, data: data.body});
     } else {
-      return res.status(500).json({success: false, error: 'Unable to get Dwolla User ID but user should be created.'})
+      console.log(data)
+      res.status(500).json({success: false, error: 'Unable to get Dwolla User ID but user should be created.'})
     }
   })
   .catch((error) => {
+    console.log(error)
     res.status(500).json({success: false, error: error});
   });
 
