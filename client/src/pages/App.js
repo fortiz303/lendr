@@ -39,17 +39,23 @@ import NotificationManager from '../components/NotificationManager';
 
 import LoginForm from './LoginForm';
 
-// import ioClient from 'socket.io-client'
+import ioClient from 'socket.io-client'
 
 import particleParams from '../particleParams';
 import Particles from 'react-particles-js';
 
-// let io = ioClient();
+let io = ioClient();
 
 
 /* eslint-disable */
 const isProduction = false;
 /* eslint-enable */
+
+
+const customMiddleWare = store => next => action => {
+  console.log("Middleware triggered:", action);
+  next(action);
+}
 
 let store;
 
@@ -99,20 +105,15 @@ class Wrapper extends Component {
       }
     }
 
-    // io.on('FETCH_ALL_TRANSACTIONS', (data) => {
-    //   dispatch({
-    //     type: 'FETCH_ALL_TRANSACTIONS',
-    //     data: data
-    //   });
-    // });
 
-    // io.on('TRANSACTION_LOCKED', function(socket) {
-    //   console.log('trans locked', socket)
-    // })
+    io.on('SOCKET__TRANSACTION_LOCKED', (socket) => {
+      dispatch({
+        type: 'SOCKET__TRANSACTION_LOCKED',
+        transactionId: socket.transactionId
+      })
+    })
 
-    // io.on('TRANSACTION_FREED', function(socket) {
-    //   console.log('trans freed', socket)
-    // })
+
   };
 
   render() {

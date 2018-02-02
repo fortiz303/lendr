@@ -1,6 +1,9 @@
+import _ from 'lodash';
+
 const initialState = {
   transactionFeed: []
 };
+
 export default function transactionReduced(state = initialState, action) {
   switch (action.type) {
     case 'SOCKET_NEW_TRANSACTION_SUCCESS':
@@ -40,6 +43,10 @@ export default function transactionReduced(state = initialState, action) {
         ...state,
         transactionFeed: action.data
       }
+    case 'SOCKET__TRANSACTION_LOCKED': {
+      console.log(state)
+      return state
+    }
     default:
       return state;
   }

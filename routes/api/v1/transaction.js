@@ -91,6 +91,7 @@ router.post('/new', (req, res, next) => {
 
 router.get('/lock/:transactionId', (req, res, next) => {
   const transactionId = req.params.transactionId;
+
   knex('transactions')
     .where('id', '=', transactionId)
     .update({
@@ -103,7 +104,10 @@ router.get('/lock/:transactionId', (req, res, next) => {
         data: row[0]
       })
 
-      socketApi.sendUpdates('TRANSACTION_LOCKED', {transactionId: transactionId});
+      socketApi.sendUpdates(
+        'SOCKET__TRANSACTION_LOCKED',
+        {transactionId: transactionId}
+      );
     })
     .catch((error) => {
       res.status(500).json({
