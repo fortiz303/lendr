@@ -4,6 +4,51 @@ const headers = new Headers({
 
 export const API = {
   // Dwolla
+  // Makes a funding source primary
+  makePrimary(funding_source_id, user_id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          funding_source_id: funding_source_id,
+          token: token,
+          user_id: user_id
+        })
+      };
+
+      fetch('/api/v1/dwolla/set-primary-funding-source', opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  removeFundingSource(funding_source_id, user_id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          user_id: user_id,
+          funding_source_id: funding_source_id,
+          token: token,
+        })
+      };
+
+      fetch('/api/v1/dwolla/remove-funding-source', opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   // Generates an IAV Token 
   generateIAVToken(dwolla_token, token) {
     return new Promise((resolve, reject) => {

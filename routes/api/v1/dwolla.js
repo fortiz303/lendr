@@ -150,7 +150,26 @@ function getIAVToken(dwolla_id) {
 
   })
 };
-
+function removeFundingSource(funding_id) {
+  return new Promise((resolve, reject) => {
+    if (!funding_id) {
+      reject('No funding source id passed');
+    } else {
+      dwollaClient.auth.client().then(client => {
+        client.post(`funding-sources/${funding_id}`, {removed: true})
+          .then((data) => {
+            resolve(data)
+          })
+          .catch((error) => {
+            reject(error)
+          })
+      })
+      .catch((error) => {
+        reject(error);
+      })
+    }
+  })
+};
 // function getFundingSources(dwolla_id) {
 //   return new Promise((resolve, reject) => {
 //     if (!dwolla_id) {
@@ -212,6 +231,46 @@ router.get('/user', (req, res, next) => {
         .json({
           ...dwollaData
         });
+    })
+    .catch((error) => {
+      res.status(500).json({success: false, error: error})
+    })
+});
+
+router.post('/set-primary-funding-source', (req, res, next) => {
+  const primaryFundingId = req.body.funding_source_id;
+  const userId = req.body.user_id;
+
+  knex('users')
+    .where('id', '=', userId)
+    .update({
+      primary_funding_id: primaryFundingId
+    })
+    .then((row) => {
+      res.status(200).json({success: true, data: row[0]})
+    })
+    .catch((error) => {
+      res.status(500).json({success: false, error: error})
+    })
+});
+
+router.post('/remove-funding-source', (req, res, next) => {
+  const userId = req.body.user_id;
+  const funding_id = req.body.funding_source_id;
+
+  removeFundingSource(funding_id)
+    .then((data) => {
+      knex('users')
+        .where('id', '=', userId)
+        .update({
+          primary_funding_id: null
+        })
+        .then((row) => {
+          res.status(200).json({success: true, data: 'removed funding source'})
+        })
+        .catch((error) => {
+          res.status(500).json({success: false, error: error})
+        })
     })
     .catch((error) => {
       res.status(500).json({success: false, error: error})

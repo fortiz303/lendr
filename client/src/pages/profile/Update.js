@@ -18,13 +18,29 @@ class Update extends Component {
     const {currentStep} = this.state;
 
     const profileStep =
-      <div className="step">
-        <form>
-          <div className="form-group">
-            <label htmlFor="exampleFormControlInput1">Email address</label>
-            <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+      <div className="step"> 
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <h3 className="font-weight-light">Your details</h3>
+              <h6 className="font-weight-light">These are visible to everyone</h6>
+              <hr />
+            </div>
           </div>
-        </form>
+          <div className="row">
+            <div className="col-xl-2">
+              <img className="profile-picture" src="https://placehold.it/100x100" alt="profile" />
+            </div>
+            <div className="col">
+              <form>
+                <div className="form-group">
+                  <label htmlFor="exampleFormControlInput1">Email address</label>
+                  <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
 
     const iavStep = <IAVStep user={user} />;
@@ -36,16 +52,8 @@ class Update extends Component {
   render() {
     const {currentStep} = this.state;
     const {dwollaUser, user} = this.props;
-
-    const settingsInfoScreen =
-      <div className="container">
-        <div className="row d-flex align-items-center justify-content-between">
-          <img className="profile-picture" src="https://placehold.it/100x100" alt="profile" />
-          <h4>{user.email}</h4>
-        </div>
-        <div className="row">
-        </div>
-      </div>
+    
+    const dwollaLoaded = _.get(dwollaUser, 'success', false);
 
     return (
       <div className="row settings-wrapper">
@@ -57,23 +65,23 @@ class Update extends Component {
             Profile
           </span>
           <span
-            className={`step-indicator ${currentStep === 1 ? 'active': null}`}
-          onClick={() => {this.setStep(1)}}
+              className={`step-indicator ${currentStep === 1 ? 'active': null}`}
+            onClick={() => {this.setStep(1)}}
           >
             Bank Verification
           </span>
 
-          <span
-            className={`step-indicator ${currentStep === 2 ? 'active': null}`}
-          onClick={() => {this.setStep(2)}}
-          >
-            Funding Sources
-          </span>
+          {dwollaLoaded ? 
+            <span
+                className={`step-indicator ${currentStep === 2 ? 'active': null}`}
+              onClick={() => {this.setStep(2)}}
+            >
+              Funding Sources
+            </span> : null
+          }
         </div>
 
         <div className="col-lg-10">
-          {settingsInfoScreen}
-          <hr />
           {this.renderCurrentScreen()}
         </div>
       </div>

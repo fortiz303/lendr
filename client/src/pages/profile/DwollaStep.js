@@ -174,160 +174,174 @@ class DwollaStep extends Component {
 
     return (
       <div className="step">
-        <p>In order to get you set up, we will need a few things. Please fill out the form below to set up a funding source.</p>
-        <form>
+        <div className="container">
           <div className="row">
             <div className="col">
-              <div className="form-group">
-                <label>First Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="first name..."
-                  onChange={this.updateFirstName}
-                  value={firstName}
-                />
-              </div>
-            </div>
-            <div className="col">
-              <div className="form-group">
-                <label>Last Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="last name..."
-                  onChange={this.updateLastName}
-                  value={lastName}
-                />
-              </div>
+              <h3 className="font-weight-light">Account Verification</h3>
+              <h6 className="font-weight-light">To ensure the safety and privacy of your account, we need to verify your identity.</h6>
+              <hr />
             </div>
           </div>
 
           <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <label>Date of Birth</label>
-                <div className="col">
-                  <input
-                    className="form-control"
-                    type="number"
-                    placeholder="dd"
-                    onChange={this.updateDay}
-                    value={day}
-                 />
-
-                  <input
-                    className="form-control"
-                    type="number"
-                    placeholder="mm"
-                    onChange={this.updateMonth}
-                    value={month}
-                  />
-
-                  <input
-                    className="form-control"
-                    type="number"
-                    placeholder="yyyy"
-                    onChange={this.updateYear}
-                    value={year}
-                  />
+            <div className="container">
+              <p>In order to get you set up, we will need a few things. Please fill out the form below to set up a funding source.</p>
+              <form>
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label>First Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="first name..."
+                        onChange={this.updateFirstName}
+                        value={firstName}
+                      />
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="form-group">
+                      <label>Last Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="last name..."
+                        onChange={this.updateLastName}
+                        value={lastName}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="col">
-              <div className="form-group">
-                <label>Email Address</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="email address"
-                  onChange={this.updateEmail}
-                  value={email}
-                />
-              </div>
-            </div>
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label>Date of Birth</label>
+                      <div className="col">
+                        <input
+                          className="form-control"
+                          type="number"
+                          placeholder="dd"
+                          onChange={this.updateDay}
+                          value={day}
+                       />
 
-            <div className="col">
-              <div className="form-group">
-                <label>Last 4 Digits of Social Security</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="ssn"
-                  onChange={this.updateSsn}
-                  value={ssn}
-                />
-              </div>
+                        <input
+                          className="form-control"
+                          type="number"
+                          placeholder="mm"
+                          onChange={this.updateMonth}
+                          value={month}
+                        />
+
+                        <input
+                          className="form-control"
+                          type="number"
+                          placeholder="yyyy"
+                          onChange={this.updateYear}
+                          value={year}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col">
+                    <div className="form-group">
+                      <label>Email Address</label>
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="email address"
+                        onChange={this.updateEmail}
+                        value={email}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col">
+                    <div className="form-group">
+                      <label>Last 4 Digits of Social Security</label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="ssn"
+                        onChange={this.updateSsn}
+                        value={ssn}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label>Address</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="address1"
+                        onChange={this.updateAddress}
+                        value={address1}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col">
+                    <div className="form-group">
+                      <label>City</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="city"
+                        onChange={this.updateCity}
+                        value={city}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label>Zip Code</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="zip code"
+                        onChange={this.updateZipCode}
+                        value={postalCode}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col">
+                    <div className="form-group">
+                      <label>State</label>
+                      <select
+                        type="select"
+                        className="form-control"
+                        onChange={this.updateState}
+                        value={state}
+                      >
+                        {US_STATES.map((c, i) => {
+                          return <option key={`${c.short}-${i}`}value={c.short}>{c.long}</option>
+                        })}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <button
+                className="btn btn-block btn-primary"
+                type="submit"
+                onClick={() => {this.handleSubmit()}}
+              >
+                Submit
+              </button>
             </div>
           </div>
-          <hr />
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <label>Address</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="address1"
-                  onChange={this.updateAddress}
-                  value={address1}
-                />
-              </div>
-            </div>
-
-            <div className="col">
-              <div className="form-group">
-                <label>City</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="city"
-                  onChange={this.updateCity}
-                  value={city}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <label>Zip Code</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="zip code"
-                  onChange={this.updateZipCode}
-                  value={postalCode}
-                />
-              </div>
-            </div>
-
-            <div className="col">
-              <div className="form-group">
-                <label>State</label>
-                <select
-                  type="select"
-                  className="form-control"
-                  onChange={this.updateState}
-                  value={state}
-                >
-                  {US_STATES.map((c, i) => {
-                    return <option key={`${c.short}-${i}`}value={c.short}>{c.long}</option>
-                  })}
-                </select>
-              </div>
-            </div>
-          </div>
-        </form>
-
-        <button
-          className="btn btn-block btn-primary"
-          type="submit"
-          onClick={() => {this.handleSubmit()}}
-        >
-          Submit
-        </button>
+        </div>
       </div>
     );
   }

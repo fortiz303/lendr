@@ -3,10 +3,12 @@ import {API} from '../../API'
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import Script from 'react-load-script';
+import userActions from '../../actions/userActions';
 
 class IAVStep extends Component {
   state = {
-    scriptLoaded: false
+    scriptLoaded: false,
+    displayIav: false
   };
 
   handleScriptLoad = () => {
@@ -33,7 +35,7 @@ class IAVStep extends Component {
   };
 
   initializeIAV = () => {
-    const {dwollaUser, user} = this.props;
+    const {dwollaUser, user, dispatch} = this.props;
 
     const editHref = _.get(dwollaUser, 'data._links.edit.href', '');
     const editHrefSplit = editHref.split('/');
@@ -44,7 +46,11 @@ class IAVStep extends Component {
         container: 'iav-container'
       }, (e, res) => {
         clearInterval(this.interval)
-        console.log(res)
+
+        if (dwollaId && !e) {
+          dispatch(userActions.fetchDwollaUser(dwollaId, user.token));
+        }
+
       });
     })
     .catch((error) => {
@@ -52,16 +58,93 @@ class IAVStep extends Component {
       return error
     });
   };
+  makePrimary = (id) => {
+    const {dwollaUser, user, dispatch} = this.props;
 
+    const editHref = _.get(dwollaUser, 'data._links.edit.href', '');
+    const editHrefSplit = editHref.split('/');
+    const dwollaId = editHrefSplit[editHrefSplit.length - 1];
+
+    API.makePrimary(id, user.id, user.token)
+      .then((data) => {
+        dispatch(userActions.fetchDwollaUser(dwollaId, user.token));
+      })
+      .then(() => {
+        dispatch(userActions.fetchById(user.id, user.token));
+      })
+      .catch((error) => {
+        console.log('Error making funding source primary');
+      })
+  };
+
+  remove = (id) => {
+    const {dwollaUser, user, dispatch} = this.props;
+
+    const editHref = _.get(dwollaUser, 'data._links.edit.href', '');
+    const editHrefSplit = editHref.split('/');
+    const dwollaId = editHrefSplit[editHrefSplit.length - 1];
+
+    API.removeFundingSource(id, user.id, user.token)
+      .then((data) => {
+        dispatch(userActions.fetchDwollaUser(dwollaId, user.token));
+      })
+      .catch((error) => {
+        console.log('Error making funding source primary');
+      })
+  };
+  renderFundingSources = () => {
+    const {dwollaUser, user} = this.props;
+    return dwollaUser.funding.map((current, index) => {
+      const isPrimary = user.primary_funding_id === current.id;
+      return current.type === 'bank' && !current.removed ?
+        <div className={`card feed-card funding-source-card ${isPrimary ? 'settled' : null}`}>
+          {
+            isPrimary ? 
+              <div className="card-header bg-success text-white">
+                Active
+              </div> : 
+              <div className="card-header bg-secondary">
+                Inactive
+              </div>
+          }
+          <div className="card-body">
+            <h5 className="card-title">{current.bankName}</h5>
+            <h6 className="card-subtitle mb-2 text-muted">{current.name}</h6>
+            {!isPrimary ? <a href="#" onClick={() => {this.makePrimary(current.id)}} className="card-link">Make Primary</a> : null}
+            <a href="#" onClick={() => {this.remove(current.id)}} className="card-link">Remove</a>
+          </div>
+        </div> : null
+    })
+  }
   render() {
-    return (
-      <div className="step" id="iav-container">
-          Funding sources
+    const {dwollaUser} = this.props;
 
-          <Script
-            url="https://cdn.dwolla.com/1/dwolla.js"
-            onLoad={this.handleScriptLoad.bind(this)}
-          />
+    const content = _.get(dwollaUser, 'funding', []).length ? 
+      this.renderFundingSources() : null;
+
+    return (
+      <div className="step">
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <h3 className="font-weight-light">Account Verification</h3>
+              <h6 className="font-weight-light">To ensure the safety and privacy of your account, we need to verify your identity.</h6>
+              <hr />
+            </div>
+          </div>
+
+          <div className="col">
+            <div className="card-deck">
+              {content}
+            </div>
+            <div id="iav-container">
+              <Script
+                url="https://cdn.dwolla.com/1/dwolla.js"
+                onLoad={this.handleScriptLoad.bind(this)}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
