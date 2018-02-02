@@ -169,7 +169,8 @@ class DwollaStep extends Component {
       day,
       month,
       year,
-      ssn
+      ssn,
+      dwollaUser
     } = this.state;
 
     return (
@@ -185,7 +186,6 @@ class DwollaStep extends Component {
 
           <div className="row">
             <div className="container">
-              <p>In order to get you set up, we will need a few things. Please fill out the form below to set up a funding source.</p>
               <form>
                 <div className="row">
                   <div className="col">
@@ -214,37 +214,46 @@ class DwollaStep extends Component {
                   </div>
                 </div>
 
+
                 <div className="row">
-                  <div className="col">
-                    <div className="form-group">
-                      <label>Date of Birth</label>
+                  {
+                    _.get(dwollaUser, 'success', false) ?
                       <div className="col">
-                        <input
-                          className="form-control"
-                          type="number"
-                          placeholder="dd"
-                          onChange={this.updateDay}
-                          value={day}
-                       />
-
-                        <input
-                          className="form-control"
-                          type="number"
-                          placeholder="mm"
-                          onChange={this.updateMonth}
-                          value={month}
-                        />
-
-                        <input
-                          className="form-control"
-                          type="number"
-                          placeholder="yyyy"
-                          onChange={this.updateYear}
-                          value={year}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                        <div className="form-group">
+                          <label>Date of Birth</label>
+                          <div className="row">
+                            <div className="col">
+                              <input
+                                className="form-control"
+                                type="number"
+                                placeholder="dd"
+                                onChange={this.updateDay}
+                                value={day}
+                             />
+                             </div>
+                             <div className="col">
+                              <input
+                                className="form-control"
+                                type="number"
+                                placeholder="mm"
+                                onChange={this.updateMonth}
+                                value={month}
+                              />
+                            </div>
+                            <div className="col">
+                              <input
+                                className="form-control"
+                                type="number"
+                                placeholder="yyyy"
+                                onChange={this.updateYear}
+                                value={year}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div> : 
+                      null
+                  }
 
                   <div className="col">
                     <div className="form-group">
@@ -258,19 +267,21 @@ class DwollaStep extends Component {
                       />
                     </div>
                   </div>
-
-                  <div className="col">
-                    <div className="form-group">
-                      <label>Last 4 Digits of Social Security</label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        placeholder="ssn"
-                        onChange={this.updateSsn}
-                        value={ssn}
-                      />
-                    </div>
-                  </div>
+                  {
+                    _.get(dwollaUser, 'success', false) ?
+                      <div className="col">
+                        <div className="form-group">
+                          <label>Last 4 Digits of Social Security</label>
+                          <input
+                            type="password"
+                            className="form-control"
+                            placeholder="ssn"
+                            onChange={this.updateSsn}
+                            value={ssn}
+                          />
+                        </div>
+                      </div> : null
+                  }
                 </div>
                 <hr />
                 <div className="row">

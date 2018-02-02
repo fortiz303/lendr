@@ -137,11 +137,20 @@ class IAVStep extends Component {
             <div className="card-deck">
               {content}
             </div>
-            <div id="iav-container">
-              <Script
-                url="https://cdn.dwolla.com/1/dwolla.js"
-                onLoad={this.handleScriptLoad.bind(this)}
-              />
+            <div className="card-deck">
+              <div className="card">
+                <div className="card-header bg-secondary">
+                  Add Funding Sources
+                </div>
+                <div className="card-body">
+                  <div id="iav-container">
+                    <Script
+                      url="https://cdn.dwolla.com/1/dwolla.js"
+                      onLoad={this.handleScriptLoad.bind(this)}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
