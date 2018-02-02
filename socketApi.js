@@ -8,6 +8,10 @@ io.on('connection', function(socket){
     console.log('A user connected');
 });
 
+// setTimeout(() => {
+//   io.sockets.emit('SOCKET__TEST', {data: Math.random()})
+// }, 1000)
+
 socketApi.sendNotification = function() {
   io.sockets.emit('hello', {msg: 'Hello World!'});
 };

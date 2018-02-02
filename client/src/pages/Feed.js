@@ -30,6 +30,7 @@ class Feed extends Component {
     return transactionFeed && transactionFeed.length && user ? transactionFeed.map((current, index) => {
       const isLocked = current.status === 'locked';
       // was the card made by me?
+      console.log(current)
       return (
         <TransactionItem
           showRepaymentButton={true}

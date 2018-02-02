@@ -105,8 +105,8 @@ router.get('/lock/:transactionId', (req, res, next) => {
       })
 
       socketApi.sendUpdates(
-        'SOCKET__TRANSACTION_LOCKED',
-        {transactionId: transactionId}
+        'SOCKET__TRANSACTION_UPDATE',
+        {transactionId: transactionId, status: 'locked'}
       );
     })
     .catch((error) => {
@@ -132,7 +132,10 @@ router.get('/free/:transactionId', (req, res, next) => {
         success: true,
         data: row[0]
       })
-      socketApi.sendUpdates('TRANSACTION_FREED', {transactionId: transactionId});
+      socketApi.sendUpdates(
+        'SOCKET__TRANSACTION_UPDATE',
+        {transactionId: transactionId, status: 'pending'}
+      );
     })
     .catch((error) => {
       res.status(500).json({

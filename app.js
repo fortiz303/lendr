@@ -14,8 +14,9 @@ var apiAdmin = require('./routes/api/v1/admin');
 var apiReviews = require('./routes/api/v1/reviews');
 var apiDwolla = require('./routes/api/v1/dwolla');
 
-var app = express();
+var socketApi = require('./socketApi');
 
+var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -27,6 +28,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/client/build')));
+
 
 // API Routes
 app.use('/api/v1/user', apiUser)

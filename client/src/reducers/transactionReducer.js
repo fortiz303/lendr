@@ -43,9 +43,18 @@ export default function transactionReduced(state = initialState, action) {
         ...state,
         transactionFeed: action.data
       }
-    case 'SOCKET__TRANSACTION_LOCKED': {
-      console.log(state)
-      return state
+    case 'SOCKET__TRANSACTION_UPDATE': {
+      const found = _.findIndex(state.transactionFeed, {id: Number(action.transactionId)})
+      const newFeed = [...state.transactionFeed];
+
+      if (newFeed[found]) {
+        newFeed[found].status = action.status;
+      }
+
+      return {
+        ...state,
+        transactionFeed: newFeed
+      }
     }
     default:
       return state;

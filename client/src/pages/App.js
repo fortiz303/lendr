@@ -106,10 +106,19 @@ class Wrapper extends Component {
     }
 
 
-    io.on('SOCKET__TRANSACTION_LOCKED', (socket) => {
+    io.on('SOCKET__TRANSACTION_UPDATE', (socket) => {
       dispatch({
-        type: 'SOCKET__TRANSACTION_LOCKED',
-        transactionId: socket.transactionId
+        type: 'SOCKET__TRANSACTION_UPDATE',
+        transactionId: socket.transactionId,
+        status: socket.status
+      })
+    })
+
+    io.on('SOCKET__TEST', (socket) => {
+      dispatch({
+        type: 'NEW_STATUS',
+        message: socket.data,
+        className: 'alert-warning'
       })
     })
 
@@ -127,6 +136,7 @@ class Wrapper extends Component {
     // });
     return (
       <div className={`container-fluid ${isLoginPage ? 'h-100' : null}`}>
+        {user ? user.id : null}
         {isLoginPage ?
             <Particles className="particle-wrapper" params={particleParams} width={'100%'} height={'100%'}/> : null
         }
