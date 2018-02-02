@@ -33,11 +33,12 @@ router.use((req, res, next) => {
 });
 
 router.post('/accept', (req, res, next) => {
+  console.log(req)
   knex('transactions')
     .where('id', '=', req.body.transactionId)
     .update({
       status: 'accepted',
-      accepted_by_user_id: req.body.fromUser
+      accepted_by_user_id: Number(req.body.fromUser)
     })
     .then((row) => {
       res.json({
@@ -45,12 +46,16 @@ router.post('/accept', (req, res, next) => {
         message: 'Transaction updated'
       })
 
-      socketApi.sendUpdates('TRANSACTION_ACCEPTED', {transactionId: req.body.transactionId});
+      socketApi.sendUpdates(
+        'SOCKET__TRANSACTION_UPDATE',
+        {transactionId: req.body.transactionId, status: 'accepted'}
+      );
     })
     .catch((error) => {
       res.status(500).json({
         success: false,
-        message: 'Transaction failed to update'
+        message: 'Transaction failed to update',
+        error: error
       })
     })
 });
@@ -159,6 +164,10 @@ router.get('/repay/:transactionId', (req, res, next) => {
         success: true,
         data: row[0]
       })
+      socketApi.sendUpdates(
+        'SOCKET__TRANSACTION_UPDATE',
+        {transactionId: transactionId, status: 'settled'}
+      );
     })
     .catch((error) => {
       res.status(500).json({
