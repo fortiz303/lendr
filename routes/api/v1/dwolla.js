@@ -49,7 +49,7 @@ var accountToken = new dwollaClient.Token({access_token: TOKEN});
 // Flow:
 // 1) User signs up for Rosco
 // 2) In the profile, surface a: 'Add Payment Source' button
-// 3) Once clicked, user is presented with a form with the info below
+// 3) Once clicke d, user is presented with a form with the info below
 
 
 // Clicking 'add bank account' creates a dwolla user
@@ -170,6 +170,7 @@ function removeFundingSource(funding_id) {
     }
   })
 };
+
 // function getFundingSources(dwolla_id) {
 //   return new Promise((resolve, reject) => {
 //     if (!dwolla_id) {

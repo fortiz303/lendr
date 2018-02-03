@@ -33,7 +33,6 @@ router.use((req, res, next) => {
 });
 
 router.post('/accept', (req, res, next) => {
-  console.log(req)
   knex('transactions')
     .where('id', '=', req.body.transactionId)
     .update({
@@ -239,7 +238,6 @@ router.get('/:transactionId', (req, res, next) => {
 
 router.get('/', (req, res, next) => {
   const userId = req.decoded.id;
-
   knex
     .select()
     .from('transactions')

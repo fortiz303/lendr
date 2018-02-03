@@ -217,7 +217,7 @@ class DwollaStep extends Component {
 
                 <div className="row">
                   {
-                    _.get(dwollaUser, 'success', false) ?
+                    !_.get(dwollaUser, 'success', false) ?
                       <div className="col">
                         <div className="form-group">
                           <label>Date of Birth</label>
@@ -268,7 +268,7 @@ class DwollaStep extends Component {
                     </div>
                   </div>
                   {
-                    _.get(dwollaUser, 'success', false) ?
+                    !_.get(dwollaUser, 'success', false) ?
                       <div className="col">
                         <div className="form-group">
                           <label>Last 4 Digits of Social Security</label>
