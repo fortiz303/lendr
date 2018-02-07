@@ -10,8 +10,28 @@ var router = express.Router();
 var knex = require('knex')(knexConfig);
 var jwt  = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
+var dwolla = require('dwolla-v2');
 
 const socketApi = require('../../../socketApi.js');
+
+// Init dwolla with correct env settings
+var dwollaClient = new dwolla.Client({
+  key: appConfig.dwollaKey,
+  secret: appConfig.dwollaSecret,
+  environment: appConfig.dwollaEnvironment,
+});
+
+const TOKEN = dwollaClient.auth.client()
+  .then((appToken) => {
+    return appToken.get('webhook-subscriptions');
+  })
+  .catch((error) => {
+    console.log('Error getting app token', error);
+    return false;
+  })
+
+var accountToken = new dwollaClient.Token({access_token: TOKEN});
+
 
 router.use((req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -32,31 +52,75 @@ router.use((req, res, next) => {
   }
 });
 
+function returnUser(id) {
+  return new Promise((resolve, reject) => {
+    knex
+      .select()
+      .from('users')
+      .where({id: id})
+      .then((row) => {
+        resolve(row[0])
+      })
+      .catch((error) => {
+        reject(error);
+      })
+  })
+};
+
+function makeTransaction(fromId, toId, amount, fee = '5.00', feeRecipientId = appConfig.roscoDwollaId) {
+  // Takes ROSCO ID's for users, looks them up, retrieves their dwolla id's and kicks off a transaction
+  return new Promise((resolve, reject) => {
+    Promise.all([returnUser(fromId), returnUser(toId)])
+      .then(([fromUser, toUser]) => {
+        const request = {
+          amount: {currency: 'USD', value: amount},
+          clearing: {destination: 'next-available'},
+          _links: {
+            source: {
+              href: `https://api-sandbox.dwolla.com/funding-sources/${fromUser.dwolla_id}`
+            },
+            destination: {
+              href: `https://api-sandbox.dwolla.com/customers/${toUser.dwolla_id}`
+            }
+          },
+          metadata: {
+            paymentId: `loan-${amount}-${fromUser.id}-${toUser.id}`,
+            note: `Loan made from ${fromUser.id} to ${toUser.id}`
+          },
+          // fees: [{
+          //   "_links": {
+          //     "charge-to": {
+          //       "href": `https://api-sandbox.dwolla.com/customers/${feeRecipientId}`
+          //     }
+          //   },
+          //   "amount": {"value": fee, "currency": "USD"}
+          // }]
+        };
+
+        dwollaClient.auth.client()
+          .then(client => {
+            client.post(`transfers`, request)
+              .then((data) => {
+                resolve(data)
+              })
+              .catch((error) => {
+                reject(error)
+              })
+          })
+          .catch((error) => {
+            reject(error);
+          })
+
+      })
+      .catch((error) => {
+        console.log(error)
+      }) 
+  })
+
+
+}
+
 router.post('/accept', (req, res, next) => {
-  // const dwollaRequest = {
-  //   amount: {currency: 'USD', value: amount},
-  //   clearing: {destination: 'next-available'},
-  //   _links: {
-  //     source: {
-  //       href: `https://api-sandbox.dwolla.com/funding-sources/${fromUser}`
-  //     },
-  //     destination: {
-  //       href: `https://api-sandbox.dwolla.com/customers/${toUser}`
-  //     }
-  //   },
-  //   metadata: {
-  //     paymentId: `${req.body.transactionId}-${fromUser}-${toUser}`,
-  //     note: `Transaction acceptance from ${fromUser} to ${toUser}`
-  //   },
-  //   fees: [{
-  //     "_links": {
-  //       "charge-to": {
-  //         "href": `https://api-sandbox.dwolla.com/customers/${appConfig.roscoDwollaId}`
-  //       }
-  //     },
-  //     "amount": {"value": "5.00", "currency": "USD"}
-  //   }]
-  // };
   knex('transactions')
     .where('id', '=', req.body.transactionId)
     .update({
@@ -261,6 +325,13 @@ router.get('/:transactionId', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
+  // makeTransaction(1, 2, 400)
+  //   .then((data) => {
+  //     console.log(data)
+  //   })
+  //   .catch((error) => {
+  //     console.log(error)
+  //   })
   const userId = req.decoded.id;
   knex
     .select()
