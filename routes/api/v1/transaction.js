@@ -33,6 +33,30 @@ router.use((req, res, next) => {
 });
 
 router.post('/accept', (req, res, next) => {
+  // const dwollaRequest = {
+  //   amount: {currency: 'USD', value: amount},
+  //   clearing: {destination: 'next-available'},
+  //   _links: {
+  //     source: {
+  //       href: `https://api-sandbox.dwolla.com/funding-sources/${fromUser}`
+  //     },
+  //     destination: {
+  //       href: `https://api-sandbox.dwolla.com/customers/${toUser}`
+  //     }
+  //   },
+  //   metadata: {
+  //     paymentId: `${req.body.transactionId}-${fromUser}-${toUser}`,
+  //     note: `Transaction acceptance from ${fromUser} to ${toUser}`
+  //   },
+  //   fees: [{
+  //     "_links": {
+  //       "charge-to": {
+  //         "href": `https://api-sandbox.dwolla.com/customers/${appConfig.roscoDwollaId}`
+  //       }
+  //     },
+  //     "amount": {"value": "5.00", "currency": "USD"}
+  //   }]
+  // };
   knex('transactions')
     .where('id', '=', req.body.transactionId)
     .update({
