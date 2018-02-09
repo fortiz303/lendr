@@ -1,6 +1,5 @@
 import {API} from '../API';
 import {dispatchWithTimeout} from '../utils';
-import ioClient from 'socket.io-client'
 
 const transactionActions = {
   repay: (id, token) => {

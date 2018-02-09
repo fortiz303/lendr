@@ -22,7 +22,6 @@ export default class NotificationManager extends Component {
   };
 
   render() {
-    const {message} = this.props;
     const {open} = this.state;
     return (
       <div className="nav-item nav-link notification-link" onMouseEnter={this.openPopout} onMouseLeave={this.closePopout}>

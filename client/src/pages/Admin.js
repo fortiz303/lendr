@@ -6,7 +6,19 @@ import {connect} from 'react-redux';
 import adminActions from '../actions/adminActions';
 import transactionActions from '../actions/transactionActions';
 
+import LoadingButton from '../components/LoadingButton';
+
 class Admin extends Component {
+  state = {
+    loading: false
+  };
+
+  testButton = () => {
+    this.setState({
+      loading: !this.state.loading
+    })
+  };
+
   componentDidUpdate = (prevProps, prevState) => {
     const {user, dispatch} = this.props;
 
@@ -31,16 +43,17 @@ class Admin extends Component {
     const rows = _.get(admin, 'users', []).map((current, index) => {
       return (
         <tr key={`${index}-user-row`}>
-          <td>{current.id}</td>
-          <td>{current.user_name}</td>
-          <td>{current.email}</td>
-          <td>{current.verified}</td>
-          <td>{current.connected_to_dwolla}</td>
-          <td>{current.user_rating}</td>
-          <td>{current.nick}</td>
-          <td>{current.password}</td>
-          <td>{current.created_at}</td>
-          <td>{current.friends}</td>
+          <td>{String(current.id)}</td>
+          <td>{String(current.user_name)}</td>
+          <td>{String(current.email)}</td>
+          <td>{String(current.verified)}</td>
+          <td>{String(current.connected_to_dwolla)}</td>
+          <td>{String(current.user_rating)}</td>
+          <td>{String(current.nick)}</td>
+          <td>{String(current.password)}</td>
+          <td>{String(current.created_at)}</td>
+          <td>{String(current.friends)}</td>
+          <td>{String(current.dwolla_id)}</td>
         </tr>
       );
     });
@@ -58,6 +71,7 @@ class Admin extends Component {
             <th>password</th>
             <th>created_at</th>
             <th>friends</th>
+            <th>dwolla id</th>
           </tr>
         </thead>
         <tbody>
@@ -122,6 +136,15 @@ class Admin extends Component {
   render() {
     return (
       <div className="row">
+
+        <LoadingButton
+          className="btn btn-block btn-primary"
+          onClick={this.testButton}
+          loading={this.state.loading}
+        >
+          Test
+        </LoadingButton>
+
         <div className="col">
           <p className="lead">Transactions</p>
           {this.renderTransactions()}

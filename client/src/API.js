@@ -3,13 +3,127 @@ const headers = new Headers({
 });
 
 export const API = {
+  // Dwolla
+  // Makes a funding source primary
+  makePrimary(funding_source_id, user_id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          funding_source_id: funding_source_id,
+          token: token,
+          user_id: user_id
+        })
+      };
+
+      fetch('/api/v1/dwolla/set-primary-funding-source', opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  removeFundingSource(funding_source_id, user_id, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          user_id: user_id,
+          funding_source_id: funding_source_id,
+          token: token,
+        })
+      };
+
+      fetch('/api/v1/dwolla/remove-funding-source', opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  // Generates an IAV Token 
+  generateIAVToken(dwolla_token, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          dwolla_token: dwolla_token,
+          token: token
+        })
+      };
+
+      fetch('/api/v1/dwolla/iav', opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  // Fetches an existing Dwolla customer
+  fetchDwollaUser(url, token) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: {
+          ...headers,
+          'x-access-token': token,
+          'dwolla_id': url
+        },
+        method: 'GET'
+      };
+
+      fetch(`/api/v1/dwolla/user`, opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data)
+        })
+        .catch((error) => {
+          reject(error)
+        });
+    })
+  },
+  // Creates a new Dwolla 'customer'
+  createNewDwollaUser(data, token, dwolla_id) {
+    return new Promise((resolve, reject) => {
+      const opts = {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+          ...data,
+          token: token,
+          dwolla_id: dwolla_id
+        })
+      };
+
+      fetch('/api/v1/dwolla/create', opts)
+        .then(res => res.json())
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   fetchReviewsForUser(id, token) {
     return new Promise((resolve, reject) => {
       const opts = {
         headers: headers,
         method: 'GET'
       };
-      
+
       fetch(`/api/v1/reviews/${id}`, opts)
         .then(res => res.json())
         .then((data) => {

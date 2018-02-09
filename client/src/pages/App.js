@@ -37,13 +37,25 @@ import Admin from './Admin';
 import Modal from '../components/Modal'
 import NotificationManager from '../components/NotificationManager';
 
+import LoginForm from './LoginForm';
+
 import ioClient from 'socket.io-client'
 
+import particleParams from '../particleParams';
+import Particles from 'react-particles-js';
+
 let io = ioClient();
+
 
 /* eslint-disable */
 const isProduction = false;
 /* eslint-enable */
+
+
+const customMiddleWare = store => next => action => {
+  console.log("Middleware triggered:", action);
+  next(action);
+}
 
 let store;
 
@@ -93,20 +105,24 @@ class Wrapper extends Component {
       }
     }
 
-    io.on('FETCH_ALL_TRANSACTIONS', (data) => {
+
+    io.on('SOCKET__TRANSACTION_UPDATE', (socket) => {
       dispatch({
-        type: 'FETCH_ALL_TRANSACTIONS',
-        data: data
-      });
-    });
+        type: 'SOCKET__TRANSACTION_UPDATE',
+        transactionId: socket.transactionId,
+        status: socket.status
+      })
+    })
 
-    // io.on('TRANSACTION_LOCKED', function(socket) {
-    //   console.log('trans locked', socket)
-    // })
+    io.on('SOCKET__TEST', (socket) => {
+      dispatch({
+        type: 'NEW_STATUS',
+        message: socket.data,
+        className: 'alert-warning'
+      })
+    })
 
-    // io.on('TRANSACTION_FREED', function(socket) {
-    //   console.log('trans freed', socket)
-    // })
+
   };
 
   render() {
@@ -114,13 +130,16 @@ class Wrapper extends Component {
     const shouldDisplayNav = !!user;
     const isLoginPage = window.location.pathname === '/login';
 
-    io.on('connection', function(socket){
-      console.log('socket connected')
-      // socket.emit('test_message', {id: 1, test: 'two', random: Math.random()});
-    });
-
+    // io.on('connection', function(socket){
+    //   console.log('socket connected')
+    //   // socket.emit('test_message', {id: 1, test: 'two', random: Math.random()});
+    // });
     return (
       <div className={`container-fluid ${isLoginPage ? 'h-100' : null}`}>
+        {user ? user.id : null}
+        {isLoginPage ?
+            <Particles className="particle-wrapper" params={particleParams} width={'100%'} height={'100%'}/> : null
+        }
         <Modal active={modal && modal.active} data={modal} />
         {loading ? <div className="loading-bar"></div> : null}
         {
@@ -131,21 +150,19 @@ class Wrapper extends Component {
               </div>
             </div>: null
         }
-        {shouldDisplayNav ?
-          <div className="row">
-            <div className="col">
-              <div className="content-wrapper nav">
-                <div className="col-lg-2 d-flex align-items-center">
-                  <pre className="rosco mb-0 text-muted">rosco</pre>
-                </div>
-                <div className="col d-flex justify-content-end">
-                  <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">help</NavLink>
-                  <NavLink className="nav-item nav-link" to="/login">logout {user.id}</NavLink>
-                </div>
+
+        <div className="row">
+          <div className="col">
+            <div className="content-wrapper nav">
+              <div className="col-lg-2 d-flex align-items-center">
+                <pre className="rosco mb-0 text-muted">rosco</pre>
+              </div>
+              <div className="col d-flex justify-content-end">
+                <LoginForm isLoginPage={isLoginPage} />
               </div>
             </div>
-          </div> : null
-        }
+          </div>
+        </div>
         <div className={`row ${isLoginPage ? 'h-100' : null}`}>
           {shouldDisplayNav ?
             <div className="col-md-4 col-lg-2">
@@ -157,7 +174,7 @@ class Wrapper extends Component {
             </div> : null
           }
 
-          <div className={`${isLoginPage ? 'col justify-content-center align-self-center' : 'col-md-8 col-lg-10'}`}>
+          <div className="col justify-content-center">
             <div className="content-wrapper">
               {this.props.children}
             </div>

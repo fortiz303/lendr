@@ -12,8 +12,11 @@ var apiTransaction = require('./routes/api/v1/transaction');
 var apiAuthentication = require('./routes/api/v1/authentication');
 var apiAdmin = require('./routes/api/v1/admin');
 var apiReviews = require('./routes/api/v1/reviews');
-var app = express();
+var apiDwolla = require('./routes/api/v1/dwolla');
 
+var socketApi = require('./socketApi');
+
+var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -26,12 +29,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/client/build')));
 
+
 // API Routes
 app.use('/api/v1/user', apiUser)
 app.use('/api/v1/auth', apiAuthentication)
 app.use('/api/v1/transaction', apiTransaction)
 app.use('/api/v1/admin', apiAdmin)
 app.use('/api/v1/reviews', apiReviews)
+app.use('/api/v1/dwolla', apiDwolla)
 
 // catch 404 and forward to error handler
 

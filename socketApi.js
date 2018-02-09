@@ -4,16 +4,12 @@ var socketApi = {};
 
 socketApi.io = io;
 
-io.on('connection', function(socket){
+io.on('connection', (socket) => {
     console.log('A user connected');
+
+    socketApi.sendUpdates = (type, data) => {
+      io.sockets.emit(type, data);
+    };
 });
-
-socketApi.sendNotification = function() {
-  io.sockets.emit('hello', {msg: 'Hello World!'});
-};
-
-socketApi.sendUpdates = (type, data) => {
-  io.sockets.emit(type, data);
-};
 
 module.exports = socketApi;

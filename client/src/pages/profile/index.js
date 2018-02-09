@@ -18,26 +18,39 @@ class Profile extends Component {
     const token = _.get(window.sessionStorage, 'token', false);
     const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
 
+    const dwollaId = _.get(user, 'dwolla_id', false);
+
     if (token && id) {
       dispatch(userActions.fetchById(id, token));
+    }
+
+    if (dwollaId && token) {
+      dispatch(userActions.fetchDwollaUser(dwollaId, token));
     }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    const {dispatch, user, match} = this.props;
+    const {dispatch, user, match, dwollaUser} = this.props;
     const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
-    console.log(user)
+
     if (prevProps.user !== this.props.user && id && user.token) {
+      const dwollaId = _.get(user, 'dwolla_id', false);
       dispatch(userActions.fetchById(id, user.token));
+
+      if (dwollaId && !(!!dwollaUser)) {
+        dispatch(userActions.fetchDwollaUser(dwollaId, user.token));
+      }
     }
+
+
   };
 
   render() {
-    const {match, user, profile} = this.props;
+    const {match, user, profile, dwollaUser} = this.props;
 
     // am I looking at myself? if so, enable settings stuff
     const isUser = user && profile && user.id === profile.id;
-    console.log(user, profile)
+
     const foundUser = !!profile;
     const notFound = <p className="lead text-center">loading</p>;
     return foundUser && user && user.id ?
@@ -92,6 +105,19 @@ class Profile extends Component {
               }
             </ul>
           </div>
+          <div className="col d-flex justify-content-end">
+            {
+              _.get(dwollaUser, 'success', false) ?
+                <span className="verify-badge verified">
+                  <span className="oi oi-check"> </span>
+                  Verified
+                </span> :
+                <span className="verify-badge">
+                  <span className="oi oi-circle-x"></span>
+                  Not Verified
+                </span>
+            }
+          </div>
         </div>
         <hr />
 
@@ -137,7 +163,8 @@ const mapStateToProps = (state) => {
   return {
     authStatus: state.authReducer.status,
     user: state.authReducer.user,
-    profile: state.userReducer.profile
+    profile: state.userReducer.profile,
+    dwollaUser: state.userReducer.dwollaUser
   }
 };
 
