@@ -9,4 +9,5 @@ node INITIALIZE_DB.js
 npm start
 
 # Start Client app
-cd client && npm start
+cd client && npm install
+npm start

@@ -4,9 +4,6 @@ import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 
-// todo: make this an environment variable.
-const isProduction = false;
-
 export const configureStore = () => {
   const customMiddleWare = store => next => action => {
     console.log("Middleware triggered:", action);
@@ -16,7 +13,7 @@ export const configureStore = () => {
   const middlewares = [ thunk ];
   const devMiddlewares = [ logger, customMiddleWare ];
 
-  if (!isProduction) {
+  if (process.env.NODE_ENV === 'development') {
     middlewares.push(...devMiddlewares);
   }
 
@@ -27,5 +24,3 @@ export const configureStore = () => {
 }
 
 export const store = configureStore();
-
-debugger;

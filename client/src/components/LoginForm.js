@@ -30,7 +30,7 @@ class LoginForm extends Component {
 
     const clickTarget = e.target;
     const login_popup = this.login_popup;
-    // debugger
+
     if (login_popup && !login_popup.contains(clickTarget) && isOpen) {
       this.handleClose();
     }

@@ -24,22 +24,20 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <div className="router-wrapper">
-            <Switch>
-              <Wrapper>
-                <Route exact path="/login" component={Login}/>
-                <div className="main-content-wrapper">
-                  <div className="container">
-                    <Route exact component={Feed}  path="/" />
-                    <Route exact component={Transaction}  path="/transaction/:id" />
-                    <Route component={Profile} path="/profile/:id?" />
-                    <Route exact component={About} path="/about" />
-                    <Route exact component={Admin} path="/admin" />
-                  </div>
+          <Switch>
+            <Wrapper>
+              <Route exact path="/login" component={Login}/>
+              <div className="main-content-wrapper">
+                <div className="container">
+                  <Route exact component={Feed}  path="/" />
+                  <Route exact component={Transaction}  path="/transaction/:id" />
+                  <Route component={Profile} path="/profile/:id?" />
+                  <Route exact component={About} path="/about" />
+                  <Route exact component={Admin} path="/admin" />
                 </div>
-                </Wrapper>
-            </Switch>
-          </div>
+              </div>
+              </Wrapper>
+          </Switch>
         </Router>
       </Provider>
     );
