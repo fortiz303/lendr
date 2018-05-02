@@ -14,15 +14,18 @@ export const configureStore = () => {
   }
   const logger = createLogger({ collapsed: true });
   const middlewares = [ thunk ];
-  const devMiddlware = [ logger, customMiddleWare ];
+  const devMiddlewares = [ logger, customMiddleWare ];
+
   if (!isProduction) {
-    middlewares.push(...devMiddlware);
+    middlewares.push(...devMiddlewares);
   }
 
-  createStore(
+  return createStore(
     reducers,
-    applyMiddleware(middlewares),
+    applyMiddleware(...middlewares),
   );
 }
 
 export const store = configureStore();
+
+debugger;

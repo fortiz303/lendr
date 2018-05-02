@@ -1,17 +1,12 @@
-# Create DB if not created
-# createdb ___________;
-
-# Create Role if not created
-# createrole ____________;
-
 # Get dependencies
-# npm install
+npm install
 
 # Migrate DB
-# knex migrate:latest
+knex migrate:latest
+node INITIALIZE_DB.js
 
 # Start API
-# npm start
+npm start
 
 # Start Client app
-# npm start
+cd client && npm start
