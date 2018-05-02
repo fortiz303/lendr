@@ -1,11 +1,11 @@
-import _ from 'lodash';
+import { range } from 'lodash';
 import React, {Component} from 'react';
 
 export default class ReviewDisplay extends Component {
   renderStars = () => {
     const {data} = this.props;
 
-    return _.range(data.review_rating).map((current, index) =>{
+    return range(data.review_rating).map((current, index) =>{
       return <span className="oi oi-star" key={`review-display-star-${index}`}></span>
     });
   };

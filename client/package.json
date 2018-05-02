@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "rosco-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,7 +30,6 @@
     "babel-preset-react": "^6.24.1"
   },
   "proxy": "http://localhost:3001",
-  "homepage": ".",
   "scripts": {
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",

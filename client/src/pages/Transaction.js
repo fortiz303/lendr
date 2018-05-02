@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { get } from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import transactionActions from '../actions/transactionActions';
@@ -17,10 +17,10 @@ class Transaction extends Component {
   componentDidMount = () => {
     const {dispatch, transactionFeed, match} = this.props;
 
-    const token = _.get(window.sessionStorage, 'token', false);
+    const token = get(window.sessionStorage, 'token', false);
 
     if (token) {
-      const id = _.get(match, 'params.id', false);
+      const id = get(match, 'params.id', false);
       if (token && !transactionFeed && id) {
         dispatch(transactionActions.fetchById(id, token));
       }
@@ -45,7 +45,7 @@ class Transaction extends Component {
   componentWillUnmount = () => {
     const {dispatch, transaction} = this.props;
     const {hasAcceptedTransaction, allowedToLockUnlock} = this.state;
-    const token = _.get(window.sessionStorage, 'token', false);
+    const token = get(window.sessionStorage, 'token', false);
 
     // this is very wrong
     if (!hasAcceptedTransaction && token && allowedToLockUnlock) {

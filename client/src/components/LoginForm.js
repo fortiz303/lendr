@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { capitalize } from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import authActions from '../actions/authActions';
@@ -147,7 +147,7 @@ class LoginForm extends Component {
               </label>
             </div> : null
           }
-          <button type="submit" className="btn btn-primary btn-block">{_.capitalize(method)}</button>
+          <button type="submit" className="btn btn-primary btn-block">{capitalize(method)}</button>
         </form>
         <hr />
         <div className="login-toggle">

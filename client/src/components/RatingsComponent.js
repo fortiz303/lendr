@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
+import { includes, range } from 'lodash';
 
 const FORWARD_KEYS = [13, 39]
 const BACKWARD_KEYS = [37]
@@ -20,9 +20,9 @@ export default class RatingsComponent extends Component {
   };
 
   handleKeyDown = (e) => {
-    if (_.includes(FORWARD_KEYS, e.keyCode)) {
+    if (includes(FORWARD_KEYS, e.keyCode)) {
       this.props.paginate('fwd');
-    } else if (_.includes(BACKWARD_KEYS, e.keyCode)) {
+    } else if (includes(BACKWARD_KEYS, e.keyCode)) {
       this.props.paginate('back');
     }
   };
@@ -41,7 +41,7 @@ export default class RatingsComponent extends Component {
   renderStars = () => {
     const {rating} = this.state;
 
-    const stars = _.range(MAX_STARS).map((current, index) => {
+    const stars = range(MAX_STARS).map((current, index) => {
       const isActive = (index + 1) <= rating;
       return (
         <span className={`oi oi-star ${isActive ? 'active' : null}`} onClick={() => {this.setRating((index + 1))}}></span>

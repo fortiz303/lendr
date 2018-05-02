@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { get } from 'lodash';
 import React, { Component } from 'react';
 // Redux
 import {connect} from 'react-redux';
@@ -10,7 +10,7 @@ class Feed extends Component {
   componentDidMount = () => {
     const {dispatch, transactionFeed} = this.props;
 
-    const token = _.get(window.sessionStorage, 'token', false);
+    const token = get(window.sessionStorage, 'token', false);
     if (token && !transactionFeed.length) {
       dispatch(transactionActions.fetchAll(token));
     }
@@ -19,7 +19,7 @@ class Feed extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     const {user, dispatch, transactionFeed} = this.props;
 
-    if (_.get(prevProps, 'user.id', false) !== _.get(user, 'id', false) && user.token && transactionFeed !== prevProps.transactionFeed) {
+    if (get(prevProps, 'user.id', false) !== get(user, 'id', false) && user.token && transactionFeed !== prevProps.transactionFeed) {
       dispatch(transactionActions.fetchAll(user.token));
     }
   };

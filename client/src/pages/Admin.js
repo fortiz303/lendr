@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { get } from 'lodash';
 import React, { Component } from 'react';
 // Redux
 import {connect} from 'react-redux';
@@ -40,7 +40,7 @@ class Admin extends Component {
   renderUsers = () => {
     const {admin} = this.props;
 
-    const rows = _.get(admin, 'users', []).map((current, index) => {
+    const rows = get(admin, 'users', []).map((current, index) => {
       return (
         <tr key={`${index}-user-row`}>
           <td>{String(current.id)}</td>
@@ -84,7 +84,7 @@ class Admin extends Component {
   renderTransactions = () => {
     const {admin} = this.props;
 
-    const rows = _.get(admin, 'transactions', []).map((current, index) => {
+    const rows = get(admin, 'transactions', []).map((current, index) => {
       return (
         <tr key={`${index}-transaction-row`}>
           <td>{current.id}</td>

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { get } from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
@@ -15,10 +15,10 @@ class Profile extends Component {
   componentDidMount = () => {
     const {dispatch, match, user} = this.props;
 
-    const token = _.get(window.sessionStorage, 'token', false);
-    const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
+    const token = get(window.sessionStorage, 'token', false);
+    const id = get(match, 'params.id', false) || get(user, 'id', false);
 
-    const dwollaId = _.get(user, 'dwolla_id', false);
+    const dwollaId = get(user, 'dwolla_id', false);
 
     if (token && id) {
       dispatch(userActions.fetchById(id, token));
@@ -31,10 +31,10 @@ class Profile extends Component {
 
   componentDidUpdate = (prevProps, prevState) => {
     const {dispatch, user, match, dwollaUser} = this.props;
-    const id = _.get(match, 'params.id', false) || _.get(user, 'id', false);
+    const id = get(match, 'params.id', false) || get(user, 'id', false);
 
     if (prevProps.user !== this.props.user && id && user.token) {
-      const dwollaId = _.get(user, 'dwolla_id', false);
+      const dwollaId = get(user, 'dwolla_id', false);
       dispatch(userActions.fetchById(id, user.token));
 
       if (dwollaId && !(!!dwollaUser)) {
@@ -107,7 +107,7 @@ class Profile extends Component {
           </div>
           <div className="col d-flex justify-content-end">
             {
-              _.get(dwollaUser, 'success', false) ?
+              get(dwollaUser, 'success', false) ?
                 <span className="verify-badge verified">
                   <span className="oi oi-check"> </span>
                   Verified

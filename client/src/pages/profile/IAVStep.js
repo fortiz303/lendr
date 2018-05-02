@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { get } from 'lodash';
 import {API} from '../../API'
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
@@ -37,7 +37,7 @@ class IAVStep extends Component {
   initializeIAV = () => {
     const {dwollaUser, user, dispatch} = this.props;
 
-    const editHref = _.get(dwollaUser, 'data._links.edit.href', '');
+    const editHref = get(dwollaUser, 'data._links.edit.href', '');
     const editHrefSplit = editHref.split('/');
     const dwollaId = editHrefSplit[editHrefSplit.length - 1];
 
@@ -61,7 +61,7 @@ class IAVStep extends Component {
   makePrimary = (id) => {
     const {dwollaUser, user, dispatch} = this.props;
 
-    const editHref = _.get(dwollaUser, 'data._links.edit.href', '');
+    const editHref = get(dwollaUser, 'data._links.edit.href', '');
     const editHrefSplit = editHref.split('/');
     const dwollaId = editHrefSplit[editHrefSplit.length - 1];
 
@@ -80,7 +80,7 @@ class IAVStep extends Component {
   remove = (id) => {
     const {dwollaUser, user, dispatch} = this.props;
 
-    const editHref = _.get(dwollaUser, 'data._links.edit.href', '');
+    const editHref = get(dwollaUser, 'data._links.edit.href', '');
     const editHrefSplit = editHref.split('/');
     const dwollaId = editHrefSplit[editHrefSplit.length - 1];
 
@@ -110,7 +110,12 @@ class IAVStep extends Component {
           <div className="card-body">
             <h5 className="card-title">{current.bankName}</h5>
             <h6 className="card-subtitle mb-2 text-muted">{current.name}</h6>
-            {!isPrimary ? <a href="#" onClick={() => {this.makePrimary(current.id)}} className="card-link">Make Primary</a> : null}
+            {!isPrimary ?
+              <a href="#" onClick={() => {this.makePrimary(current.id)}} className="card-link">
+                Make Primary
+              </a>
+              : null
+            }
             <a href="#" onClick={() => {this.remove(current.id)}} className="card-link">Remove</a>
           </div>
         </div> : null
@@ -119,7 +124,7 @@ class IAVStep extends Component {
   render() {
     const {dwollaUser} = this.props;
 
-    const content = _.get(dwollaUser, 'funding', []).length ? 
+    const content = get(dwollaUser, 'funding', []).length ? 
       this.renderFundingSources() : null;
 
     return (
