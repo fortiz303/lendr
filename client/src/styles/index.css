@@ -6839,12 +6839,15 @@ html,
   height: 100%; }
 
 .login-nav {
-  position: absolute;
-  width: 300px;
-  right: 0;
   padding: 20px;
   z-index: 9;
-  box-shadow: 0 3px 10px 1px #bdc3cc; }
+  box-shadow: 0 3px 10px 1px #bdc3cc;
+  min-width: 400px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
 
 .nav-item.nav-link .menu-toggle {
   cursor: pointer;
@@ -6855,20 +6858,6 @@ html,
 .main-nav {
   background-color: #FFFFFF;
   border-bottom: 1px solid #DADADA; }
-
-.nav-wrapper,
-.content-wrapper {
-  padding: 40px 20px;
-  background-color: #FFFFFF;
-  border: 1px solid #DADADA;
-  border-bottom-width: 2px;
-  margin-bottom: 30px; }
-  .nav-wrapper.nav,
-  .content-wrapper.nav {
-    padding: 10px; }
-
-.nav-wrapper {
-  padding: 20px 0; }
 
 .alert {
   border: none;

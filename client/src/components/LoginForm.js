@@ -108,6 +108,7 @@ class LoginForm extends Component {
   render() {
     const {email, password, method, isOpen} = this.state;
     const {isLoginPage} = this.props;
+
     const content = !isLoginPage ?
       <div className="login-nav card">
         <NavLink activeClassName="btn-primary" exact className="nav-item nav-link" to="/about">help</NavLink>
@@ -169,10 +170,9 @@ class LoginForm extends Component {
       </div>
 
     return (
-      <span href="#" className="nav-item nav-link" ref={c => this.login_popup = c}>
-        <span className={`oi menu-toggle ${isOpen ? 'oi-x': 'oi-menu'}`} onClick={() => {this.toggleOpen()}}></span>
-        {isOpen ? content : null}
-      </span>
+      <div class="row">
+        {content}
+      </div>
     );
   }
 };

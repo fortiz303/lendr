@@ -11,9 +11,6 @@ export default class Sidebar extends Component {
               <div className="col-lg-2 d-flex align-items-center">
                 <pre className="rosco mb-0 text-muted">ROSCO</pre>
               </div>
-              <div className="col d-flex justify-content-end">
-                <LoginForm isLoginPage={isLoginPage} />
-              </div>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { get } from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import authActions from '../actions/authActions';
+import LoginForm from '../components/LoginForm';
 
 class Login extends Component {
   componentDidMount = () => {
@@ -19,9 +20,11 @@ class Login extends Component {
   };
 
   render() {
+    const isLoginPage = window.location.pathname === '/login';
+
     return (
       <div className="container align-items-center">
-        Login
+        <LoginForm isLoginPage={isLoginPage}/>
       </div>
     );
   }
