@@ -22,8 +22,23 @@ $text-white: $fill-white;
 /* links */
 
 $link-default: $text-highlight;
-/* borders */
 
+/* borders */
 $border-grey: #DADADA;
 $border-dark-grey: #AAAAAA;
 $border-light-grey: #EAEAEA;
+
+// colors
+$light-blue: #1585f1;
+$light-blue-2: #097ce4;
+$light-blue-grey: #506876;
+$medium-blue: #1e3d4f;
+$navy-blue: #05273b;
+$white: #ffffff;
+$light-grey: #f6fafd;
+$light-green: #2ad07f;
+
+$light-blue-text: $light-blue-2;
+$light-grey-bg: $light-grey;
+$success-green: $light-green;
+$body-text: $navy-blue;
