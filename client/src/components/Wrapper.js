@@ -10,6 +10,7 @@ import authActions from '../actions/authActions';
 import Modal from '../components/Modal';
 import Alert from '../components/Alert';
 import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 
 let io = ioClient();
 
@@ -52,8 +53,7 @@ class Wrapper extends Component {
     const isLoginPage = window.location.pathname === '/login';
 
     return (
-      <div className={`container-fluid ${isLoginPage ? 'h-100' : null}`}>
-        {user ? user.id : null}
+      <div className={`container-fluid ${isLoginPage ? 'h-100' : ''}`}>
         {isLoginPage ?
           <Particles
             className="particle-wrapper"
@@ -62,19 +62,21 @@ class Wrapper extends Component {
             height={'100%'} />
           : null
         }
-        <Modal active={modal && modal.active} data={modal} />
-        {loading ? <div className="loading-bar"></div> : null}
-        {error ? <Alert error={error} /> : null}
-        <div className={`row ${isLoginPage ? 'h-100' : null}`}>
+        <div className="row h-100">
           <Navbar
             shouldDisplayNav={shouldDisplayNav}
+            isLoginPage={isLoginPage}
             user={user}
           />
-          <div className="col justify-content-center">
+          {!isLoginPage ? <Sidebar user={user}/> : null}
+          <div className="container justify-content-center">
             <div className="content-wrapper">
               {this.props.children}
             </div>
           </div>
+          <Modal active={modal && modal.active} data={modal} />
+          {loading ? <div className="loading-bar"></div> : null}
+          {/* {error ? <Alert error={error} /> : null} */}
         </div>
       </div>
     );

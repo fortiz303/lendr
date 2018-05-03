@@ -12,10 +12,8 @@ export default class Alert extends Component {
     const { error } = this.props;
 
     return (
-      <div className="row">
-        <div className={`alert ${error.className}`} role="alert">
-          {error.message}
-        </div>
+      <div className={`alert ${error.className}`} role="alert">
+        {error.message}
       </div>
     )
   }

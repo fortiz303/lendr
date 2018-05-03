@@ -1,33 +1,19 @@
 import React, { Component } from 'react'
 import NotificationManager from '../components/NotificationManager';
 import { NavLink } from 'react-router-dom'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 export default class Navbar extends Component {
   render() {
-    const { shouldDisplayNav, user } = this.props;
+    const { shouldDisplayNav, user, isLoginPage } = this.props;
 
     return (
-      <div className="navbar">
-        {shouldDisplayNav ?
-          <div className="col-md-4 col-lg-2">
-            <div className="content-wrapper nav-wrapper">
-              <NavLink
-                to="/"
-                exact                
-                activeClassName="btn-primary"
-                className="nav-item nav-link">
-                feed
-              </NavLink>
-              <NavLink
-                to="/profile"
-                activeClassName="btn-primary"
-                className="nav-item nav-link">
-                profile
-              </NavLink>
-              {false ? <NotificationManager user={user} /> : null}
-            </div>
-          </div> : null
-        }
+      <div className={`navbar-wrapper ${!isLoginPage ? 'w-100' : ''}`}>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+          <NavLink to={'/'} className="navbar-brand">
+            <FontAwesomeIcon icon="dot-circle" color="white" size="2x" />
+          </NavLink>
+        </nav>
       </div>
     )
   }

@@ -170,7 +170,7 @@ class LoginForm extends Component {
       </div>
 
     return (
-      <div class="row">
+      <div className="row">
         {content}
       </div>
     );

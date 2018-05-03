@@ -19,6 +19,10 @@ import About from './About';
 import Profile from './profile';
 import Admin from './Admin';
 
+// Navbar on top
+// sidebar and main content next to each other.
+// Footer
+
 export default class App extends Component {
   render() {
     return (
@@ -29,9 +33,9 @@ export default class App extends Component {
               <Route exact path="/login" component={Login}/>
               <div className="main-content-wrapper">
                 <div className="container">
-                  <Route exact component={Feed}  path="/" />
+                  <Route exact component={Feed} path="/" />
                   <Route exact component={Transaction}  path="/transaction/:id" />
-                  <Route component={Profile} path="/profile/:id?" />
+                  <Route exact component={Profile} path="/profile/:id?" />
                   <Route exact component={About} path="/about" />
                   <Route exact component={Admin} path="/admin" />
                 </div>
