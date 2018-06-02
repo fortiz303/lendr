@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { includes } from 'lodash';
 import React, { Component } from 'react';
 import DayPicker from 'react-day-picker';
 
@@ -14,9 +14,9 @@ export default class NewLoanEntry extends Component {
   };
 
   handleKeyDown = (e) => {
-    if (_.includes(FORWARD_KEYS, e.keyCode)) {
+    if (includes(FORWARD_KEYS, e.keyCode)) {
       this.props.paginate('fwd');
-    } else if (_.includes(BACKWARD_KEYS, e.keyCode)) {
+    } else if (includes(BACKWARD_KEYS, e.keyCode)) {
       this.props.paginate('back');
     }
   };

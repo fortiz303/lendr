@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { get } from 'lodash'
 import React, { Component } from 'react';
 import userActions from '../../actions/userActions';
 import {connect} from 'react-redux';
@@ -79,14 +79,14 @@ const US_STATES = [
 
 class DwollaStep extends Component {
   state = {
-    firstName: _.get(this.props, 'dwollaUser.data.firstName', ''),
-    lastName: _.get(this.props, 'dwollaUser.data.lastName', ''),
-    email: _.get(this.props, 'dwollaUser.data.email', ''),
-    address1: _.get(this.props, 'dwollaUser.data.address1', ''),
-    city: _.get(this.props, 'dwollaUser.data.city', ''),
-    state: _.get(this.props, 'dwollaUser.data.state', ''),
-    postalCode: _.get(this.props, 'dwollaUser.data.postalCode', ''),
-    ssn: _.get(this.props, 'dwollaUser.data.ssn', '')
+    firstName: get(this.props, 'dwollaUser.data.firstName', ''),
+    lastName: get(this.props, 'dwollaUser.data.lastName', ''),
+    email: get(this.props, 'dwollaUser.data.email', ''),
+    address1: get(this.props, 'dwollaUser.data.address1', ''),
+    city: get(this.props, 'dwollaUser.data.city', ''),
+    state: get(this.props, 'dwollaUser.data.state', ''),
+    postalCode: get(this.props, 'dwollaUser.data.postalCode', ''),
+    ssn: get(this.props, 'dwollaUser.data.ssn', '')
   };
 
   updateFirstName = (e) => {this.setState({firstName: e.target.value})};
@@ -148,9 +148,9 @@ class DwollaStep extends Component {
       user_id: user.id
     };
 
-    if (_.get(dwollaUser, 'data._links.edit.href', false)) {
+    if (get(dwollaUser, 'data._links.edit.href', false)) {
       // if there is an id, update the user
-      dispatch(userActions.createNewDwollaUser(data, user.token, _.get(dwollaUser, 'data._links.edit.href', false)))
+      dispatch(userActions.createNewDwollaUser(data, user.token, get(dwollaUser, 'data._links.edit.href', false)))
     } else {
       // if not, create one
       dispatch(userActions.createNewDwollaUser(data, user.token));
@@ -217,7 +217,7 @@ class DwollaStep extends Component {
 
                 <div className="row">
                   {
-                    !_.get(dwollaUser, 'success', false) ?
+                    !get(dwollaUser, 'success', false) ?
                       <div className="col">
                         <div className="form-group">
                           <label>Date of Birth</label>
@@ -268,7 +268,7 @@ class DwollaStep extends Component {
                     </div>
                   </div>
                   {
-                    !_.get(dwollaUser, 'success', false) ?
+                    !get(dwollaUser, 'success', false) ?
                       <div className="col">
                         <div className="form-group">
                           <label>Last 4 Digits of Social Security</label>

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { round, compact, concat } from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -136,9 +136,9 @@ class History extends Component {
       return current.review_rating
     });
 
-    const compact = _.compact(totalRating);
+    const compactRating = compact(totalRating);
 
-    return compact.length ? _.round(compact.reduce((acc, curr) => acc + curr) / compact.length, 1) : 0;
+    return compactRating.length ? round(compactRating.reduce((acc, curr) => acc + curr) / compactRating.length, 1) : 0;
   };
 
   renderReviewHistory = () => {
@@ -163,7 +163,7 @@ class History extends Component {
     let totalInterestReceived = 0;
 
     let graphData = ((borrowHistory || lendHistory) && user) ?
-      _.compact(_.concat(borrowHistory, lendHistory)).map((current, index) => {
+      compact(concat(borrowHistory, lendHistory)).map((current, index) => {
         const borrowed = current.created_by_user_id === user.id;
         const loaned = current.accepted_by_user_id === user.id;
 

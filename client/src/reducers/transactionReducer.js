@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { findIndex } from 'lodash';
 
 const initialState = {
   transactionFeed: []
@@ -44,7 +44,7 @@ export default function transactionReduced(state = initialState, action) {
         transactionFeed: action.data
       }
     case 'SOCKET__TRANSACTION_UPDATE': {
-      const found = _.findIndex(state.transactionFeed, {id: Number(action.transactionId)})
+      const found = findIndex(state.transactionFeed, {id: Number(action.transactionId)})
       const newFeed = [...state.transactionFeed];
 
       if (newFeed[found]) {

@@ -1,10 +1,9 @@
 const knexConfig = require('./config/db');
-
-
 var knex = require('knex')(knexConfig)
 
 console.log('Connected to db');
 console.log('Creating new tables with');
+
 knex.schema
   .createTableIfNotExists('users', (table) => {
     table.increments('id'); // the  user id

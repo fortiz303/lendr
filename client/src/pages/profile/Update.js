@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { get } from 'lodash';
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import DwollaStep from './DwollaStep';
@@ -51,9 +51,9 @@ class Update extends Component {
   }
   render() {
     const {currentStep} = this.state;
-    const {dwollaUser, user} = this.props;
+    const {dwollaUser} = this.props;
     
-    const dwollaLoaded = _.get(dwollaUser, 'success', false);
+    const dwollaLoaded = get(dwollaUser, 'success', false);
 
     return (
       <div className="row settings-wrapper">
